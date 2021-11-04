@@ -24,7 +24,7 @@ clean: ## cleans the binary
 
 .PHONY: run
 run: setup ## runs go run the application
-	go run ${GORACE} fakeit.go
+	go run ${GORACE} cmd/fakeit-go/main.go
 
 .PHONY: test
 test: ## runs go test the application
@@ -32,7 +32,7 @@ test: ## runs go test the application
 
 .PHONY: build
 build: clean ## build the application
-	GOOS=${GOOS} GOARCH=amd64 go build ${GORACE} -a -v -ldflags="-w -s" -o bin/${APPLICATION} fakeit.go
+	GOOS=${GOOS} GOARCH=amd64 go build ${GORACE} -a -v -ldflags="-w -s" -o bin/${APPLICATION} cmd/fakeit-go/main.go
 
 .PHONY: docker-login
 docker-login: ## login docker registry
