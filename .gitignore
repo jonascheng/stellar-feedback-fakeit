@@ -27,5 +27,5 @@ dist/*
 
 .idea/
 
-./bin/**
+bin/**
 coverage.out

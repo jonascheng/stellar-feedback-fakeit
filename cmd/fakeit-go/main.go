@@ -10,7 +10,7 @@ import (
 )
 
 type AgentSystemEnv struct {
-	SystemEnv myfakeit.SystemEnv `json:"system" xml:"system" fake:"{system}"`
+	SystemInfo myfakeit.SystemInfo `json:"system" xml:"system" fake:"{system}"`
 	// AddressInfo *gofakeit.AddressInfo `fake:"{address}"`
 	// PersonInfo  *gofakeit.PersonInfo  `fake:"{person}"`
 	// UUID string `fake:"{uuid}"`

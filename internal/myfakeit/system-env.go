@@ -7,10 +7,10 @@ import (
 	"github.com/brianvoe/gofakeit/v6"
 )
 
-type SystemEnv struct {
+type SystemInfo struct {
 	Guid    string       `json:"guid" xml:"guid" fake:"{uuid}"`
-	Caption string       `json:"caption" xml:"caption"`
-	Version string       `json:"version" xml:"version"`
+	Caption string       `json:"caption" xml:"caption" fake:"{os-caption}"`
+	Version string       `json:"version" xml:"version" fake:"{os-version}"`
 	Qfe     []QfeInfo    `json:"qfe" xml:"qfe" fakesize:"5"`
 	Volume  []VolumeInfo `json:"volume" xml:"volume" fakesize:"2"`
 	// Meta    []MetaInfo   `json:"meta" xml:"meta"`
@@ -31,16 +31,14 @@ type VolumeInfo struct {
 // }
 
 // System will generate a struct of system information
-func System() *SystemEnv { return system(globalFaker.Rand) }
+func SystemEnv() *SystemInfo { return systemEnv(globalFaker.Rand) }
 
-func system(r *rand.Rand) *SystemEnv {
-	var s SystemEnv
+func systemEnv(r *rand.Rand) *SystemInfo {
+	var s SystemInfo
 	err := gofakeit.Struct(&s)
 	if err != nil {
 		panic(err)
 	}
-	s.Caption = operatingSystemCaption(r)
-	s.Version = operatingSystemVersion(r)
 	return &s
 }
 
@@ -71,12 +69,34 @@ func addSystemLookup() {
 		Category:    "system",
 		Description: "Random set of system information",
 		Generate: func(r *rand.Rand, m *gofakeit.MapParams, info *gofakeit.Info) (interface{}, error) {
-			return system(r), nil
+			return systemEnv(r), nil
+		},
+	})
+
+	gofakeit.AddFuncLookup("os-caption", gofakeit.Info{
+		Display:     "OS Caption",
+		Category:    "os-caption",
+		Description: "Random OS Caption",
+		Example:     "Microsoft Windows 10 Enterprise",
+		Output:      "string",
+		Generate: func(r *rand.Rand, m *gofakeit.MapParams, info *gofakeit.Info) (interface{}, error) {
+			return operatingSystemCaption(r), nil
+		},
+	})
+
+	gofakeit.AddFuncLookup("os-version", gofakeit.Info{
+		Display:     "OS Version",
+		Category:    "os-version",
+		Description: "Random OS Version",
+		Example:     "10.0.19042",
+		Output:      "string",
+		Generate: func(r *rand.Rand, m *gofakeit.MapParams, info *gofakeit.Info) (interface{}, error) {
+			return operatingSystemVersion(r), nil
 		},
 	})
 
 	gofakeit.AddFuncLookup("hotfixid", gofakeit.Info{
-		Display:     "HotfixID",
+		Display:     "Hotfix ID",
 		Category:    "hotfixid",
 		Description: "Random hotfix ID",
 		Example:     "KB5004331",
