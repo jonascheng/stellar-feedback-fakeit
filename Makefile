@@ -10,7 +10,7 @@ GOOS?=windows
 RACE=""
 else
 GOOS?=$(shell uname -s | awk '{print tolower($0)}')
-GORACE="-race"
+GORACE=-race
 endif
 
 .PHONY: setup
