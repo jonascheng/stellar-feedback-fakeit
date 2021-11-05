@@ -35,7 +35,10 @@ func System() *SystemEnv { return system(globalFaker.Rand) }
 
 func system(r *rand.Rand) *SystemEnv {
 	var s SystemEnv
-	gofakeit.Struct(&s)
+	err := gofakeit.Struct(&s)
+	if err != nil {
+		panic(err)
+	}
 	s.Caption = operatingSystemCaption(r)
 	s.Version = operatingSystemVersion(r)
 	return &s

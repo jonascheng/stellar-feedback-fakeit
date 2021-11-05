@@ -23,7 +23,11 @@ type BulkAgentSystemEnv struct {
 
 func testStruct() {
 	var agents BulkAgentSystemEnv
-	gofakeit.Struct(&agents)
+	err := gofakeit.Struct(&agents)
+	if err != nil {
+		panic(err)
+	}
+
 	x, err := json.Marshal(agents)
 	if err != nil {
 		panic(err)
