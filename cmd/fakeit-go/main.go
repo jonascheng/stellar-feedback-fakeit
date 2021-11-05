@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -156,7 +157,18 @@ func main() {
 		fmt.Println("")
 		fmt.Println(string(csvBytes))
 		fmt.Println("<<")
-		// TODO: clean up benchmark files
+
+		// clean up benchmark files
+		files, err := filepath.Glob("*.json")
+		checkError(err)
+		for _, f := range files {
+			os.Remove(f)
+		}
+		files, err = filepath.Glob("*.gz")
+		checkError(err)
+		for _, f := range files {
+			os.Remove(f)
+		}
 		return
 	}
 
