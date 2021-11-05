@@ -8,7 +8,7 @@ import (
 	"github.com/brianvoe/gofakeit/v6"
 )
 
-type SystemInfo struct {
+type AgentSystemEnv struct {
 	Guid    string              `json:"guid" xml:"guid" fake:"{uuid}"`
 	Caption string              `json:"caption" xml:"caption" fake:"{os-caption}"`
 	Version string              `json:"version" xml:"version" fake:"{os-version}"`
@@ -29,10 +29,10 @@ type VolumeInfo struct {
 }
 
 // System will generate a struct of system information
-func SystemEnv() *SystemInfo { return systemEnv(globalFaker.Rand) }
+func SystemEnv() *AgentSystemEnv { return systemEnv(globalFaker.Rand) }
 
-func systemEnv(r *rand.Rand) *SystemInfo {
-	var s SystemInfo
+func systemEnv(r *rand.Rand) *AgentSystemEnv {
+	var s AgentSystemEnv
 	err := gofakeit.Struct(&s)
 	s.Meta = operatingSystemMeta(r)
 	if err != nil {

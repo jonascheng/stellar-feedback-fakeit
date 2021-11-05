@@ -8,8 +8,15 @@ import (
 )
 
 func main() {
-	agents := builder.CollectAgentSystemEnv()
+	agents := builder.CollectAgentSystemEnv(1)
 	jsonBytes, err := json.Marshal(agents)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(string(jsonBytes))
+
+	telemetry := builder.EncodeAgentSystemEnvCollectionFlat(agents)
+	jsonBytes, err = json.Marshal(telemetry)
 	if err != nil {
 		panic(err)
 	}
