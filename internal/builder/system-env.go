@@ -49,27 +49,27 @@ type AgentSystemEnv struct {
 	Meta   []myfakeit.MetaInfo   `json:"meta" xml:"meta"`
 }
 
-func CollectAgentSystemEnv(size int) AgentSystemEnvCollection {
+func CollectAgentSystemEnv(size int) *AgentSystemEnvCollection {
 	var agents AgentSystemEnvCollection
 
 	for i := 0; i < size; i++ {
 		agent := myfakeit.SystemEnv()
 		agents.Agents = append(agents.Agents, *agent)
 	}
-	return agents
+	return &agents
 }
 
-func EncodeAgentSystemEnvCollectionFlat(agents AgentSystemEnvCollection) *AgentTelemetrySystemEnvFlat {
+func EncodeAgentSystemEnvCollectionFlat(agents *AgentSystemEnvCollection) *AgentTelemetrySystemEnvFlat {
 	telemetry := AgentTelemetrySystemEnvFlat{
 		Timestamp:     time.Now(),
 		TelemetryType: "agent-telemetry-system-environment",
 		ServerGuid:    gofakeit.UUID(),
-		Associations:  agents,
+		Associations:  *agents,
 	}
 	return &telemetry
 }
 
-func EncodeAgentSystemEnvCollectionLookup(agents AgentSystemEnvCollection) *AgentTelemetrySystemEnvLookup {
+func EncodeAgentSystemEnvCollectionLookup(agents *AgentSystemEnvCollection) *AgentTelemetrySystemEnvLookup {
 	telemetry := AgentTelemetrySystemEnvLookup{
 		Timestamp:     time.Now(),
 		TelemetryType: "agent-telemetry-system-environment",
