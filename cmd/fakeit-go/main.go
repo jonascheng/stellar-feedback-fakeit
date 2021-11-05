@@ -25,6 +25,14 @@ var (
 	debug          = kingpin.Flag("debug", "Debug output results in json format").Bool()
 )
 
+type Benchmark struct {
+	Size                 int `json:"fakesize" xml:"fakesize" csv:"fakesize"`
+	SizeFlat             int `json:"sizeFlat" xml:"sizeFlat" csv:"sizeFlat"`
+	SizeLookup           int `json:"sizeLookup" xml:"sizeLookup" csv:"sizeLookup"`
+	SizeFlatCompressed   int `json:"sizeFlatCompressed" xml:"sizeFlatCompressed" csv:"sizeFlatCompressed"`
+	SizeLookupCompressed int `json:"sizeLookupCompressed" xml:"sizeLookupCompressed" csv:"sizeLookupCompressed"`
+}
+
 func getAgentSystemEnvCollection(size int) *builder.AgentSystemEnvCollection {
 	agents := builder.CollectAgentSystemEnv(size)
 	return agents
@@ -38,6 +46,25 @@ func encodeAgentSystemEnvCollectionFlat(agents *builder.AgentSystemEnvCollection
 func encodeAgentSystemEnvCollectionLookup(agents *builder.AgentSystemEnvCollection) *builder.AgentTelemetrySystemEnvLookup {
 	telemetry := builder.EncodeAgentSystemEnvCollectionLookup(agents)
 	return telemetry
+}
+
+func fullAgentSystemEnvCollection(size int) Benchmark {
+	var benchmark Benchmark
+
+	agents := getAgentSystemEnvCollection(size)
+	benchmark.Size = size
+
+	telemetryFlat := encodeAgentSystemEnvCollectionFlat(agents)
+	flatFilename := fmt.Sprintf("agent-telemetry-system-environment-flat-%d.json", size)
+	benchmark.SizeFlat = dumpToFile(telemetryFlat, flatFilename)
+	benchmark.SizeFlatCompressed = compressFile(flatFilename)
+
+	lookupFilename := fmt.Sprintf("agent-telemetry-system-environment-lookup-%d.json", size)
+	telemetryLookup := encodeAgentSystemEnvCollectionLookup(agents)
+	benchmark.SizeLookup = dumpToFile(telemetryLookup, lookupFilename)
+	benchmark.SizeLookupCompressed = compressFile(lookupFilename)
+
+	return benchmark
 }
 
 func dumpToFile(v interface{}, filename string) int {
@@ -112,33 +139,13 @@ func main() {
 	if *benchmark {
 		quit := make(chan bool)
 
-		type Benchmark struct {
-			Size                 int `json:"fakesize" xml:"fakesize" csv:"fakesize"`
-			SizeFlat             int `json:"sizeFlat" xml:"sizeFlat" csv:"sizeFlat"`
-			SizeLookup           int `json:"sizeLookup" xml:"sizeLookup" csv:"sizeLookup"`
-			SizeFlatCompressed   int `json:"sizeFlatCompressed" xml:"sizeFlatCompressed" csv:"sizeFlatCompressed"`
-			SizeLookupCompressed int `json:"sizeLookupCompressed" xml:"sizeLookupCompressed" csv:"sizeLookupCompressed"`
-		}
-
 		fmt.Println(">>")
 		fmt.Println("Benchmark getAgentSystemEnvCollection")
 		go dots(quit)
 
 		var benchmarkResult []Benchmark
 		for i := 50; i < 10000; i = i * 2 {
-			var benchmark Benchmark
-
-			agents := getAgentSystemEnvCollection(i)
-			benchmark.Size = i
-
-			telemetryFlat := encodeAgentSystemEnvCollectionFlat(agents)
-			benchmark.SizeFlat = dumpToFile(telemetryFlat, "agent-telemetry-system-environment-flat.json")
-			benchmark.SizeFlatCompressed = compressFile("agent-telemetry-system-environment-flat.json")
-
-			telemetryLookup := encodeAgentSystemEnvCollectionLookup(agents)
-			benchmark.SizeLookup = dumpToFile(telemetryLookup, "agent-telemetry-system-environment-lookup.json")
-			benchmark.SizeLookupCompressed = compressFile("agent-telemetry-system-environment-lookup.json")
-
+			benchmark := fullAgentSystemEnvCollection(i)
 			benchmarkResult = append(benchmarkResult, benchmark)
 		}
 
@@ -149,22 +156,14 @@ func main() {
 		fmt.Println("")
 		fmt.Println(string(csvBytes))
 		fmt.Println("<<")
+		// TODO: clean up benchmark files
+		return
 	}
 
 	if *agentSystemEnv {
 		fmt.Println(">>")
-		fmt.Printf("Generate agent system environment collection with size %v\n", size)
-
-		agents := getAgentSystemEnvCollection(*size)
-
-		fmt.Println("Encode agent system environment in flat")
-		telemetryFlat := encodeAgentSystemEnvCollectionFlat(agents)
-		dumpToFile(telemetryFlat, "agent-telemetry-system-environment-flat.json")
-
-		fmt.Println("Encode agent system environment in lookup")
-		telemetryLookup := encodeAgentSystemEnvCollectionLookup(agents)
-		dumpToFile(telemetryLookup, "agent-telemetry-system-environment-lookup.json")
-
+		fmt.Printf("Generate agent system environment collection with size %v\n", *size)
+		fullAgentSystemEnvCollection(*size)
 		fmt.Println("<<")
 	}
 }
