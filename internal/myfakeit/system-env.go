@@ -9,12 +9,12 @@ import (
 )
 
 type AgentSystemEnv struct {
-	Guid    string              `json:"guid" xml:"guid" fake:"{uuid}"`
-	Caption string              `json:"caption" xml:"caption" fake:"{os-caption}"`
-	Version string              `json:"version" xml:"version" fake:"{os-version}"`
-	Qfe     []QfeInfo           `json:"qfe" xml:"qfe" fakesize:"5"`
-	Volume  []VolumeInfo        `json:"volume" xml:"volume" fakesize:"2"`
-	Meta    []map[string]string `json:"meta" xml:"meta"`
+	Guid    string       `json:"guid" xml:"guid" fake:"{uuid}"`
+	Caption string       `json:"caption" xml:"caption" fake:"{os-caption}"`
+	Version string       `json:"version" xml:"version" fake:"{os-version}"`
+	Qfe     []QfeInfo    `json:"qfe" xml:"qfe" fakesize:"5"`
+	Volume  []VolumeInfo `json:"volume" xml:"volume" fakesize:"2"`
+	Meta    []MetaInfo   `json:"meta" xml:"meta"`
 }
 
 type QfeInfo struct {
@@ -27,6 +27,8 @@ type VolumeInfo struct {
 	Free  string `json:"free" xml:"free" fake:"{number:2000000000,4000000000}"`
 	Type  string `json:"type" xml:"type" fake:"{randomstring:[FAT32,NTFS]}"`
 }
+
+type MetaInfo map[string]string
 
 // System will generate a struct of system information
 func SystemEnv() *AgentSystemEnv { return systemEnv(globalFaker.Rand) }
@@ -82,19 +84,24 @@ func operatingSystemQfeInstalledOn(r *rand.Rand) string {
 }
 
 // OperatingSystemMeta will generate a random operating system meta
-func OperatingSystemMeta() []map[string]string { return operatingSystemMeta(globalFaker.Rand) }
+func OperatingSystemMeta() []MetaInfo { return operatingSystemMeta(globalFaker.Rand) }
 
-func operatingSystemMeta(r *rand.Rand) []map[string]string {
-	var list []map[string]string
-	list = append(list, map[string]string{
-		"CpuCaption":      "Intel64 Family 6 Model 167 Stepping 1",
-		"CpuName":         "11th Gen Intel(R) Core(TM) i7-11700 @ 2.50GHz",
-		"CpuArchitecture": strconv.Itoa(gofakeit.RandomInt([]int{0, 5, 9, 12})),
-		"OsArchitecture":  gofakeit.RandomString([]string{"64-bit", "32-bit"}),
-		"OSLanguage":      gofakeit.RandomString([]string{"1033", "1028", "1041"}),
-		"TotalMemory":     strconv.Itoa(gofakeit.Number(30000000000, 40000000000)),
-		"FreeMemory":      strconv.Itoa(gofakeit.Number(10000000, 20000000)),
-	})
+func operatingSystemMeta(r *rand.Rand) []MetaInfo {
+	var list []MetaInfo
+	list = append(list, MetaInfo{
+		"CpuCaption": "Intel64 Family 6 Model 167 Stepping 1"})
+	list = append(list, MetaInfo{
+		"CpuName": "11th Gen Intel(R) Core(TM) i7-11700 @ 2.50GHz"})
+	list = append(list, MetaInfo{
+		"CpuArchitecture": strconv.Itoa(gofakeit.RandomInt([]int{0, 5, 9, 12}))})
+	list = append(list, MetaInfo{
+		"OsArchitecture": gofakeit.RandomString([]string{"64-bit", "32-bit"})})
+	list = append(list, MetaInfo{
+		"OSLanguage": gofakeit.RandomString([]string{"1033", "1028", "1041"})})
+	list = append(list, MetaInfo{
+		"TotalMemory": strconv.Itoa(gofakeit.Number(30000000000, 40000000000))})
+	list = append(list, MetaInfo{
+		"FreeMemory": strconv.Itoa(gofakeit.Number(10000000, 20000000))})
 	return list
 }
 

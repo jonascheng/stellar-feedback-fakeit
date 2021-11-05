@@ -15,8 +15,15 @@ func main() {
 	}
 	fmt.Println(string(jsonBytes))
 
-	telemetry := builder.EncodeAgentSystemEnvCollectionFlat(agents)
-	jsonBytes, err = json.Marshal(telemetry)
+	telemetryFlat := builder.EncodeAgentSystemEnvCollectionFlat(agents)
+	jsonBytes, err = json.Marshal(telemetryFlat)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(string(jsonBytes))
+
+	telemetryLookup := builder.EncodeAgentSystemEnvCollectionLookup(agents)
+	jsonBytes, err = json.Marshal(telemetryLookup)
 	if err != nil {
 		panic(err)
 	}
