@@ -61,7 +61,7 @@ func CollectAgentSystemEnv(size int) *AgentSystemEnvCollection {
 
 func EncodeAgentSystemEnvCollectionFlat(agents *AgentSystemEnvCollection) *AgentTelemetrySystemEnvFlat {
 	telemetry := AgentTelemetrySystemEnvFlat{
-		Timestamp:     time.Now(),
+		Timestamp:     time.Now().UTC(),
 		TelemetryType: "agent-telemetry-system-environment",
 		ServerGuid:    gofakeit.UUID(),
 		Associations:  *agents,
@@ -71,7 +71,7 @@ func EncodeAgentSystemEnvCollectionFlat(agents *AgentSystemEnvCollection) *Agent
 
 func EncodeAgentSystemEnvCollectionLookup(agents *AgentSystemEnvCollection) *AgentTelemetrySystemEnvLookup {
 	telemetry := AgentTelemetrySystemEnvLookup{
-		Timestamp:     time.Now(),
+		Timestamp:     time.Now().UTC(),
 		TelemetryType: "agent-telemetry-system-environment",
 		ServerGuid:    gofakeit.UUID(),
 	}
