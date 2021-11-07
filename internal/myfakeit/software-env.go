@@ -3,6 +3,7 @@ package myfakeit
 import (
 	"fmt"
 	"math/rand"
+	"strings"
 
 	"github.com/brianvoe/gofakeit/v6"
 )
@@ -19,7 +20,7 @@ type AppInfo struct {
 	InstallLocation string `json:"installLocation" xml:"installLocation" fake:"{app-installlocation}"`
 }
 
-// System will generate a struct of system information
+// SoftwareEnv will generate a struct of software information
 func SoftwareEnv() *AgentSoftwareEnv { return sfotwareEnv(globalFaker.Rand) }
 
 func sfotwareEnv(r *rand.Rand) *AgentSoftwareEnv {
@@ -28,6 +29,9 @@ func sfotwareEnv(r *rand.Rand) *AgentSoftwareEnv {
 	if err != nil {
 		panic(err)
 	}
+
+	// remove dash from UUID
+	s.Guid = strings.Replace(s.Guid, "-", "", -1)
 
 	// set vendor to caption
 	for i, app := range s.App {
@@ -65,14 +69,14 @@ func applicationInstallLocation(r *rand.Rand) string {
 }
 
 func addSoftwareLookup() {
-	// gofakeit.AddFuncLookup("system", gofakeit.Info{
-	// 	Display:     "System",
-	// 	Category:    "system",
-	// 	Description: "Random set of system information",
-	// 	Generate: func(r *rand.Rand, m *gofakeit.MapParams, info *gofakeit.Info) (interface{}, error) {
-	// 		return systemEnv(r), nil
-	// 	},
-	// })
+	gofakeit.AddFuncLookup("software", gofakeit.Info{
+		Display:     "Software",
+		Category:    "software",
+		Description: "Random set of software information",
+		Generate: func(r *rand.Rand, m *gofakeit.MapParams, info *gofakeit.Info) (interface{}, error) {
+			return sfotwareEnv(r), nil
+		},
+	})
 
 	gofakeit.AddFuncLookup("app-caption", gofakeit.Info{
 		Display:     "App Caption",

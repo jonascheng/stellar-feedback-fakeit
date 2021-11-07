@@ -3,6 +3,7 @@ package myfakeit
 import (
 	"math/rand"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/brianvoe/gofakeit/v6"
@@ -30,16 +31,21 @@ type VolumeInfo struct {
 
 type MetaInfo map[string]string
 
-// System will generate a struct of system information
+// SystemEnv will generate a struct of system information
 func SystemEnv() *AgentSystemEnv { return systemEnv(globalFaker.Rand) }
 
 func systemEnv(r *rand.Rand) *AgentSystemEnv {
 	var s AgentSystemEnv
 	err := gofakeit.Struct(&s)
-	s.Meta = operatingSystemMeta(r)
 	if err != nil {
 		panic(err)
 	}
+
+	// remove dash from UUID
+	s.Guid = strings.Replace(s.Guid, "-", "", -1)
+
+	s.Meta = operatingSystemMeta(r)
+
 	return &s
 }
 

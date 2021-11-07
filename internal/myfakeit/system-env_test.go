@@ -12,7 +12,7 @@ func TestAgentSystemEnv(t *testing.T) {
 
 	agent := SystemEnv()
 
-	assert.Equal(t, "590c1440-9888-45b0-bd51-a817ee07c3f2", agent.Guid)
+	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", agent.Guid)
 	assert.Equal(t, "Microsoft Windows 10 Pro for Workstations", agent.Caption)
 	assert.Equal(t, "10.0.16299", agent.Version)
 	assert.Equal(t, 5, len(agent.Qfe))
