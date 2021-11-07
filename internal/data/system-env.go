@@ -1,6 +1,6 @@
 package data
 
-// Address consists of address information
+// Operating system consists of OS information
 var OperatingSystem = map[string][]string{
 	// https://en.wikipedia.org/wiki/List_of_Microsoft_Windows_versions
 	"caption": {"Microsoft Windows 10 Enterprise", "Microsoft Windows 10 Pro for Workstations", "Microsoft Windows 10 Pro"},
