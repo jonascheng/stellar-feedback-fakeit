@@ -14,7 +14,7 @@ type AgentSoftwareEnvCollection struct {
 }
 
 type AgentTelemetrySoftwareLookup struct {
-	SoftwareMap map[string]AgentSoftwareApplication `json:"softwareMap" xml:"softwareMap"`
+	AppMap map[string]AgentSoftwareApplication `json:"appMap" xml:"appMap"`
 }
 
 type AgentSoftwareApplication struct {
@@ -33,8 +33,8 @@ type AgentTelemetrySoftwareAssociationsLookup struct {
 }
 
 type AgentSoftwareEnv struct {
-	Guid     string   `json:"guid" xml:"guid"`
-	Software []string `json:"software" xml:"software"`
+	Guid string   `json:"guid" xml:"guid"`
+	App  []string `json:"app" xml:"app"`
 }
 
 func CollectAgentSoftwareEnv(size int) *AgentSoftwareEnvCollection {
@@ -89,8 +89,8 @@ func (agents *AgentSoftwareEnvCollection) EncodeAgentCollectionLookup() *AgentTe
 
 		// encode agent
 		newAgent := AgentSoftwareEnv{
-			Guid:     agent.Guid,
-			Software: softwareList,
+			Guid: agent.Guid,
+			App:  softwareList,
 		}
 
 		newAgents.Agents = append(newAgents.Agents, newAgent)
@@ -99,9 +99,9 @@ func (agents *AgentSoftwareEnvCollection) EncodeAgentCollectionLookup() *AgentTe
 
 	if len(lookup) > 0 {
 		var reversedLookup AgentTelemetrySoftwareLookup
-		reversedLookup.SoftwareMap = make(map[string]AgentSoftwareApplication)
+		reversedLookup.AppMap = make(map[string]AgentSoftwareApplication)
 		for key, element := range lookup {
-			reversedLookup.SoftwareMap[element] = key
+			reversedLookup.AppMap[element] = key
 		}
 		telemetry.Lookup = reversedLookup
 	}
