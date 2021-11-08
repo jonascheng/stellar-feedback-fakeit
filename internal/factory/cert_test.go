@@ -17,10 +17,10 @@ func TestNewAgentCertCollection(t *testing.T) {
 	agent := agents.Agents[0]
 	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", agent.Guid)
 	assert.Equal(t, 100, len(agent.Cert))
-	assert.Equal(t, "Civinomics", agent.Cert[0].Subject)
+	assert.Equal(t, "LRXSW 3.45", agent.Cert[0].Subject)
 	assert.Equal(t, "DigiCert Global Root CA", agent.Cert[0].Issuer)
-	assert.Equal(t, "xHkiJ", agent.Cert[0].Serial)
-	assert.Equal(t, "bfff758c3318d335b0cae32492bf81f62d2f243deda6a7adb956a631089c7dbc", agent.Cert[0].SHA2)
+	assert.Equal(t, "6", agent.Cert[0].Serial)
+	assert.Equal(t, "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683", agent.Cert[0].SHA2)
 }
 
 func TestEncodeAgentCertCollectionFlat(t *testing.T) {
@@ -30,7 +30,7 @@ func TestEncodeAgentCertCollectionFlat(t *testing.T) {
 	assert.Equal(t, 5, len(agents.Agents))
 
 	telemetry := agents.EncodeAgentCollectionFlat()
-	assert.Equal(t, "25f5de8ad4174d049fbf4da7dea50e30", telemetry.ServerGuid)
+	assert.Equal(t, "687f9ed2ed6c41e7a468f9af21d70de3", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-cert", telemetry.TelemetryType)
 
 	associatedAgents := telemetry.Associations.(AgentCertCollection)
@@ -39,10 +39,10 @@ func TestEncodeAgentCertCollectionFlat(t *testing.T) {
 	agent := agents.Agents[0]
 	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", agent.Guid)
 	assert.Equal(t, 100, len(agent.Cert))
-	assert.Equal(t, "Civinomics", agent.Cert[0].Subject)
+	assert.Equal(t, "LRXSW 3.45", agent.Cert[0].Subject)
 	assert.Equal(t, "DigiCert Global Root CA", agent.Cert[0].Issuer)
-	assert.Equal(t, "xHkiJ", agent.Cert[0].Serial)
-	assert.Equal(t, "bfff758c3318d335b0cae32492bf81f62d2f243deda6a7adb956a631089c7dbc", agent.Cert[0].SHA2)
+	assert.Equal(t, "6", agent.Cert[0].Serial)
+	assert.Equal(t, "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683", agent.Cert[0].SHA2)
 }
 
 func TestEncodeAgentCertCollectionLookup(t *testing.T) {
@@ -52,7 +52,7 @@ func TestEncodeAgentCertCollectionLookup(t *testing.T) {
 	assert.Equal(t, 5, len(agents.Agents))
 
 	telemetry := agents.EncodeAgentCollectionLookup()
-	assert.Equal(t, "25f5de8ad4174d049fbf4da7dea50e30", telemetry.ServerGuid)
+	assert.Equal(t, "687f9ed2ed6c41e7a468f9af21d70de3", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-cert", telemetry.TelemetryType)
 
 	lookup := telemetry.Lookup.(AgentTelemetryCertLookup)
@@ -60,10 +60,10 @@ func TestEncodeAgentCertCollectionLookup(t *testing.T) {
 
 	cert, ok := lookup.CertMap["1"]
 	assert.True(t, ok)
-	assert.Equal(t, "Civinomics", cert.Subject)
+	assert.Equal(t, "LRXSW 3.45", cert.Subject)
 	assert.Equal(t, "DigiCert Global Root CA", cert.Issuer)
-	assert.Equal(t, "xHkiJ", cert.Serial)
-	assert.Equal(t, "bfff758c3318d335b0cae32492bf81f62d2f243deda6a7adb956a631089c7dbc", cert.SHA2)
+	assert.Equal(t, "6", cert.Serial)
+	assert.Equal(t, "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683", cert.SHA2)
 
 	associatedAgents := telemetry.Associations.(AgentTelemetryCertAssociationsLookup)
 	assert.Equal(t, 5, len(associatedAgents.Agents))

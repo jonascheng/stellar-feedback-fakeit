@@ -14,8 +14,8 @@ func TestCert(t *testing.T) {
 
 	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", agent.Guid)
 	assert.Equal(t, 100, len(agent.Cert))
-	assert.Equal(t, "Civinomics", agent.Cert[0].Subject)
+	assert.Equal(t, "LRXSW 3.45", agent.Cert[0].Subject)
 	assert.Equal(t, "DigiCert Global Root CA", agent.Cert[0].Issuer)
-	assert.Equal(t, "xHkiJ", agent.Cert[0].Serial)
-	assert.Equal(t, "bfff758c3318d335b0cae32492bf81f62d2f243deda6a7adb956a631089c7dbc", agent.Cert[0].SHA2)
+	assert.Equal(t, "6", agent.Cert[0].Serial)
+	assert.Equal(t, "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683", agent.Cert[0].SHA2)
 }
