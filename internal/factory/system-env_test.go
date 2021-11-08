@@ -113,7 +113,7 @@ func TestEncodeAgentSystemEnvCollectionLookuWithSameOS(t *testing.T) {
 	lookup := telemetry.Lookup.(AgentTelemetrySystemLookup)
 	assert.Equal(t, 1, len(lookup.SystemMap))
 
-	var os AgentSystemOperatingSystem
+	var os myfakeit.OSInfo
 	var ok bool
 	os, ok = lookup.SystemMap["1"]
 	assert.True(t, ok)
@@ -167,7 +167,7 @@ func TestEncodeAgentSystemEnvCollectionLookuWithDifferentOS(t *testing.T) {
 	lookup := telemetry.Lookup.(AgentTelemetrySystemLookup)
 	assert.Equal(t, 3, len(lookup.SystemMap))
 
-	var os AgentSystemOperatingSystem
+	var os myfakeit.OSInfo
 	var ok bool
 	os, ok = lookup.SystemMap["1"]
 	assert.True(t, ok)

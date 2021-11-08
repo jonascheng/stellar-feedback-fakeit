@@ -18,6 +18,11 @@ type AgentSystemEnv struct {
 	Meta    []MetaInfo   `json:"meta" xml:"meta"`
 }
 
+type OSInfo struct {
+	Caption string `json:"caption" xml:"caption" fake:"{os-caption}"`
+	Version string `json:"version" xml:"version" fake:"{os-version}"`
+}
+
 type QfeInfo struct {
 	HotfixId    string `json:"hotfixid" xml:"hotfixid" fake:"{qfe-hotfixid}"`
 	InstalledOn string `json:"installedon" xml:"installedon" fake:"{qfe-installedon}"`

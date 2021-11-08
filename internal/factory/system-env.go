@@ -15,12 +15,7 @@ type AgentSystemEnvCollection struct {
 }
 
 type AgentTelemetrySystemLookup struct {
-	SystemMap map[string]AgentSystemOperatingSystem `json:"systemMap" xml:"systemMap"`
-}
-
-type AgentSystemOperatingSystem struct {
-	Caption string `json:"caption" xml:"caption"`
-	Version string `json:"version" xml:"version"`
+	SystemMap map[string]myfakeit.OSInfo `json:"systemMap" xml:"systemMap"`
 }
 
 type AgentTelemetrySystemAssociations struct {
@@ -67,12 +62,12 @@ func (agents *AgentSystemEnvCollection) EncodeAgentCollectionLookup() *AgentTele
 	}
 
 	var newAgents AgentTelemetrySystemAssociationsLookup
-	lookup := make(map[AgentSystemOperatingSystem]string)
+	lookup := make(map[myfakeit.OSInfo]string)
 	encode_counter := 1
 	for _, agent := range agents.Agents {
 		var val string
 		var ok bool
-		os := AgentSystemOperatingSystem{
+		os := myfakeit.OSInfo{
 			Caption: agent.Caption,
 			Version: agent.Version,
 		}
@@ -98,7 +93,7 @@ func (agents *AgentSystemEnvCollection) EncodeAgentCollectionLookup() *AgentTele
 
 	if len(lookup) > 0 {
 		var reversedLookup AgentTelemetrySystemLookup
-		reversedLookup.SystemMap = make(map[string]AgentSystemOperatingSystem)
+		reversedLookup.SystemMap = make(map[string]myfakeit.OSInfo)
 		for key, element := range lookup {
 			reversedLookup.SystemMap[element] = key
 		}
