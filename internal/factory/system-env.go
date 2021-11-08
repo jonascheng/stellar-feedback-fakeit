@@ -1,7 +1,8 @@
-package builder
+package factory
 
 import (
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/brianvoe/gofakeit/v6"
@@ -63,7 +64,7 @@ func EncodeAgentSystemEnvCollectionFlat(agents *AgentSystemEnvCollection) *Agent
 	telemetry := AgentTelemetrySystemEnvFlat{
 		Timestamp:     time.Now().UTC(),
 		TelemetryType: "agent-telemetry-system-environment",
-		ServerGuid:    gofakeit.UUID(),
+		ServerGuid:    strings.Replace(gofakeit.UUID(), "-", "", -1),
 		Associations:  *agents,
 	}
 	return &telemetry
@@ -73,7 +74,7 @@ func EncodeAgentSystemEnvCollectionLookup(agents *AgentSystemEnvCollection) *Age
 	telemetry := AgentTelemetrySystemEnvLookup{
 		Timestamp:     time.Now().UTC(),
 		TelemetryType: "agent-telemetry-system-environment",
-		ServerGuid:    gofakeit.UUID(),
+		ServerGuid:    strings.Replace(gofakeit.UUID(), "-", "", -1),
 	}
 
 	lookup := make(map[AgentSystemOperatingSystem]string)

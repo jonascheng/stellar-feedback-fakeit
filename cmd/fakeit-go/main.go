@@ -9,10 +9,12 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"reflect"
+	"runtime"
 	"strings"
 	"time"
 
-	"github.com/jonascheng/stellar-feedback-fakeit/internal/builder"
+	"github.com/jonascheng/stellar-feedback-fakeit/internal/factory"
 	"github.com/jszwec/csvutil"
 
 	// A Go (golang) command line and flag parser
@@ -20,10 +22,11 @@ import (
 )
 
 var (
-	agentSystemEnv = kingpin.Flag("agent-system-env", "Random generate agent-telemetry-system-environment.").Bool()
-	benchmark      = kingpin.Flag("benchmark", "Benchmark performance.").Bool()
-	size           = kingpin.Flag("size", "Random size").Default("1").Int()
-	debug          = kingpin.Flag("debug", "Debug output results in json format").Bool()
+	agentSystemEnv   = kingpin.Flag("agent-system-env", "Random generate agent-telemetry-system-environment.").Bool()
+	agentSoftwareEnv = kingpin.Flag("agent-software-env", "Random generate agent-telemetry-software-environment.").Bool()
+	benchmark        = kingpin.Flag("benchmark", "Benchmark performance.").Bool()
+	size             = kingpin.Flag("size", "Random size").Default("1").Int()
+	debug            = kingpin.Flag("debug", "Debug output results in json format").Bool()
 )
 
 type Benchmark struct {
@@ -34,18 +37,18 @@ type Benchmark struct {
 	SizeLookupCompressed int `json:"sizeLookupCompressed" xml:"sizeLookupCompressed" csv:"sizeLookupCompressed"`
 }
 
-func getAgentSystemEnvCollection(size int) *builder.AgentSystemEnvCollection {
-	agents := builder.CollectAgentSystemEnv(size)
+func getAgentSystemEnvCollection(size int) *factory.AgentSystemEnvCollection {
+	agents := factory.CollectAgentSystemEnv(size)
 	return agents
 }
 
-func encodeAgentSystemEnvCollectionFlat(agents *builder.AgentSystemEnvCollection) *builder.AgentTelemetrySystemEnvFlat {
-	telemetry := builder.EncodeAgentSystemEnvCollectionFlat(agents)
+func encodeAgentSystemEnvCollectionFlat(agents *factory.AgentSystemEnvCollection) *factory.AgentTelemetrySystemEnvFlat {
+	telemetry := factory.EncodeAgentSystemEnvCollectionFlat(agents)
 	return telemetry
 }
 
-func encodeAgentSystemEnvCollectionLookup(agents *builder.AgentSystemEnvCollection) *builder.AgentTelemetrySystemEnvLookup {
-	telemetry := builder.EncodeAgentSystemEnvCollectionLookup(agents)
+func encodeAgentSystemEnvCollectionLookup(agents *factory.AgentSystemEnvCollection) *factory.AgentTelemetrySystemEnvLookup {
+	telemetry := factory.EncodeAgentSystemEnvCollectionLookup(agents)
 	return telemetry
 }
 
@@ -62,6 +65,25 @@ func fullAgentSystemEnvCollection(size int) Benchmark {
 
 	lookupFilename := fmt.Sprintf("agent-telemetry-system-environment-lookup-%d.json", size)
 	telemetryLookup := encodeAgentSystemEnvCollectionLookup(agents)
+	benchmark.SizeLookup = dumpToFile(telemetryLookup, lookupFilename)
+	benchmark.SizeLookupCompressed = compressFile(lookupFilename)
+
+	return benchmark
+}
+
+func fullAgentSoftwareEnvCollection(size int) Benchmark {
+	var benchmark Benchmark
+
+	agents := factory.NewAgentSoftwareEnvCollection(size)
+	benchmark.Size = size
+
+	telemetryFlat := agents.EncodeAgentCollectionFlat()
+	flatFilename := fmt.Sprintf("agent-telemetry-software-environment-flat-%d.json", size)
+	benchmark.SizeFlat = dumpToFile(telemetryFlat, flatFilename)
+	benchmark.SizeFlatCompressed = compressFile(flatFilename)
+
+	lookupFilename := fmt.Sprintf("agent-telemetry-software-environment-lookup-%d.json", size)
+	telemetryLookup := agents.EncodeAgentCollectionLookup()
 	benchmark.SizeLookup = dumpToFile(telemetryLookup, lookupFilename)
 	benchmark.SizeLookupCompressed = compressFile(lookupFilename)
 
@@ -133,30 +155,36 @@ func compressFile(source string) int {
 	return int(fi.Size())
 }
 
+func benchmarkAgentTelemetry(callback func(size int) Benchmark) {
+	quit := make(chan bool)
+
+	fmt.Println(">>")
+	funcName := runtime.FuncForPC(reflect.ValueOf(callback).Pointer()).Name()
+	fmt.Printf("Benchmark %v\n", funcName)
+	go dots(quit)
+
+	var benchmarkResult []Benchmark
+	for i := 50; i < 10000; i = i * 2 {
+		benchmark := callback(i)
+		benchmarkResult = append(benchmarkResult, benchmark)
+	}
+
+	// output result in csv
+	csvBytes, err := csvutil.Marshal(benchmarkResult)
+	quit <- true
+	checkError(err)
+	fmt.Println("")
+	fmt.Println(string(csvBytes))
+	fmt.Println("<<")
+}
+
 func main() {
 	kingpin.Version("1.0.0")
 	kingpin.Parse()
 
 	if *benchmark {
-		quit := make(chan bool)
-
-		fmt.Println(">>")
-		fmt.Println("Benchmark getAgentSystemEnvCollection")
-		go dots(quit)
-
-		var benchmarkResult []Benchmark
-		for i := 50; i < 10000; i = i * 2 {
-			benchmark := fullAgentSystemEnvCollection(i)
-			benchmarkResult = append(benchmarkResult, benchmark)
-		}
-
-		// output result in csv
-		csvBytes, err := csvutil.Marshal(benchmarkResult)
-		quit <- true
-		checkError(err)
-		fmt.Println("")
-		fmt.Println(string(csvBytes))
-		fmt.Println("<<")
+		benchmarkAgentTelemetry(fullAgentSystemEnvCollection)
+		benchmarkAgentTelemetry(fullAgentSoftwareEnvCollection)
 
 		// clean up benchmark files
 		files, err := filepath.Glob("*.json")
@@ -176,6 +204,13 @@ func main() {
 		fmt.Println(">>")
 		fmt.Printf("Generate agent system environment collection with size %v\n", *size)
 		fullAgentSystemEnvCollection(*size)
+		fmt.Println("<<")
+	}
+
+	if *agentSoftwareEnv {
+		fmt.Println(">>")
+		fmt.Printf("Generate agent software environment collection with size %v\n", *size)
+		fullAgentSoftwareEnvCollection(*size)
 		fmt.Println("<<")
 	}
 }
