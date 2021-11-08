@@ -14,8 +14,6 @@ type AgentSystemEnvCollection struct {
 	Agents []myfakeit.AgentSystemEnv `json:"agents" xml:"agents"`
 }
 
-//
-
 type AgentTelemetrySystemLookup struct {
 	SystemMap map[string]AgentSystemOperatingSystem `json:"systemMap" xml:"systemMap"`
 }

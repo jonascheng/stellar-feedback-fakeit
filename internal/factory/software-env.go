@@ -20,6 +20,7 @@ type AgentTelemetrySoftwareLookup struct {
 type AgentSoftwareApplication struct {
 	Caption         string `json:"caption" xml:"caption"`
 	Version         string `json:"version" xml:"version"`
+	Vendor          string `json:"vendor" xml:"vendor"`
 	InstallLocation string `json:"installLocation" xml:"installLocation"`
 }
 
@@ -74,6 +75,7 @@ func (agents *AgentSoftwareEnvCollection) EncodeAgentCollectionLookup() *AgentTe
 			software := AgentSoftwareApplication{
 				Caption:         app.Caption,
 				Version:         app.Version,
+				Vendor:          app.Vendor,
 				InstallLocation: app.InstallLocation,
 			}
 			if val, ok = lookup[software]; !ok {

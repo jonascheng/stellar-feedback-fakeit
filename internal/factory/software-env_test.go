@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/brianvoe/gofakeit/v6"
+	"github.com/jonascheng/stellar-feedback-fakeit/internal/myfakeit"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -61,6 +62,7 @@ func TestEncodeAgentSoftwareEnvCollectionLookup(t *testing.T) {
 	assert.True(t, ok)
 	assert.Equal(t, "LRXSW 3.45", software.Caption)
 	assert.Equal(t, "3.2.1000", software.Version)
+	assert.Equal(t, "LRXSW 3.45", software.Vendor)
 	assert.Equal(t, "C:\\Program Files\\ASDA_Soft_V5\\", software.InstallLocation)
 
 	associatedAgents := telemetry.Associations.(AgentTelemetrySoftwareAssociationsLookup)
@@ -70,4 +72,170 @@ func TestEncodeAgentSoftwareEnvCollectionLookup(t *testing.T) {
 	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", agent.Guid)
 	assert.Greater(t, len(agent.Software), 0)
 	assert.Equal(t, "1", agent.Software[0])
+}
+
+func TestEncodeAgentSoftwareEnvCollectionLookuWithSameApp(t *testing.T) {
+	gofakeit.Seed(11)
+
+	var agents AgentSoftwareEnvCollection
+
+	// declare fake software
+	app := make([]myfakeit.AppInfo, 3)
+	app[0] = myfakeit.AppInfo{
+		Caption: "test1", Version: "1", Vendor: "test1", InstallLocation: "C:\\Program Files\\test1\\",
+	}
+	app[1] = myfakeit.AppInfo{
+		Caption: "test2", Version: "2", Vendor: "test2", InstallLocation: "C:\\Program Files\\test2\\",
+	}
+	app[2] = myfakeit.AppInfo{
+		Caption: "test3", Version: "3", Vendor: "test3", InstallLocation: "C:\\Program Files\\test3\\",
+	}
+
+	// declare fake agents
+	agents.Agents = make([]myfakeit.AgentSoftwareEnv, 3)
+	agents.Agents[0] = myfakeit.AgentSoftwareEnv{
+		Guid: "guid1",
+		App:  app,
+	}
+	agents.Agents[1] = myfakeit.AgentSoftwareEnv{
+		Guid: "guid2",
+		App:  app,
+	}
+	agents.Agents[2] = myfakeit.AgentSoftwareEnv{
+		Guid: "guid3",
+		App:  app,
+	}
+
+	telemetry := agents.EncodeAgentCollectionLookup()
+	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", telemetry.ServerGuid)
+	assert.Equal(t, "agent-telemetry-software-environment", telemetry.TelemetryType)
+
+	lookup := telemetry.Lookup.(AgentTelemetrySoftwareLookup)
+	assert.Equal(t, 3, len(lookup.SoftwareMap))
+
+	var software AgentSoftwareApplication
+	var ok bool
+	software, ok = lookup.SoftwareMap["1"]
+	assert.True(t, ok)
+	assert.Equal(t, "test1", software.Caption)
+	assert.Equal(t, "1", software.Version)
+	assert.Equal(t, "test1", software.Vendor)
+	assert.Equal(t, "C:\\Program Files\\test1\\", software.InstallLocation)
+
+	software, ok = lookup.SoftwareMap["2"]
+	assert.True(t, ok)
+	assert.Equal(t, "test2", software.Caption)
+	assert.Equal(t, "2", software.Version)
+	assert.Equal(t, "test2", software.Vendor)
+	assert.Equal(t, "C:\\Program Files\\test2\\", software.InstallLocation)
+
+	software, ok = lookup.SoftwareMap["3"]
+	assert.True(t, ok)
+	assert.Equal(t, "test3", software.Caption)
+	assert.Equal(t, "3", software.Version)
+	assert.Equal(t, "test3", software.Vendor)
+	assert.Equal(t, "C:\\Program Files\\test3\\", software.InstallLocation)
+
+	associatedAgents := telemetry.Associations.(AgentTelemetrySoftwareAssociationsLookup)
+	assert.Equal(t, 3, len(associatedAgents.Agents))
+
+	var agent AgentSoftwareEnv
+	agent = associatedAgents.Agents[0]
+	assert.Equal(t, "guid1", agent.Guid)
+	assert.Equal(t, len(agent.Software), 3)
+	assert.Equal(t, []string{"1", "2", "3"}, agent.Software)
+
+	agent = associatedAgents.Agents[1]
+	assert.Equal(t, "guid2", agent.Guid)
+	assert.Equal(t, len(agent.Software), 3)
+	assert.Equal(t, []string{"1", "2", "3"}, agent.Software)
+
+	agent = associatedAgents.Agents[2]
+	assert.Equal(t, "guid3", agent.Guid)
+	assert.Equal(t, len(agent.Software), 3)
+	assert.Equal(t, []string{"1", "2", "3"}, agent.Software)
+}
+
+func TestEncodeAgentSoftwareEnvCollectionLookuWithDifferentApp(t *testing.T) {
+	gofakeit.Seed(11)
+
+	var agents AgentSoftwareEnvCollection
+
+	// declare fake software
+	var app []myfakeit.AppInfo
+	app = append(app, myfakeit.AppInfo{
+		Caption: "test1", Version: "1", Vendor: "test1", InstallLocation: "C:\\Program Files\\test1\\",
+	})
+
+	// declare fake agents
+	agents.Agents = make([]myfakeit.AgentSoftwareEnv, 3)
+	agents.Agents[0] = myfakeit.AgentSoftwareEnv{
+		Guid: "guid1",
+		App:  app,
+	}
+
+	app = append(app, myfakeit.AppInfo{
+		Caption: "test2", Version: "2", Vendor: "test2", InstallLocation: "C:\\Program Files\\test2\\",
+	})
+	agents.Agents[1] = myfakeit.AgentSoftwareEnv{
+		Guid: "guid2",
+		App:  app,
+	}
+
+	app = append(app, myfakeit.AppInfo{
+		Caption: "test3", Version: "3", Vendor: "test3", InstallLocation: "C:\\Program Files\\test3\\",
+	})
+	agents.Agents[2] = myfakeit.AgentSoftwareEnv{
+		Guid: "guid3",
+		App:  app,
+	}
+
+	telemetry := agents.EncodeAgentCollectionLookup()
+	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", telemetry.ServerGuid)
+	assert.Equal(t, "agent-telemetry-software-environment", telemetry.TelemetryType)
+
+	lookup := telemetry.Lookup.(AgentTelemetrySoftwareLookup)
+	assert.Equal(t, 3, len(lookup.SoftwareMap))
+
+	var software AgentSoftwareApplication
+	var ok bool
+	software, ok = lookup.SoftwareMap["1"]
+	assert.True(t, ok)
+	assert.Equal(t, "test1", software.Caption)
+	assert.Equal(t, "1", software.Version)
+	assert.Equal(t, "test1", software.Vendor)
+	assert.Equal(t, "C:\\Program Files\\test1\\", software.InstallLocation)
+
+	software, ok = lookup.SoftwareMap["2"]
+	assert.True(t, ok)
+	assert.Equal(t, "test2", software.Caption)
+	assert.Equal(t, "2", software.Version)
+	assert.Equal(t, "test2", software.Vendor)
+	assert.Equal(t, "C:\\Program Files\\test2\\", software.InstallLocation)
+
+	software, ok = lookup.SoftwareMap["3"]
+	assert.True(t, ok)
+	assert.Equal(t, "test3", software.Caption)
+	assert.Equal(t, "3", software.Version)
+	assert.Equal(t, "test3", software.Vendor)
+	assert.Equal(t, "C:\\Program Files\\test3\\", software.InstallLocation)
+
+	associatedAgents := telemetry.Associations.(AgentTelemetrySoftwareAssociationsLookup)
+	assert.Equal(t, 3, len(associatedAgents.Agents))
+
+	var agent AgentSoftwareEnv
+	agent = associatedAgents.Agents[0]
+	assert.Equal(t, "guid1", agent.Guid)
+	assert.Equal(t, len(agent.Software), 1)
+	assert.Equal(t, []string{"1"}, agent.Software)
+
+	agent = associatedAgents.Agents[1]
+	assert.Equal(t, "guid2", agent.Guid)
+	assert.Equal(t, len(agent.Software), 2)
+	assert.Equal(t, []string{"1", "2"}, agent.Software)
+
+	agent = associatedAgents.Agents[2]
+	assert.Equal(t, "guid3", agent.Guid)
+	assert.Equal(t, len(agent.Software), 3)
+	assert.Equal(t, []string{"1", "2", "3"}, agent.Software)
 }
