@@ -24,6 +24,7 @@ import (
 var (
 	agentSystemEnv   = kingpin.Flag("agent-system-env", "Random generate agent-telemetry-system-environment.").Bool()
 	agentSoftwareEnv = kingpin.Flag("agent-software-env", "Random generate agent-telemetry-software-environment.").Bool()
+	agentCert        = kingpin.Flag("agent-cert", "Random generate agent-telemetry-cert.").Bool()
 	benchmark        = kingpin.Flag("benchmark", "Benchmark performance.").Bool()
 	size             = kingpin.Flag("size", "Random size").Default("1").Int()
 	debug            = kingpin.Flag("debug", "Debug output results in json format").Bool()
@@ -70,6 +71,25 @@ func fullAgentSoftwareEnvCollection(size int) Benchmark {
 	benchmark.SizeFlatCompressed = compressFile(flatFilename)
 
 	lookupFilename := fmt.Sprintf("agent-telemetry-software-environment-lookup-%d.json", size)
+	telemetryLookup := agents.EncodeAgentCollectionLookup()
+	benchmark.SizeLookup = dumpToFile(telemetryLookup, lookupFilename)
+	benchmark.SizeLookupCompressed = compressFile(lookupFilename)
+
+	return benchmark
+}
+
+func fullAgentCertCollection(size int) Benchmark {
+	var benchmark Benchmark
+
+	agents := factory.NewAgentCertCollection(size)
+	benchmark.Size = size
+
+	telemetryFlat := agents.EncodeAgentCollectionFlat()
+	flatFilename := fmt.Sprintf("agent-telemetry-cert-flat-%d.json", size)
+	benchmark.SizeFlat = dumpToFile(telemetryFlat, flatFilename)
+	benchmark.SizeFlatCompressed = compressFile(flatFilename)
+
+	lookupFilename := fmt.Sprintf("agent-telemetry-cert-lookup-%d.json", size)
 	telemetryLookup := agents.EncodeAgentCollectionLookup()
 	benchmark.SizeLookup = dumpToFile(telemetryLookup, lookupFilename)
 	benchmark.SizeLookupCompressed = compressFile(lookupFilename)
@@ -177,6 +197,7 @@ func main() {
 	if *benchmark {
 		benchmarkAgentTelemetry(fullAgentSystemEnvCollection)
 		benchmarkAgentTelemetry(fullAgentSoftwareEnvCollection)
+		benchmarkAgentTelemetry(fullAgentCertCollection)
 
 		// clean up benchmark files
 		files, err := filepath.Glob("*.json")
@@ -203,6 +224,13 @@ func main() {
 		fmt.Println(">>")
 		fmt.Printf("Generate agent software environment collection with size %v\n", *size)
 		fullAgentSoftwareEnvCollection(*size)
+		fmt.Println("<<")
+	}
+
+	if *agentCert {
+		fmt.Println(">>")
+		fmt.Printf("Generate agent cert collection with size %v\n", *size)
+		fullAgentCertCollection(*size)
 		fmt.Println("<<")
 	}
 }

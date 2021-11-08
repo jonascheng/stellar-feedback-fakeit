@@ -15,9 +15,9 @@ type AgentCert struct {
 }
 
 type CertInfo struct {
-	Subject string `json:"subject" xml:"subject" fake:"{company}"`
+	Subject string `json:"subject" xml:"subject" fake:"{app-caption}"`
 	Issuer  string `json:"issuer" xml:"issuer" fake:"{cert-issuer}"`
-	Serial  string `json:"serial" xml:"serial"`
+	Serial  string `json:"serial" xml:"serial" fake:"{number:1,10}"`
 	SHA2    string `json:"sha2" xml:"sha2" fake:"skip"`
 }
 
