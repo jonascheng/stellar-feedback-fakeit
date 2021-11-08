@@ -30,11 +30,13 @@ var (
 )
 
 type Benchmark struct {
-	Size                 int `json:"fakesize" xml:"fakesize" csv:"fakesize"`
-	SizeFlat             int `json:"sizeFlat" xml:"sizeFlat" csv:"sizeFlat"`
-	SizeLookup           int `json:"sizeLookup" xml:"sizeLookup" csv:"sizeLookup"`
-	SizeFlatCompressed   int `json:"sizeFlatCompressed" xml:"sizeFlatCompressed" csv:"sizeFlatCompressed"`
-	SizeLookupCompressed int `json:"sizeLookupCompressed" xml:"sizeLookupCompressed" csv:"sizeLookupCompressed"`
+	Size                  int     `json:"fakesize" xml:"fakesize" csv:"fakesize"`
+	SizeFlat              int     `json:"sizeFlat" xml:"sizeFlat" csv:"sizeFlat"`
+	SizeLookup            int     `json:"sizeLookup" xml:"sizeLookup" csv:"sizeLookup"`
+	SizeFlatCompressed    int     `json:"sizeFlatCompressed" xml:"sizeFlatCompressed" csv:"sizeFlatCompressed"`
+	RatioFlatCompressed   float32 `json:"ratioFlatCompressed" xml:"ratioFlatCompressed" csv:"ratioFlatCompressed"`
+	SizeLookupCompressed  int     `json:"sizeLookupCompressed" xml:"sizeLookupCompressed" csv:"sizeLookupCompressed"`
+	RatioLookupCompressed float32 `json:"ratioLookupCompressed" xml:"ratioLookupCompressed" csv:"ratioLookupCompressed"`
 }
 
 func fullAgentSystemEnvCollection(size int) Benchmark {
@@ -151,6 +153,11 @@ func benchmarkAgentTelemetry(callback func(size int) Benchmark) {
 	var benchmarkResult []Benchmark
 	for i := 50; i < 10000; i = i * 2 {
 		benchmark := callback(i)
+
+		// calculate compression ratio
+		benchmark.RatioFlatCompressed = float32(benchmark.SizeFlat) / float32(benchmark.SizeFlatCompressed)
+		benchmark.RatioLookupCompressed = float32(benchmark.SizeLookup) / float32(benchmark.SizeLookupCompressed)
+
 		benchmarkResult = append(benchmarkResult, benchmark)
 	}
 
