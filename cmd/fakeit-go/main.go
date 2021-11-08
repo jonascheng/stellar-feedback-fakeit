@@ -37,34 +37,19 @@ type Benchmark struct {
 	SizeLookupCompressed int `json:"sizeLookupCompressed" xml:"sizeLookupCompressed" csv:"sizeLookupCompressed"`
 }
 
-func getAgentSystemEnvCollection(size int) *factory.AgentSystemEnvCollection {
-	agents := factory.CollectAgentSystemEnv(size)
-	return agents
-}
-
-func encodeAgentSystemEnvCollectionFlat(agents *factory.AgentSystemEnvCollection) *factory.AgentTelemetrySystemEnvFlat {
-	telemetry := factory.EncodeAgentSystemEnvCollectionFlat(agents)
-	return telemetry
-}
-
-func encodeAgentSystemEnvCollectionLookup(agents *factory.AgentSystemEnvCollection) *factory.AgentTelemetrySystemEnvLookup {
-	telemetry := factory.EncodeAgentSystemEnvCollectionLookup(agents)
-	return telemetry
-}
-
 func fullAgentSystemEnvCollection(size int) Benchmark {
 	var benchmark Benchmark
 
-	agents := getAgentSystemEnvCollection(size)
+	agents := factory.NewAgentSystemEnvCollection(size)
 	benchmark.Size = size
 
-	telemetryFlat := encodeAgentSystemEnvCollectionFlat(agents)
+	telemetryFlat := agents.EncodeAgentCollectionFlat()
 	flatFilename := fmt.Sprintf("agent-telemetry-system-environment-flat-%d.json", size)
 	benchmark.SizeFlat = dumpToFile(telemetryFlat, flatFilename)
 	benchmark.SizeFlatCompressed = compressFile(flatFilename)
 
 	lookupFilename := fmt.Sprintf("agent-telemetry-system-environment-lookup-%d.json", size)
-	telemetryLookup := encodeAgentSystemEnvCollectionLookup(agents)
+	telemetryLookup := agents.EncodeAgentCollectionLookup()
 	benchmark.SizeLookup = dumpToFile(telemetryLookup, lookupFilename)
 	benchmark.SizeLookupCompressed = compressFile(lookupFilename)
 

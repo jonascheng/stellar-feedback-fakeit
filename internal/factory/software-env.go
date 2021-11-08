@@ -13,10 +13,6 @@ type AgentSoftwareEnvCollection struct {
 	Agents []myfakeit.AgentSoftwareEnv `json:"agents" xml:"agents"`
 }
 
-type AgentSoftwareEnvCollectionLookup struct {
-	Agents []AgentSoftwareEnv `json:"agents" xml:"agents"`
-}
-
 type AgentTelemetrySoftwareLookup struct {
 	SoftwareMap map[string]AgentSoftwareApplication `json:"softwareMap" xml:"softwareMap"`
 }
@@ -29,6 +25,10 @@ type AgentSoftwareApplication struct {
 
 type AgentTelemetrySoftwareAssociations struct {
 	Agents []myfakeit.AgentSoftwareEnv `json:"agents" xml:"agents"`
+}
+
+type AgentTelemetrySoftwareAssociationsLookup struct {
+	Agents []AgentSoftwareEnv `json:"agents" xml:"agents"`
 }
 
 type AgentSoftwareEnv struct {
@@ -63,7 +63,7 @@ func (agents *AgentSoftwareEnvCollection) EncodeAgentCollectionLookup() *AgentTe
 		ServerGuid:    strings.Replace(gofakeit.UUID(), "-", "", -1),
 	}
 
-	var newAgents AgentSoftwareEnvCollectionLookup
+	var newAgents AgentTelemetrySoftwareAssociationsLookup
 	lookup := make(map[AgentSoftwareApplication]string)
 	encode_counter := 1
 	for _, agent := range agents.Agents {

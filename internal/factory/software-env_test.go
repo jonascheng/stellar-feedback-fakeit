@@ -22,7 +22,7 @@ func TestCollectAgentSoftwareEnv(t *testing.T) {
 	assert.Equal(t, "C:\\Program Files\\ASDA_Soft_V5\\", agent.App[0].InstallLocation)
 }
 
-func TestEncodeAgentCollectionFlat(t *testing.T) {
+func TestEncodeAgentSoftwareEnvCollectionFlat(t *testing.T) {
 	gofakeit.Seed(11)
 
 	agents := NewAgentSoftwareEnvCollection(5)
@@ -44,7 +44,7 @@ func TestEncodeAgentCollectionFlat(t *testing.T) {
 	assert.Equal(t, "C:\\Program Files\\ASDA_Soft_V5\\", agent.App[0].InstallLocation)
 }
 
-func TestEncodeAgentCollectionLookup(t *testing.T) {
+func TestEncodeAgentSoftwareEnvCollectionLookup(t *testing.T) {
 	gofakeit.Seed(11)
 
 	agents := NewAgentSoftwareEnvCollection(5)
@@ -63,7 +63,7 @@ func TestEncodeAgentCollectionLookup(t *testing.T) {
 	assert.Equal(t, "3.2.1000", software.Version)
 	assert.Equal(t, "C:\\Program Files\\ASDA_Soft_V5\\", software.InstallLocation)
 
-	associatedAgents := telemetry.Associations.(AgentSoftwareEnvCollectionLookup)
+	associatedAgents := telemetry.Associations.(AgentTelemetrySoftwareAssociationsLookup)
 	assert.Equal(t, 5, len(associatedAgents.Agents))
 
 	agent := associatedAgents.Agents[0]

@@ -14,20 +14,7 @@ type AgentSystemEnvCollection struct {
 	Agents []myfakeit.AgentSystemEnv `json:"agents" xml:"agents"`
 }
 
-type AgentTelemetrySystemEnvFlat struct {
-	Timestamp     time.Time                `json:"timestamp" xml:"timestamp"`
-	TelemetryType string                   `json:"telemetryType" xml:"telemetryType"`
-	ServerGuid    string                   `json:"serverGuid" xml:"serverGuid"`
-	Associations  AgentSystemEnvCollection `json:"associations" xml:"associations"`
-}
-
-type AgentTelemetrySystemEnvLookup struct {
-	Timestamp     time.Time                        `json:"timestamp" xml:"timestamp"`
-	TelemetryType string                           `json:"telemetryType" xml:"telemetryType"`
-	ServerGuid    string                           `json:"serverGuid" xml:"serverGuid"`
-	Lookup        AgentTelemetrySystemLookup       `json:"lookup" xml:"lookup"`
-	Associations  AgentTelemetrySystemAssociations `json:"associations" xml:"associations"`
-}
+//
 
 type AgentTelemetrySystemLookup struct {
 	SystemMap map[string]AgentSystemOperatingSystem `json:"systemMap" xml:"systemMap"`
@@ -39,6 +26,10 @@ type AgentSystemOperatingSystem struct {
 }
 
 type AgentTelemetrySystemAssociations struct {
+	Agents []AgentSystemEnv `json:"agents" xml:"agents"`
+}
+
+type AgentTelemetrySystemAssociationsLookup struct {
 	Agents []AgentSystemEnv `json:"agents" xml:"agents"`
 }
 
@@ -60,8 +51,8 @@ func CollectAgentSystemEnv(size int) *AgentSystemEnvCollection {
 	return &agents
 }
 
-func EncodeAgentSystemEnvCollectionFlat(agents *AgentSystemEnvCollection) *AgentTelemetrySystemEnvFlat {
-	telemetry := AgentTelemetrySystemEnvFlat{
+func (agents *AgentSystemEnvCollection) EncodeAgentCollectionFlat() *AgentTelemetry {
+	telemetry := AgentTelemetry{
 		Timestamp:     time.Now().UTC(),
 		TelemetryType: "agent-telemetry-system-environment",
 		ServerGuid:    strings.Replace(gofakeit.UUID(), "-", "", -1),
@@ -70,13 +61,14 @@ func EncodeAgentSystemEnvCollectionFlat(agents *AgentSystemEnvCollection) *Agent
 	return &telemetry
 }
 
-func EncodeAgentSystemEnvCollectionLookup(agents *AgentSystemEnvCollection) *AgentTelemetrySystemEnvLookup {
-	telemetry := AgentTelemetrySystemEnvLookup{
+func (agents *AgentSystemEnvCollection) EncodeAgentCollectionLookup() *AgentTelemetry {
+	telemetry := AgentTelemetry{
 		Timestamp:     time.Now().UTC(),
 		TelemetryType: "agent-telemetry-system-environment",
 		ServerGuid:    strings.Replace(gofakeit.UUID(), "-", "", -1),
 	}
 
+	var newAgents AgentTelemetrySystemAssociationsLookup
 	lookup := make(map[AgentSystemOperatingSystem]string)
 	encode_counter := 1
 	for _, agent := range agents.Agents {
@@ -102,14 +94,17 @@ func EncodeAgentSystemEnvCollectionLookup(agents *AgentSystemEnvCollection) *Age
 			Meta:   agent.Meta,
 		}
 
-		telemetry.Associations.Agents = append(telemetry.Associations.Agents, newAgent)
+		newAgents.Agents = append(newAgents.Agents, newAgent)
 	}
+	telemetry.Associations = newAgents
 
 	if len(lookup) > 0 {
-		telemetry.Lookup.SystemMap = make(map[string]AgentSystemOperatingSystem)
+		var reversedLookup AgentTelemetrySystemLookup
+		reversedLookup.SystemMap = make(map[string]AgentSystemOperatingSystem)
 		for key, element := range lookup {
-			telemetry.Lookup.SystemMap[element] = key
+			reversedLookup.SystemMap[element] = key
 		}
+		telemetry.Lookup = reversedLookup
 	}
 
 	return &telemetry
