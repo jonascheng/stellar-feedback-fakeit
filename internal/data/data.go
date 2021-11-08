@@ -4,4 +4,5 @@ package data
 var Data = map[string]map[string][]string{
 	"OperatingSystem": OperatingSystem,
 	"Application":     Application,
+	"Cert":            Cert,
 }

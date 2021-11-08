@@ -12,4 +12,5 @@ func init() {
 
 	addSystemLookup()
 	addSoftwareLookup()
+	addCertLookup()
 }
