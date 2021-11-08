@@ -14,14 +14,7 @@ type AgentSoftwareEnvCollection struct {
 }
 
 type AgentTelemetrySoftwareLookup struct {
-	AppMap map[string]AgentSoftwareApplication `json:"appMap" xml:"appMap"`
-}
-
-type AgentSoftwareApplication struct {
-	Caption         string `json:"caption" xml:"caption"`
-	Version         string `json:"version" xml:"version"`
-	Vendor          string `json:"vendor" xml:"vendor"`
-	InstallLocation string `json:"installLocation" xml:"installLocation"`
+	AppMap map[string]myfakeit.AppInfo `json:"appMap" xml:"appMap"`
 }
 
 type AgentTelemetrySoftwareAssociations struct {
@@ -65,32 +58,26 @@ func (agents *AgentSoftwareEnvCollection) EncodeAgentCollectionLookup() *AgentTe
 	}
 
 	var newAgents AgentTelemetrySoftwareAssociationsLookup
-	lookup := make(map[AgentSoftwareApplication]string)
+	lookup := make(map[myfakeit.AppInfo]string)
 	encode_counter := 1
 	for _, agent := range agents.Agents {
-		var softwareList []string
+		var appList []string
 		var val string
 		var ok bool
 		for _, app := range agent.App {
-			software := AgentSoftwareApplication{
-				Caption:         app.Caption,
-				Version:         app.Version,
-				Vendor:          app.Vendor,
-				InstallLocation: app.InstallLocation,
-			}
-			if val, ok = lookup[software]; !ok {
+			if val, ok = lookup[app]; !ok {
 				// not exist
 				val = strconv.Itoa(encode_counter)
-				lookup[software] = val
+				lookup[app] = val
 				encode_counter++
 			}
-			softwareList = append(softwareList, val)
+			appList = append(appList, val)
 		}
 
 		// encode agent
 		newAgent := AgentSoftwareEnv{
 			Guid: agent.Guid,
-			App:  softwareList,
+			App:  appList,
 		}
 
 		newAgents.Agents = append(newAgents.Agents, newAgent)
@@ -99,7 +86,7 @@ func (agents *AgentSoftwareEnvCollection) EncodeAgentCollectionLookup() *AgentTe
 
 	if len(lookup) > 0 {
 		var reversedLookup AgentTelemetrySoftwareLookup
-		reversedLookup.AppMap = make(map[string]AgentSoftwareApplication)
+		reversedLookup.AppMap = make(map[string]myfakeit.AppInfo)
 		for key, element := range lookup {
 			reversedLookup.AppMap[element] = key
 		}

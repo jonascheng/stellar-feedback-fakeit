@@ -58,12 +58,12 @@ func TestEncodeAgentSoftwareEnvCollectionLookup(t *testing.T) {
 	lookup := telemetry.Lookup.(AgentTelemetrySoftwareLookup)
 	assert.Greater(t, len(lookup.AppMap), 0)
 
-	software, ok := lookup.AppMap["1"]
+	app, ok := lookup.AppMap["1"]
 	assert.True(t, ok)
-	assert.Equal(t, "LRXSW 3.45", software.Caption)
-	assert.Equal(t, "3.2.1000", software.Version)
-	assert.Equal(t, "LRXSW 3.45", software.Vendor)
-	assert.Equal(t, "C:\\Program Files\\ASDA_Soft_V5\\", software.InstallLocation)
+	assert.Equal(t, "LRXSW 3.45", app.Caption)
+	assert.Equal(t, "3.2.1000", app.Version)
+	assert.Equal(t, "LRXSW 3.45", app.Vendor)
+	assert.Equal(t, "C:\\Program Files\\ASDA_Soft_V5\\", app.InstallLocation)
 
 	associatedAgents := telemetry.Associations.(AgentTelemetrySoftwareAssociationsLookup)
 	assert.Equal(t, 5, len(associatedAgents.Agents))
@@ -79,15 +79,15 @@ func TestEncodeAgentSoftwareEnvCollectionLookuWithSameApp(t *testing.T) {
 
 	var agents AgentSoftwareEnvCollection
 
-	// declare fake software
-	app := make([]myfakeit.AppInfo, 3)
-	app[0] = myfakeit.AppInfo{
+	// declare fake app
+	appList := make([]myfakeit.AppInfo, 3)
+	appList[0] = myfakeit.AppInfo{
 		Caption: "test1", Version: "1", Vendor: "test1", InstallLocation: "C:\\Program Files\\test1\\",
 	}
-	app[1] = myfakeit.AppInfo{
+	appList[1] = myfakeit.AppInfo{
 		Caption: "test2", Version: "2", Vendor: "test2", InstallLocation: "C:\\Program Files\\test2\\",
 	}
-	app[2] = myfakeit.AppInfo{
+	appList[2] = myfakeit.AppInfo{
 		Caption: "test3", Version: "3", Vendor: "test3", InstallLocation: "C:\\Program Files\\test3\\",
 	}
 
@@ -95,15 +95,15 @@ func TestEncodeAgentSoftwareEnvCollectionLookuWithSameApp(t *testing.T) {
 	agents.Agents = make([]myfakeit.AgentSoftwareEnv, 3)
 	agents.Agents[0] = myfakeit.AgentSoftwareEnv{
 		Guid: "guid1",
-		App:  app,
+		App:  appList,
 	}
 	agents.Agents[1] = myfakeit.AgentSoftwareEnv{
 		Guid: "guid2",
-		App:  app,
+		App:  appList,
 	}
 	agents.Agents[2] = myfakeit.AgentSoftwareEnv{
 		Guid: "guid3",
-		App:  app,
+		App:  appList,
 	}
 
 	telemetry := agents.EncodeAgentCollectionLookup()
@@ -113,28 +113,28 @@ func TestEncodeAgentSoftwareEnvCollectionLookuWithSameApp(t *testing.T) {
 	lookup := telemetry.Lookup.(AgentTelemetrySoftwareLookup)
 	assert.Equal(t, 3, len(lookup.AppMap))
 
-	var software AgentSoftwareApplication
+	var app myfakeit.AppInfo
 	var ok bool
-	software, ok = lookup.AppMap["1"]
+	app, ok = lookup.AppMap["1"]
 	assert.True(t, ok)
-	assert.Equal(t, "test1", software.Caption)
-	assert.Equal(t, "1", software.Version)
-	assert.Equal(t, "test1", software.Vendor)
-	assert.Equal(t, "C:\\Program Files\\test1\\", software.InstallLocation)
+	assert.Equal(t, "test1", app.Caption)
+	assert.Equal(t, "1", app.Version)
+	assert.Equal(t, "test1", app.Vendor)
+	assert.Equal(t, "C:\\Program Files\\test1\\", app.InstallLocation)
 
-	software, ok = lookup.AppMap["2"]
+	app, ok = lookup.AppMap["2"]
 	assert.True(t, ok)
-	assert.Equal(t, "test2", software.Caption)
-	assert.Equal(t, "2", software.Version)
-	assert.Equal(t, "test2", software.Vendor)
-	assert.Equal(t, "C:\\Program Files\\test2\\", software.InstallLocation)
+	assert.Equal(t, "test2", app.Caption)
+	assert.Equal(t, "2", app.Version)
+	assert.Equal(t, "test2", app.Vendor)
+	assert.Equal(t, "C:\\Program Files\\test2\\", app.InstallLocation)
 
-	software, ok = lookup.AppMap["3"]
+	app, ok = lookup.AppMap["3"]
 	assert.True(t, ok)
-	assert.Equal(t, "test3", software.Caption)
-	assert.Equal(t, "3", software.Version)
-	assert.Equal(t, "test3", software.Vendor)
-	assert.Equal(t, "C:\\Program Files\\test3\\", software.InstallLocation)
+	assert.Equal(t, "test3", app.Caption)
+	assert.Equal(t, "3", app.Version)
+	assert.Equal(t, "test3", app.Vendor)
+	assert.Equal(t, "C:\\Program Files\\test3\\", app.InstallLocation)
 
 	associatedAgents := telemetry.Associations.(AgentTelemetrySoftwareAssociationsLookup)
 	assert.Equal(t, 3, len(associatedAgents.Agents))
@@ -161,9 +161,9 @@ func TestEncodeAgentSoftwareEnvCollectionLookuWithDifferentApp(t *testing.T) {
 
 	var agents AgentSoftwareEnvCollection
 
-	// declare fake software
-	var app []myfakeit.AppInfo
-	app = append(app, myfakeit.AppInfo{
+	// declare fake app
+	var appList []myfakeit.AppInfo
+	appList = append(appList, myfakeit.AppInfo{
 		Caption: "test1", Version: "1", Vendor: "test1", InstallLocation: "C:\\Program Files\\test1\\",
 	})
 
@@ -171,23 +171,23 @@ func TestEncodeAgentSoftwareEnvCollectionLookuWithDifferentApp(t *testing.T) {
 	agents.Agents = make([]myfakeit.AgentSoftwareEnv, 3)
 	agents.Agents[0] = myfakeit.AgentSoftwareEnv{
 		Guid: "guid1",
-		App:  app,
+		App:  appList,
 	}
 
-	app = append(app, myfakeit.AppInfo{
+	appList = append(appList, myfakeit.AppInfo{
 		Caption: "test2", Version: "2", Vendor: "test2", InstallLocation: "C:\\Program Files\\test2\\",
 	})
 	agents.Agents[1] = myfakeit.AgentSoftwareEnv{
 		Guid: "guid2",
-		App:  app,
+		App:  appList,
 	}
 
-	app = append(app, myfakeit.AppInfo{
+	appList = append(appList, myfakeit.AppInfo{
 		Caption: "test3", Version: "3", Vendor: "test3", InstallLocation: "C:\\Program Files\\test3\\",
 	})
 	agents.Agents[2] = myfakeit.AgentSoftwareEnv{
 		Guid: "guid3",
-		App:  app,
+		App:  appList,
 	}
 
 	telemetry := agents.EncodeAgentCollectionLookup()
@@ -197,28 +197,28 @@ func TestEncodeAgentSoftwareEnvCollectionLookuWithDifferentApp(t *testing.T) {
 	lookup := telemetry.Lookup.(AgentTelemetrySoftwareLookup)
 	assert.Equal(t, 3, len(lookup.AppMap))
 
-	var software AgentSoftwareApplication
+	var app myfakeit.AppInfo
 	var ok bool
-	software, ok = lookup.AppMap["1"]
+	app, ok = lookup.AppMap["1"]
 	assert.True(t, ok)
-	assert.Equal(t, "test1", software.Caption)
-	assert.Equal(t, "1", software.Version)
-	assert.Equal(t, "test1", software.Vendor)
-	assert.Equal(t, "C:\\Program Files\\test1\\", software.InstallLocation)
+	assert.Equal(t, "test1", app.Caption)
+	assert.Equal(t, "1", app.Version)
+	assert.Equal(t, "test1", app.Vendor)
+	assert.Equal(t, "C:\\Program Files\\test1\\", app.InstallLocation)
 
-	software, ok = lookup.AppMap["2"]
+	app, ok = lookup.AppMap["2"]
 	assert.True(t, ok)
-	assert.Equal(t, "test2", software.Caption)
-	assert.Equal(t, "2", software.Version)
-	assert.Equal(t, "test2", software.Vendor)
-	assert.Equal(t, "C:\\Program Files\\test2\\", software.InstallLocation)
+	assert.Equal(t, "test2", app.Caption)
+	assert.Equal(t, "2", app.Version)
+	assert.Equal(t, "test2", app.Vendor)
+	assert.Equal(t, "C:\\Program Files\\test2\\", app.InstallLocation)
 
-	software, ok = lookup.AppMap["3"]
+	app, ok = lookup.AppMap["3"]
 	assert.True(t, ok)
-	assert.Equal(t, "test3", software.Caption)
-	assert.Equal(t, "3", software.Version)
-	assert.Equal(t, "test3", software.Vendor)
-	assert.Equal(t, "C:\\Program Files\\test3\\", software.InstallLocation)
+	assert.Equal(t, "test3", app.Caption)
+	assert.Equal(t, "3", app.Version)
+	assert.Equal(t, "test3", app.Vendor)
+	assert.Equal(t, "C:\\Program Files\\test3\\", app.InstallLocation)
 
 	associatedAgents := telemetry.Associations.(AgentTelemetrySoftwareAssociationsLookup)
 	assert.Equal(t, 3, len(associatedAgents.Agents))

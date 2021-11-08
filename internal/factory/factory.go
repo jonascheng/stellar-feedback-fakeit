@@ -22,3 +22,7 @@ func NewAgentSystemEnvCollection(size int) *AgentSystemEnvCollection {
 func NewAgentSoftwareEnvCollection(size int) *AgentSoftwareEnvCollection {
 	return CollectAgentSoftwareEnv(size)
 }
+
+func NewAgentCertCollection(size int) *AgentCertCollection {
+	return CollectAgentCert(size)
+}
