@@ -41,8 +41,7 @@ func SystemEnv() *AgentSystemEnv { return systemEnv(globalFaker.Rand) }
 
 func systemEnv(r *rand.Rand) *AgentSystemEnv {
 	var s AgentSystemEnv
-	err := gofakeit.Struct(&s)
-	if err != nil {
+	if err := gofakeit.Struct(&s); err != nil {
 		panic(err)
 	}
 

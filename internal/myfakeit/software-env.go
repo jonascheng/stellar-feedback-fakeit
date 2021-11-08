@@ -25,8 +25,7 @@ func SoftwareEnv() *AgentSoftwareEnv { return sfotwareEnv(globalFaker.Rand) }
 
 func sfotwareEnv(r *rand.Rand) *AgentSoftwareEnv {
 	var s AgentSoftwareEnv
-	err := gofakeit.Struct(&s)
-	if err != nil {
+	if err := gofakeit.Struct(&s); err != nil {
 		panic(err)
 	}
 

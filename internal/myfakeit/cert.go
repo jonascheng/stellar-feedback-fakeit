@@ -26,8 +26,7 @@ func Cert() *AgentCert { return cert(globalFaker.Rand) }
 
 func cert(r *rand.Rand) *AgentCert {
 	var s AgentCert
-	err := gofakeit.Struct(&s)
-	if err != nil {
+	if err := gofakeit.Struct(&s); err != nil {
 		panic(err)
 	}
 
@@ -37,7 +36,9 @@ func cert(r *rand.Rand) *AgentCert {
 	// set SHA2
 	h := sha256.New()
 	for i, cert := range s.Cert {
-		h.Write([]byte(cert.Serial))
+		if _, err := h.Write([]byte(cert.Serial)); err != nil {
+			panic(err)
+		}
 		s.Cert[i].SHA2 = hex.EncodeToString(h.Sum(nil))
 	}
 
