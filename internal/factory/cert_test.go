@@ -19,7 +19,7 @@ func TestNewAgentCertCollection(t *testing.T) {
 	assert.Equal(t, 100, len(agent.Cert))
 	assert.Equal(t, "VT5", agent.Cert[0].Subject)
 	assert.Equal(t, "Class 1 Public Primary Certification Authority", agent.Cert[0].Issuer)
-	assert.Equal(t, "10", agent.Cert[0].Serial)
+	assert.Equal(t, "MTA=", agent.Cert[0].Serial)
 	assert.Equal(t, "4a44dc15364204a80fe80e9039455cc1608281820fe2b24f1e5233ade6af1dd5", agent.Cert[0].SHA2)
 }
 
@@ -41,7 +41,7 @@ func TestEncodeAgentCertCollectionFlat(t *testing.T) {
 	assert.Equal(t, 100, len(agent.Cert))
 	assert.Equal(t, "VT5", agent.Cert[0].Subject)
 	assert.Equal(t, "Class 1 Public Primary Certification Authority", agent.Cert[0].Issuer)
-	assert.Equal(t, "10", agent.Cert[0].Serial)
+	assert.Equal(t, "MTA=", agent.Cert[0].Serial)
 	assert.Equal(t, "4a44dc15364204a80fe80e9039455cc1608281820fe2b24f1e5233ade6af1dd5", agent.Cert[0].SHA2)
 }
 
@@ -62,7 +62,7 @@ func TestEncodeAgentCertCollectionLookup(t *testing.T) {
 	assert.True(t, ok)
 	assert.Equal(t, "VT5", cert.Subject)
 	assert.Equal(t, "Class 1 Public Primary Certification Authority", cert.Issuer)
-	assert.Equal(t, "10", cert.Serial)
+	assert.Equal(t, "MTA=", cert.Serial)
 	assert.Equal(t, "4a44dc15364204a80fe80e9039455cc1608281820fe2b24f1e5233ade6af1dd5", cert.SHA2)
 
 	associatedAgents := telemetry.Associations.(AgentTelemetryCertAssociationsLookup)

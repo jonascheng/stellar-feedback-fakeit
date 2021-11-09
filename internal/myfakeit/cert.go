@@ -2,6 +2,7 @@ package myfakeit
 
 import (
 	"crypto/sha256"
+	"encoding/base64"
 	"encoding/hex"
 	"math/rand"
 	"strings"
@@ -33,12 +34,13 @@ func cert(r *rand.Rand) *AgentCert {
 	// remove dash from UUID
 	s.Guid = strings.Replace(s.Guid, "-", "", -1)
 
-	// set SHA2
+	// set SHA2 and encode Serial in base64
 	for i, cert := range s.Cert {
 		h := sha256.New()
 		if _, err := h.Write([]byte(cert.Serial)); err != nil {
 			panic(err)
 		}
+		s.Cert[i].Serial = base64.StdEncoding.EncodeToString([]byte(cert.Serial))
 		s.Cert[i].SHA2 = hex.EncodeToString(h.Sum(nil))
 	}
 
