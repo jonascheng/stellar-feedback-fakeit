@@ -34,8 +34,8 @@ func cert(r *rand.Rand) *AgentCert {
 	s.Guid = strings.Replace(s.Guid, "-", "", -1)
 
 	// set SHA2
-	h := sha256.New()
 	for i, cert := range s.Cert {
+		h := sha256.New()
 		if _, err := h.Write([]byte(cert.Serial)); err != nil {
 			panic(err)
 		}
