@@ -27,40 +27,41 @@ var (
 	agentSystemEnv   = kingpin.Flag("agent-system-env", "Random generate agent-telemetry-system-environment.").Bool()
 	agentSoftwareEnv = kingpin.Flag("agent-software-env", "Random generate agent-telemetry-software-environment.").Bool()
 	agentCert        = kingpin.Flag("agent-cert", "Random generate agent-telemetry-cert.").Bool()
-	benchmark        = kingpin.Flag("benchmark", "Benchmark performance.").Bool()
+	allInfo          = kingpin.Flag("all-info", "Random generate all telemetry above.").Bool()
+	benchmark        = kingpin.Flag("benchmark", "Benchmark performance for agent-system-env, agent-software-env and agent-cert.").Bool()
 	size             = kingpin.Flag("size", "Random size").Default("1").Int()
 	debug            = kingpin.Flag("debug", "Debug output results in json format").Bool()
 )
 
 type Benchmark struct {
 	Size                  int     `json:"fakesize" xml:"fakesize" csv:"fakesize"`
-	SizeFlat              int     `json:"sizeFlat" xml:"sizeFlat" csv:"sizeFlat"`
-	SizeLookup            int     `json:"sizeLookup" xml:"sizeLookup" csv:"sizeLookup"`
-	SizeFlatCompressed    int     `json:"sizeFlatCompressed" xml:"sizeFlatCompressed" csv:"sizeFlatCompressed"`
-	RatioFlatCompressed   float32 `json:"ratioFlatCompressed" xml:"ratioFlatCompressed" csv:"ratioFlatCompressed"`
-	SizeLookupCompressed  int     `json:"sizeLookupCompressed" xml:"sizeLookupCompressed" csv:"sizeLookupCompressed"`
-	RatioLookupCompressed float32 `json:"ratioLookupCompressed" xml:"ratioLookupCompressed" csv:"ratioLookupCompressed"`
+	FlatBytes             int     `json:"flatBytes" xml:"flatBytes" csv:"flatBytes"`
+	LookupBytes           int     `json:"lookupBytes" xml:"lookupBytes" csv:"lookupBytes"`
+	FlatCompressedBytes   int     `json:"flatCompressedBytes" xml:"flatCompressedBytes" csv:"flatCompressedBytes"`
+	FlatCompressedRatio   float32 `json:"flatCompressedRatio" xml:"flatCompressedRatio" csv:"flatCompressedRatio"`
+	LookupCompressedBytes int     `json:"lookupCompressedBytes" xml:"lookupCompressedBytes" csv:"lookupCompressedBytes"`
+	LookupCompressedRatio float32 `json:"lookupCompressedRatio" xml:"lookupCompressedRatio" csv:"lookupCompressedRatio"`
 }
 
 func encodeCollectionFlat(benchmark *Benchmark, agents factory.IAgentTelemetry, flatFilename string) {
 	telemetryFlat := agents.EncodeCollectionFlat()
-	benchmark.SizeFlat = dumpToFile(telemetryFlat, flatFilename)
-	benchmark.SizeFlatCompressed = compressFile(flatFilename)
+	benchmark.FlatBytes = dumpToFile(telemetryFlat, flatFilename)
+	benchmark.FlatCompressedBytes = compressFile(flatFilename)
 }
 
 func encodeAgentCollectionLookup(benchmark *Benchmark, agents factory.IAgentTelemetry, lookupFilename string) {
 	telemetryFlat := agents.EncodeAgentCollectionLookup()
-	benchmark.SizeLookup = dumpToFile(telemetryFlat, lookupFilename)
-	benchmark.SizeLookupCompressed = compressFile(lookupFilename)
+	benchmark.LookupBytes = dumpToFile(telemetryFlat, lookupFilename)
+	benchmark.LookupCompressedBytes = compressFile(lookupFilename)
 }
 
-func fullServerCollection() Benchmark {
+func fullServerCollection(size int) Benchmark {
 	var benchmark Benchmark
 
 	agents := factory.NewServerCollection()
 	benchmark.Size = 0
 
-	flatFilename := "server-telemetry-info-flat.json"
+	flatFilename := fmt.Sprintf("agent-telemetry-info-flat-%d.json", size)
 	encodeCollectionFlat(&benchmark, agents, flatFilename)
 
 	return benchmark
@@ -201,8 +202,8 @@ func benchmarkAgentTelemetry(callback func(size int) Benchmark) {
 		benchmark := callback(i)
 
 		// calculate compression ratio
-		benchmark.RatioFlatCompressed = float32(benchmark.SizeFlat) / float32(benchmark.SizeFlatCompressed)
-		benchmark.RatioLookupCompressed = float32(benchmark.SizeLookup) / float32(benchmark.SizeLookupCompressed)
+		benchmark.FlatCompressedRatio = float32(benchmark.FlatBytes) / float32(benchmark.FlatCompressedBytes)
+		benchmark.LookupCompressedRatio = float32(benchmark.LookupBytes) / float32(benchmark.LookupCompressedBytes)
 
 		benchmarkResult = append(benchmarkResult, benchmark)
 	}
@@ -239,35 +240,35 @@ func main() {
 		return
 	}
 
-	if *serverInfo {
+	if *serverInfo || *allInfo {
 		fmt.Println(">>")
-		fmt.Println("Generate server collection")
-		fullServerCollection()
+		fmt.Printf("Generate server collection with size %v\n", *size)
+		fullServerCollection(*size)
 		fmt.Println("<<")
 	}
 
-	if *agentInfo {
+	if *agentInfo || *allInfo {
 		fmt.Println(">>")
 		fmt.Printf("Generate agent collection with size %v\n", *size)
 		fullAgentCollection(*size)
 		fmt.Println("<<")
 	}
 
-	if *agentSystemEnv {
+	if *agentSystemEnv || *allInfo {
 		fmt.Println(">>")
 		fmt.Printf("Generate agent system environment collection with size %v\n", *size)
 		fullAgentSystemEnvCollection(*size)
 		fmt.Println("<<")
 	}
 
-	if *agentSoftwareEnv {
+	if *agentSoftwareEnv || *allInfo {
 		fmt.Println(">>")
 		fmt.Printf("Generate agent software environment collection with size %v\n", *size)
 		fullAgentSoftwareEnvCollection(*size)
 		fmt.Println("<<")
 	}
 
-	if *agentCert {
+	if *agentCert || *allInfo {
 		fmt.Println(">>")
 		fmt.Printf("Generate agent cert collection with size %v\n", *size)
 		fullAgentCertCollection(*size)
