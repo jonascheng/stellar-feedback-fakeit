@@ -22,6 +22,7 @@ import (
 )
 
 var (
+	serverInfo       = kingpin.Flag("server-info", "Random generate server-telemetry.").Bool()
 	agentInfo        = kingpin.Flag("agent-info", "Random generate agent-telemetry.").Bool()
 	agentSystemEnv   = kingpin.Flag("agent-system-env", "Random generate agent-telemetry-system-environment.").Bool()
 	agentSoftwareEnv = kingpin.Flag("agent-software-env", "Random generate agent-telemetry-software-environment.").Bool()
@@ -51,6 +52,18 @@ func encodeAgentCollectionLookup(benchmark *Benchmark, agents factory.AgentTelem
 	telemetryFlat := agents.EncodeAgentCollectionLookup()
 	benchmark.SizeLookup = dumpToFile(telemetryFlat, lookupFilename)
 	benchmark.SizeLookupCompressed = compressFile(lookupFilename)
+}
+
+func fullServerCollection() Benchmark {
+	var benchmark Benchmark
+
+	agents := factory.NewServerCollection()
+	benchmark.Size = 0
+
+	flatFilename := "server-telemetry-info-flat.json"
+	encodeAgentCollectionFlat(&benchmark, agents, flatFilename)
+
+	return benchmark
 }
 
 func fullAgentCollection(size int) Benchmark {
@@ -208,7 +221,6 @@ func main() {
 	kingpin.Parse()
 
 	if *benchmark {
-		benchmarkAgentTelemetry(fullAgentCollection)
 		benchmarkAgentTelemetry(fullAgentSystemEnvCollection)
 		benchmarkAgentTelemetry(fullAgentSoftwareEnvCollection)
 		benchmarkAgentTelemetry(fullAgentCertCollection)
@@ -225,6 +237,13 @@ func main() {
 			os.Remove(f)
 		}
 		return
+	}
+
+	if *serverInfo {
+		fmt.Println(">>")
+		fmt.Println("Generate server collection")
+		fullServerCollection()
+		fmt.Println("<<")
 	}
 
 	if *agentInfo {

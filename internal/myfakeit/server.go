@@ -43,7 +43,7 @@ func serverInfo(r *rand.Rand) *Server {
 }
 
 // ServerEnabledFeature will generate a random enabled feature
-func ServerEnabledFeature() []string { return serverEnabledFeature(globalFaker.Rand) }
+// func ServerEnabledFeature() []string { return serverEnabledFeature(globalFaker.Rand) }
 
 func serverEnabledFeature(r *rand.Rand) []string {
 	var list []string
@@ -82,7 +82,7 @@ func serverEnabledFeature(r *rand.Rand) []string {
 }
 
 // ServerOperatingSystemMeta will generate a random operating system meta
-func ServerOperatingSystemMeta() []MetaInfo { return serverOperatingSystemMeta(globalFaker.Rand) }
+// func ServerOperatingSystemMeta() []MetaInfo { return serverOperatingSystemMeta(globalFaker.Rand) }
 
 func serverOperatingSystemMeta(r *rand.Rand) []MetaInfo {
 	var list []MetaInfo

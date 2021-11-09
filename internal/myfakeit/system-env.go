@@ -55,28 +55,28 @@ func systemEnv(r *rand.Rand) *AgentSystemEnv {
 }
 
 // OperatingSystemCaption will generate a random operating system string
-func OperatingSystemCaption() string { return operatingSystemCaption(globalFaker.Rand) }
+// func OperatingSystemCaption() string { return operatingSystemCaption(globalFaker.Rand) }
 
 func operatingSystemCaption(r *rand.Rand) string {
 	return getRandValue(r, []string{"OperatingSystem", "caption"})
 }
 
 // OperatingSystemVersion will generate a random operating system version string
-func OperatingSystemVersion() string { return operatingSystemVersion(globalFaker.Rand) }
+// func OperatingSystemVersion() string { return operatingSystemVersion(globalFaker.Rand) }
 
 func operatingSystemVersion(r *rand.Rand) string {
 	return getRandValue(r, []string{"OperatingSystem", "version"})
 }
 
 // OperatingSystemQfe will generate a random operating system qfe
-func OperatingSystemQfe() string { return operatingSystemQfe(globalFaker.Rand) }
+// func OperatingSystemQfe() string { return operatingSystemQfe(globalFaker.Rand) }
 
 func operatingSystemQfe(r *rand.Rand) string {
 	return "KB" + gofakeit.DigitN(7)
 }
 
 // OperatingSystemQfeInstalledOn will generate a random operating system qfe
-func OperatingSystemQfeInstalledOn() string { return operatingSystemQfeInstalledOn(globalFaker.Rand) }
+// func OperatingSystemQfeInstalledOn() string { return operatingSystemQfeInstalledOn(globalFaker.Rand) }
 
 func operatingSystemQfeInstalledOn(r *rand.Rand) string {
 	// Declaring layout constant
@@ -95,7 +95,7 @@ func operatingSystemQfeInstalledOn(r *rand.Rand) string {
 }
 
 // OperatingSystemMeta will generate a random operating system meta
-func OperatingSystemMeta() []MetaInfo { return operatingSystemMeta(globalFaker.Rand) }
+// func OperatingSystemMeta() []MetaInfo { return operatingSystemMeta(globalFaker.Rand) }
 
 func operatingSystemMeta(r *rand.Rand) []MetaInfo {
 	var list []MetaInfo

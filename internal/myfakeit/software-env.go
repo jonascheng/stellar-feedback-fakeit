@@ -41,7 +41,7 @@ func sfotwareEnv(r *rand.Rand) *AgentSoftwareEnv {
 }
 
 // ApplicationCaption will generate a random application caption string
-func ApplicationCaption() string { return applicationCaption(globalFaker.Rand) }
+// func ApplicationCaption() string { return applicationCaption(globalFaker.Rand) }
 
 func applicationCaption(r *rand.Rand) string {
 	n := gofakeit.Number(0, 1)
@@ -53,7 +53,7 @@ func applicationCaption(r *rand.Rand) string {
 }
 
 // ApplicationVersion will generate a random application version string
-func ApplicationVersion() string { return applicationVersion(globalFaker.Rand) }
+// func ApplicationVersion() string { return applicationVersion(globalFaker.Rand) }
 
 func applicationVersion(r *rand.Rand) string {
 	major := gofakeit.Number(1, 3)
@@ -64,7 +64,7 @@ func applicationVersion(r *rand.Rand) string {
 }
 
 // ApplicationInstallLocation will generate a random application version string
-func ApplicationInstallLocation() string { return applicationInstallLocation(globalFaker.Rand) }
+// func ApplicationInstallLocation() string { return applicationInstallLocation(globalFaker.Rand) }
 
 func applicationInstallLocation(r *rand.Rand) string {
 	base := gofakeit.RandomString([]string{"C:\\Program Files"})

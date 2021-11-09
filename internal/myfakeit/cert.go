@@ -48,7 +48,7 @@ func cert(r *rand.Rand) *AgentCert {
 }
 
 // CertIssuer will generate a random cert issuer string
-func CertIssuer() string { return certIssuer(globalFaker.Rand) }
+// func CertIssuer() string { return certIssuer(globalFaker.Rand) }
 
 func certIssuer(r *rand.Rand) string {
 	return getRandValue(r, []string{"Cert", "issuer"})
