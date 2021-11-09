@@ -44,7 +44,12 @@ func sfotwareEnv(r *rand.Rand) *AgentSoftwareEnv {
 func ApplicationCaption() string { return applicationCaption(globalFaker.Rand) }
 
 func applicationCaption(r *rand.Rand) string {
-	return getRandValue(r, []string{"Application", "caption"})
+	n := gofakeit.Number(0, 1)
+	if n%2 == 0 {
+		return getRandValue(r, []string{"Application", "caption"})
+	} else {
+		return gofakeit.Company()
+	}
 }
 
 // ApplicationVersion will generate a random application version string
