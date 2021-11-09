@@ -33,7 +33,7 @@ func TestEncodeAgentSystemEnvCollectionFlat(t *testing.T) {
 	assert.Equal(t, 5, len(agents.Agents))
 
 	telemetry := agents.EncodeAgentCollectionFlat()
-	assert.Equal(t, "67a955c278db4c2bb475671570233dab", telemetry.ServerGuid)
+	assert.Equal(t, "f83e12501065410d8499d725553b2a94", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-system-environment", telemetry.TelemetryType)
 
 	associatedAgents := telemetry.Associations.(AgentSystemEnvCollection)
@@ -58,7 +58,7 @@ func TestEncodeAgentSystemEnvCollectionLookup(t *testing.T) {
 	assert.Equal(t, 5, len(agents.Agents))
 
 	telemetry := agents.EncodeAgentCollectionLookup()
-	assert.Equal(t, "67a955c278db4c2bb475671570233dab", telemetry.ServerGuid)
+	assert.Equal(t, "f83e12501065410d8499d725553b2a94", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-system-environment", telemetry.TelemetryType)
 
 	lookup := telemetry.Lookup.(AgentTelemetrySystemLookup)

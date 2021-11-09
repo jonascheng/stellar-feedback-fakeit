@@ -15,7 +15,7 @@ type AgentSystemEnv struct {
 	Version string       `json:"version" xml:"version" fake:"{os-version}"`
 	Qfe     []QfeInfo    `json:"qfe" xml:"qfe" fakesize:"5"`
 	Volume  []VolumeInfo `json:"volume" xml:"volume" fakesize:"2"`
-	Meta    []MetaInfo   `json:"meta" xml:"meta"`
+	Meta    []MetaInfo   `json:"meta" xml:"meta" fake:"skip"`
 }
 
 type OSInfo struct {
