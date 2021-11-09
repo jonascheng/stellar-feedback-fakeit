@@ -26,7 +26,7 @@ func TestCollectAgentSystemEnv(t *testing.T) {
 	assert.Equal(t, myfakeit.MetaInfo{"cpuCaption": "Intel64 Family 6 Model 167 Stepping 1"}, agent.Meta[0])
 }
 
-func TestEncodeAgentCollectionFlat(t *testing.T) {
+func TestEncodeAgentSystemEnvCollectionFlat(t *testing.T) {
 	gofakeit.Seed(11)
 
 	agents := NewAgentSystemEnvCollection(5)

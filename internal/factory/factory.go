@@ -15,6 +15,10 @@ type AgentTelemetryEncoder interface {
 	EncodeAgentCollectionLookup() *AgentTelemetry
 }
 
+func NewAgentCollection(size int) *AgentCollection {
+	return CollectAgent(size)
+}
+
 func NewAgentSystemEnvCollection(size int) *AgentSystemEnvCollection {
 	return CollectAgentSystemEnv(size)
 }

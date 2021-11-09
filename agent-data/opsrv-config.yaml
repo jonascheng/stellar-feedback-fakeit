@@ -1,0 +1,70 @@
+product: one_protect
+version: "1.0"
+
+real-time-scan:
+    enable: true
+
+change-control:
+    enable: true
+    protect-ics-applications: true
+    protect-ics-processes: false
+
+ics-application-inventory:
+    publisher-constraints:
+        yokogawa:
+        yaskawa:
+        yamaha:
+        siemens:
+        schneider electric:
+        rockwell:
+        roboticsware:
+        red lion:
+        phoenix contact:
+        pactware:
+        omron:
+        national instruments:
+        mitsubishi:
+        lovato electric:
+        keyence:
+        idec:
+        honeywell:
+        hitachi:
+        ge:
+        fuji:
+        fanuc:
+        seiko epson:
+        fisher controls:
+        delta electronics:
+        bürkert:
+        beckhoff:
+        druck limited:
+        codesys:
+        baker hughes:
+        autonics:
+        abb:
+        3s-smart software solutions gmbh:
+        zebra:
+        verif-i:
+        motorola:
+        acronis:
+        micromeritics:
+
+    trusted-signers:
+        Yokogawa Electric Corporation:
+        YASKAWA ELECTRIC CORPORATION:
+        SIEMENS AG:
+        AVEVA Group plc:
+        Omron Corporation:
+        MITSUBISHI ELECTRIC CORPORATION:
+        Sperian Protection Instrumentation LLC:
+        Hitachi Industrial Equipment Systems Co., Ltd:
+        General Electric Company:
+        SEIKO EPSON CORPORATION:
+        Druck Limited:
+        ABB Asea Brown Boveri Ltd:
+        Schneider Electric:
+        National Instruments Corporation:
+        Beckhoff Automation GmbH & Co. KG:
+        Rockwell Automation:
+        Rockwell Automation Inc:
+        Buerkert Werke GmbH & Co KG:
