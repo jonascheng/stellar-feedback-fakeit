@@ -3,7 +3,6 @@ package myfakeit
 import (
 	"encoding/base64"
 	"io/ioutil"
-	"log"
 	"math/rand"
 	"strings"
 	"sync"
@@ -48,11 +47,9 @@ var base64EnabledFeature string
 func getEnabledFeature() string {
 	once.Do(func() {
 		// Read the entire file into a byte slice
-		bytes, err := ioutil.ReadFile("./agent-data/opsrv-config.yaml")
-		if err != nil {
-			log.Fatal(err)
+		if bytes, err := ioutil.ReadFile("./agent-data/opsrv-config.yaml"); err == nil {
+			base64EnabledFeature = base64.StdEncoding.EncodeToString(bytes)
 		}
-		base64EnabledFeature = base64.StdEncoding.EncodeToString(bytes)
 	})
 	return base64EnabledFeature
 }
