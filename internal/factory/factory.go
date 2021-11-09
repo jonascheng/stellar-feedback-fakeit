@@ -10,8 +10,8 @@ type AgentTelemetry struct {
 	Associations  interface{} `json:"associations" xml:"associations"`
 }
 
-type AgentTelemetryEncoder interface {
-	EncodeAgentCollectionFlat() *AgentTelemetry
+type IAgentTelemetry interface {
+	EncodeCollectionFlat() *AgentTelemetry
 	EncodeAgentCollectionLookup() *AgentTelemetry
 }
 

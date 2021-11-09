@@ -26,7 +26,7 @@ func CollectAgent(size int) *AgentCollection {
 	return &agents
 }
 
-func (agents *AgentCollection) EncodeAgentCollectionFlat() *AgentTelemetry {
+func (agents *AgentCollection) EncodeCollectionFlat() *AgentTelemetry {
 	telemetry := AgentTelemetry{
 		Timestamp:     time.Now().UTC(),
 		TelemetryType: "agent-telemetry",
@@ -37,5 +37,5 @@ func (agents *AgentCollection) EncodeAgentCollectionFlat() *AgentTelemetry {
 }
 
 func (agents *AgentCollection) EncodeAgentCollectionLookup() *AgentTelemetry {
-	return agents.EncodeAgentCollectionFlat()
+	return agents.EncodeCollectionFlat()
 }

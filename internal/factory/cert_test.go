@@ -29,7 +29,7 @@ func TestEncodeAgentCertCollectionFlat(t *testing.T) {
 	agents := NewAgentCertCollection(5)
 	assert.Equal(t, 5, len(agents.Agents))
 
-	telemetry := agents.EncodeAgentCollectionFlat()
+	telemetry := agents.EncodeCollectionFlat()
 	assert.Equal(t, "0b6db5705a7e4a3fb4dd084b3f16e637", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-cert", telemetry.TelemetryType)
 

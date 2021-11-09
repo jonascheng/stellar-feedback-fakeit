@@ -40,7 +40,7 @@ func CollectAgentSoftwareEnv(size int) *AgentSoftwareEnvCollection {
 	return &agents
 }
 
-func (agents *AgentSoftwareEnvCollection) EncodeAgentCollectionFlat() *AgentTelemetry {
+func (agents *AgentSoftwareEnvCollection) EncodeCollectionFlat() *AgentTelemetry {
 	telemetry := AgentTelemetry{
 		Timestamp:     time.Now().UTC(),
 		TelemetryType: "agent-telemetry-software-environment",

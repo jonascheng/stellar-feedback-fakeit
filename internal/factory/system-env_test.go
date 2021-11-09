@@ -32,7 +32,7 @@ func TestEncodeAgentSystemEnvCollectionFlat(t *testing.T) {
 	agents := NewAgentSystemEnvCollection(5)
 	assert.Equal(t, 5, len(agents.Agents))
 
-	telemetry := agents.EncodeAgentCollectionFlat()
+	telemetry := agents.EncodeCollectionFlat()
 	assert.Equal(t, "f83e12501065410d8499d725553b2a94", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-system-environment", telemetry.TelemetryType)
 

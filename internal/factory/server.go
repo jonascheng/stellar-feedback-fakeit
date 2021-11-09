@@ -20,7 +20,7 @@ func CollectServer() *ServerCollection {
 	return &server
 }
 
-func (server *ServerCollection) EncodeAgentCollectionFlat() *AgentTelemetry {
+func (server *ServerCollection) EncodeCollectionFlat() *AgentTelemetry {
 	telemetry := AgentTelemetry{
 		Timestamp:     time.Now().UTC(),
 		TelemetryType: "server-telemetry",
@@ -31,5 +31,5 @@ func (server *ServerCollection) EncodeAgentCollectionFlat() *AgentTelemetry {
 }
 
 func (server *ServerCollection) EncodeAgentCollectionLookup() *AgentTelemetry {
-	return server.EncodeAgentCollectionFlat()
+	return server.EncodeCollectionFlat()
 }

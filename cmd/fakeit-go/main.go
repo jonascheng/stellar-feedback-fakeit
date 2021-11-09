@@ -42,13 +42,13 @@ type Benchmark struct {
 	RatioLookupCompressed float32 `json:"ratioLookupCompressed" xml:"ratioLookupCompressed" csv:"ratioLookupCompressed"`
 }
 
-func encodeAgentCollectionFlat(benchmark *Benchmark, agents factory.AgentTelemetryEncoder, flatFilename string) {
-	telemetryFlat := agents.EncodeAgentCollectionFlat()
+func encodeCollectionFlat(benchmark *Benchmark, agents factory.IAgentTelemetry, flatFilename string) {
+	telemetryFlat := agents.EncodeCollectionFlat()
 	benchmark.SizeFlat = dumpToFile(telemetryFlat, flatFilename)
 	benchmark.SizeFlatCompressed = compressFile(flatFilename)
 }
 
-func encodeAgentCollectionLookup(benchmark *Benchmark, agents factory.AgentTelemetryEncoder, lookupFilename string) {
+func encodeAgentCollectionLookup(benchmark *Benchmark, agents factory.IAgentTelemetry, lookupFilename string) {
 	telemetryFlat := agents.EncodeAgentCollectionLookup()
 	benchmark.SizeLookup = dumpToFile(telemetryFlat, lookupFilename)
 	benchmark.SizeLookupCompressed = compressFile(lookupFilename)
@@ -61,7 +61,7 @@ func fullServerCollection() Benchmark {
 	benchmark.Size = 0
 
 	flatFilename := "server-telemetry-info-flat.json"
-	encodeAgentCollectionFlat(&benchmark, agents, flatFilename)
+	encodeCollectionFlat(&benchmark, agents, flatFilename)
 
 	return benchmark
 }
@@ -73,7 +73,7 @@ func fullAgentCollection(size int) Benchmark {
 	benchmark.Size = size
 
 	flatFilename := fmt.Sprintf("agent-telemetry-info-flat-%d.json", size)
-	encodeAgentCollectionFlat(&benchmark, agents, flatFilename)
+	encodeCollectionFlat(&benchmark, agents, flatFilename)
 
 	return benchmark
 }
@@ -85,7 +85,7 @@ func fullAgentSystemEnvCollection(size int) Benchmark {
 	benchmark.Size = size
 
 	flatFilename := fmt.Sprintf("agent-telemetry-system-environment-flat-%d.json", size)
-	encodeAgentCollectionFlat(&benchmark, agents, flatFilename)
+	encodeCollectionFlat(&benchmark, agents, flatFilename)
 
 	lookupFilename := fmt.Sprintf("agent-telemetry-system-environment-lookup-%d.json", size)
 	encodeAgentCollectionLookup(&benchmark, agents, lookupFilename)
@@ -100,7 +100,7 @@ func fullAgentSoftwareEnvCollection(size int) Benchmark {
 	benchmark.Size = size
 
 	flatFilename := fmt.Sprintf("agent-telemetry-software-environment-flat-%d.json", size)
-	encodeAgentCollectionFlat(&benchmark, agents, flatFilename)
+	encodeCollectionFlat(&benchmark, agents, flatFilename)
 
 	lookupFilename := fmt.Sprintf("agent-telemetry-software-environment-lookup-%d.json", size)
 	encodeAgentCollectionLookup(&benchmark, agents, lookupFilename)
@@ -115,7 +115,7 @@ func fullAgentCertCollection(size int) Benchmark {
 	benchmark.Size = size
 
 	flatFilename := fmt.Sprintf("agent-telemetry-cert-flat-%d.json", size)
-	encodeAgentCollectionFlat(&benchmark, agents, flatFilename)
+	encodeCollectionFlat(&benchmark, agents, flatFilename)
 
 	lookupFilename := fmt.Sprintf("agent-telemetry-cert-lookup-%d.json", size)
 	encodeAgentCollectionLookup(&benchmark, agents, lookupFilename)

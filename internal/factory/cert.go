@@ -40,7 +40,7 @@ func CollectAgentCert(size int) *AgentCertCollection {
 	return &agents
 }
 
-func (agents *AgentCertCollection) EncodeAgentCollectionFlat() *AgentTelemetry {
+func (agents *AgentCertCollection) EncodeCollectionFlat() *AgentTelemetry {
 	telemetry := AgentTelemetry{
 		Timestamp:     time.Now().UTC(),
 		TelemetryType: "agent-telemetry-cert",

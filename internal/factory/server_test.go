@@ -32,7 +32,7 @@ func TestEncodeServerCollectionFlat(t *testing.T) {
 
 	server := NewServerCollection()
 
-	telemetry := server.EncodeAgentCollectionFlat()
+	telemetry := server.EncodeCollectionFlat()
 	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", telemetry.ServerGuid)
 	assert.Equal(t, "server-telemetry", telemetry.TelemetryType)
 
@@ -51,13 +51,13 @@ func TestEncodeServerCollectionFlat(t *testing.T) {
 	assert.Equal(t, 5, len(associatedServer.Meta))
 }
 
-// identical to EncodeAgentCollectionFlat
+// identical to EncodeCollectionFlat
 func TestEncodeServerCollectionLookup(t *testing.T) {
 	gofakeit.Seed(11)
 
 	server := NewServerCollection()
 
-	telemetry := server.EncodeAgentCollectionFlat()
+	telemetry := server.EncodeCollectionFlat()
 	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", telemetry.ServerGuid)
 	assert.Equal(t, "server-telemetry", telemetry.TelemetryType)
 

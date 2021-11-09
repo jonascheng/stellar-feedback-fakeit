@@ -26,7 +26,7 @@ func TestEncodeAgentCollectionFlat(t *testing.T) {
 	agents := NewAgentCollection(5)
 	assert.Equal(t, 5, len(agents.Agents))
 
-	telemetry := agents.EncodeAgentCollectionFlat()
+	telemetry := agents.EncodeCollectionFlat()
 	assert.Equal(t, "56769046311d483d91c150205f6674f4", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry", telemetry.TelemetryType)
 
@@ -40,7 +40,7 @@ func TestEncodeAgentCollectionFlat(t *testing.T) {
 	assert.Equal(t, 15888, agent.TimeGap)
 }
 
-// identical to EncodeAgentCollectionFlat
+// identical to EncodeCollectionFlat
 func TestEncodeAgentCollectionLookup(t *testing.T) {
 	gofakeit.Seed(11)
 
