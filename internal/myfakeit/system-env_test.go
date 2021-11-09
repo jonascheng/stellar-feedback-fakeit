@@ -19,8 +19,9 @@ func TestAgentSystemEnv(t *testing.T) {
 	assert.Equal(t, "KB5994899", agent.Qfe[0].HotfixId)
 	assert.Equal(t, "21/07/2021", agent.Qfe[0].InstalledOn)
 	assert.Equal(t, 2, len(agent.Volume))
-	assert.Equal(t, "2333396909501", agent.Volume[0].Total)
-	assert.Equal(t, "2888082257", agent.Volume[0].Free)
-	assert.Equal(t, "NTFS", agent.Volume[0].Type)
+	assert.Equal(t, "D:", agent.Volume[0].Drive)
+	assert.Equal(t, "2252481995878", agent.Volume[0].Total)
+	assert.Equal(t, "2670240491", agent.Volume[0].Free)
+	assert.Equal(t, "FAT32", agent.Volume[0].Type)
 	assert.Equal(t, 7, len(agent.Meta))
 }

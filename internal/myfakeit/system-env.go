@@ -29,6 +29,7 @@ type QfeInfo struct {
 }
 
 type VolumeInfo struct {
+	Drive string `json:"drive" xml:"drive" fake:"{randomstring:[C:,D:]}"`
 	Total string `json:"total" xml:"total" fake:"{number:2000000000000,4000000000000}"`
 	Free  string `json:"free" xml:"free" fake:"{number:2000000000,4000000000}"`
 	Type  string `json:"type" xml:"type" fake:"{randomstring:[FAT32,NTFS]}"`
