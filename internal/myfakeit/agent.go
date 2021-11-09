@@ -15,8 +15,8 @@ type Agent struct {
 	Guid           string    `json:"guid" xml:"guid" fake:"{uuid}"`
 	Version        string    `json:"version" xml:"version" fake:"{randomstring:[1.0.1000,1.1.1100]}"`
 	Type           int       `json:"type" xml:"type" fake:"{number:0,1}"`
-	LastSyncAt     time.Time `json:"timestamp" xml:"timestamp" fake:"skip"`
-	TimeGap        int       `json:"timeGap" xml:"timeGap" fake:"{number:[-86400,86400]}"`
+	LastSyncAt     time.Time `json:"lastSyncAt" xml:"lastSyncAt" fake:"skip"`
+	TimeGap        int       `json:"timeGap" xml:"timeGap" fake:"{number:-86400,86400}"`
 	EnabledFeature string    `json:"enabledFeature" xml:"enabledFeature" fake:"skip"`
 }
 
