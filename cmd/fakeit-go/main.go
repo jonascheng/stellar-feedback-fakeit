@@ -27,6 +27,7 @@ var (
 	agentSystemEnv   = kingpin.Flag("agent-system-env", "Random generate agent-telemetry-system-environment.").Bool()
 	agentSoftwareEnv = kingpin.Flag("agent-software-env", "Random generate agent-telemetry-software-environment.").Bool()
 	agentCert        = kingpin.Flag("agent-cert", "Random generate agent-telemetry-cert.").Bool()
+	threatInfo       = kingpin.Flag("threat-info", "Random generate agent-telemetry-threat.").Bool()
 	allInfo          = kingpin.Flag("all-info", "Random generate all telemetry above.").Bool()
 	benchmark        = kingpin.Flag("benchmark", "Benchmark performance for agent-system-env, agent-software-env and agent-cert.").Bool()
 	size             = kingpin.Flag("size", "Random size").Default("1").Int()
@@ -75,6 +76,18 @@ func fullAgentCollection(size int) Benchmark {
 
 	flatFilename := fmt.Sprintf("agent-telemetry-info-flat-%d.json", size)
 	encodeCollectionFlat(&benchmark, agents, flatFilename)
+
+	return benchmark
+}
+
+func fullThreatCollection(size int) Benchmark {
+	var benchmark Benchmark
+
+	threats := factory.NewThreatCollection(size)
+	benchmark.Size = size
+
+	flatFilename := fmt.Sprintf("agent-telemetry-threat-info-flat-%d.json", size)
+	encodeCollectionFlat(&benchmark, threats, flatFilename)
 
 	return benchmark
 }
@@ -272,6 +285,13 @@ func main() {
 		fmt.Println(">>")
 		fmt.Printf("Generate agent cert collection with size %v\n", *size)
 		fullAgentCertCollection(*size)
+		fmt.Println("<<")
+	}
+
+	if *threatInfo || *allInfo {
+		fmt.Println(">>")
+		fmt.Printf("Generate threat collection with size %v\n", *size)
+		fullThreatCollection(*size)
 		fmt.Println("<<")
 	}
 }

@@ -34,3 +34,7 @@ func NewAgentSoftwareEnvCollection(size int) *AgentSoftwareEnvCollection {
 func NewAgentCertCollection(size int) *AgentCertCollection {
 	return CollectAgentCert(size)
 }
+
+func NewThreatCollection(size int) *ThreatCollection {
+	return CollectThreat(size)
+}
