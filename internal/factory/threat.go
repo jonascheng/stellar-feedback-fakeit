@@ -21,7 +21,7 @@ func CollectThreat(size int) *ThreatCollection {
 	var threats ThreatCollection
 
 	for i := 0; i < size; i++ {
-		agent := myfakeit.ThreatInfo(false)
+		agent := myfakeit.ThreatInfo(0)
 		threats.Agents = append(threats.Agents, *agent)
 	}
 	return &threats

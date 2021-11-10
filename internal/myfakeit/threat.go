@@ -27,23 +27,21 @@ type AppExecBlockedEvent struct {
 }
 
 // ThreatInfo will generate a struct of threat information
-func ThreatInfo(fakeall bool) *Threat {
-	return threatInfo(globalFaker.Rand, fakeall)
+func ThreatInfo(min int) *Threat {
+	return threatInfo(globalFaker.Rand, min)
 }
 
-func threatInfo(r *rand.Rand, fakeall bool) *Threat {
+func threatInfo(r *rand.Rand, min int) *Threat {
 	var s Threat
 
 	// AppExecBlockedEvents
-	if gofakeit.Bool() || fakeall { // fakeit or not?
-		for nEvents := gofakeit.Number(1, 10); nEvents > 0; nEvents-- {
-			uuid := gofakeit.UUID()
-			// remove dash from UUID
-			uuid = strings.Replace(uuid, "-", "", -1)
+	for nEvents := gofakeit.Number(min, 10); nEvents > 0; nEvents-- {
+		uuid := gofakeit.UUID()
+		// remove dash from UUID
+		uuid = strings.Replace(uuid, "-", "", -1)
 
-			event := appExecBlockedEventInfo(r, uuid)
-			s.AppExecBlocked = append(s.AppExecBlocked, *event)
-		}
+		event := appExecBlockedEventInfo(r, uuid)
+		s.AppExecBlocked = append(s.AppExecBlocked, *event)
 	}
 
 	return &s
