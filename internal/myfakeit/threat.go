@@ -12,7 +12,12 @@ import (
 )
 
 type Threat struct {
-	AppExecBlocked []AppExecBlockedEvent `json:"appExecBlocked,omitempty" xml:"appExecBlocked" fake:"skip"`
+	AppExecBlocked         []AppExecBlockedEvent         `json:"appExecBlocked,omitempty" xml:"appExecBlocked,omitempty" fake:"skip"`
+	FileScanBlocked        []FileScanBlockedEvent        `json:"fileScanBlocked,omitempty" xml:"fileScanBlocked,omitempty" fake:"skip"`
+	SuspiciousExecBlocked  []SuspiciousExecBlockedEvent  `json:"suspiciousExecBlocked,omitempty" xml:"suspiciousExecBlocked,omitempty" fake:"skip"`
+	OBADBlocked            []OBADBlockedEvent            `json:"obadBlocked,omitempty" xml:"obadBlocked,omitempty" fake:"skip"`
+	NonWhitelistingBlocked []NonWhitelistingBlockedEvent `json:"nonWhitelistingBlocked,omitempty" xml:"nonWhitelistingBlocked,omitempty" fake:"skip"`
+	ADCBlocked             []ADCBlockedEvent             `json:"adcBlocked,omitempty" xml:"adcBlocked,omitempty" fake:"skip"`
 }
 
 type AppExecBlockedEvent struct {
@@ -24,6 +29,64 @@ type AppExecBlockedEvent struct {
 	Type          string `json:"type" xml:"type" fake:"{randomstring:[Virus]}"`
 	Name          string `json:"name" xml:"name" fake:"{randomstring:[PE_TEST_VIRUS]}"`
 	Count         int    `json:"count" xml:"count" fake:"{number:1,1000}"`
+}
+
+type FileScanBlockedEvent struct {
+	Guid          string `json:"guid" xml:"guid" fake:"skip"`
+	TimeslotBegin int64  `json:"timeslotBegin" xml:"timeslotBegin" fake:"skip"`
+	TimeslotEnd   int64  `json:"timeslotEnd" xml:"timeslotEnd" fake:"skip"`
+	File          string `json:"flie" xml:"flie" fake:"{threat-filename}"`
+	Hash          string `json:"hash" xml:"hash" fake:"skip"`
+	Type          string `json:"type" xml:"type" fake:"{randomstring:[Virus]}"`
+	Name          string `json:"name" xml:"name" fake:"{randomstring:[PE_TEST_VIRUS]}"`
+	Result        string `json:"result" xml:"result" fake:"{randomstring:[0]}"`
+	Quarantine    string `json:"quarantine" xml:"quarantine" fake:"{threat-quarantine}"`
+	Count         int    `json:"count" xml:"count" fake:"{number:1,1000}"`
+}
+
+type SuspiciousExecBlockedEvent struct {
+	Guid          string `json:"guid" xml:"guid" fake:"skip"`
+	TimeslotBegin int64  `json:"timeslotBegin" xml:"timeslotBegin" fake:"skip"`
+	TimeslotEnd   int64  `json:"timeslotEnd" xml:"timeslotEnd" fake:"skip"`
+	File          string `json:"flie" xml:"flie" fake:"{threat-filename}"`
+	Hash          string `json:"hash" xml:"hash" fake:"skip"`
+	Count         int    `json:"count" xml:"count" fake:"{number:1,1000}"`
+}
+
+type OBADBlockedEvent struct {
+	Guid          string `json:"guid" xml:"guid" fake:"skip"`
+	TimeslotBegin int64  `json:"timeslotBegin" xml:"timeslotBegin" fake:"skip"`
+	TimeslotEnd   int64  `json:"timeslotEnd" xml:"timeslotEnd" fake:"skip"`
+	File          string `json:"flie" xml:"flie" fake:"{threat-filename}"`
+	User          string `json:"user" xml:"user" fake:"{firstname}"`
+	Parent1       string `json:"parent1" xml:"parent1" fake:"{threat-filename}"`
+	Parent2       string `json:"parent2" xml:"parent2" fake:"{threat-filename}"`
+	Parent3       string `json:"parent3" xml:"parent3" fake:"{threat-filename}"`
+	Parent4       string `json:"parent4" xml:"parent4" fake:"{threat-filename}"`
+	Mode          string `json:"mode" xml:"mode" fake:"{randomstring:[Detection,Prevention]}"`
+	Level         string `json:"lvl" xml:"lvl" fake:"{randomstring:[aggressive]}"`
+	Count         int    `json:"count" xml:"count" fake:"{number:1,1000}"`
+}
+
+type NonWhitelistingBlockedEvent struct {
+	Guid          string `json:"guid" xml:"guid" fake:"skip"`
+	TimeslotBegin int64  `json:"timeslotBegin" xml:"timeslotBegin" fake:"skip"`
+	TimeslotEnd   int64  `json:"timeslotEnd" xml:"timeslotEnd" fake:"skip"`
+	File          string `json:"flie" xml:"flie" fake:"{threat-filename}"`
+	Hash          string `json:"hash" xml:"hash" fake:"skip"`
+	User          string `json:"user" xml:"user" fake:"{firstname}"`
+	Count         int    `json:"count" xml:"count" fake:"{number:1,1000}"`
+}
+
+type ADCBlockedEvent struct {
+	Guid          string   `json:"guid" xml:"guid" fake:"skip"`
+	TimeslotBegin int64    `json:"timeslotBegin" xml:"timeslotBegin" fake:"skip"`
+	TimeslotEnd   int64    `json:"timeslotEnd" xml:"timeslotEnd" fake:"skip"`
+	File          string   `json:"flie" xml:"flie" fake:"{threat-filename}"`
+	Hash          string   `json:"hash" xml:"hash" fake:"skip"`
+	Impacted      []string `json:"impacted" xml:"impacted" fake:"skip"`
+	Mode          string   `json:"mode" xml:"mode" fake:"{randomstring:[Detection,Prevention]}"`
+	Count         int      `json:"count" xml:"count" fake:"{number:1,1000}"`
 }
 
 // ThreatInfo will generate a struct of threat information
