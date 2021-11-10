@@ -18,6 +18,9 @@ func TestNewThreatCollection(t *testing.T) {
 	{
 		threat := threats.Agents[1].AppExecBlocked[0]
 		assert.Equal(t, "55e3c7a7649043e0aa0b6a665862c32e", threat.Guid)
+		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
+		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
+		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
 		assert.Equal(t, "C:\\Program Files (x86)\\Vijeo Designer Runtime\\Vijeo Designer Runtime.exe", threat.File)
 		assert.Equal(t, "7d8ed22559df165701e6efdfd6f1bc8e84690a13a285ada096c2c8a00553cec7", threat.Hash)
 		assert.Equal(t, "Virus", threat.Type)
