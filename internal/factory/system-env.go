@@ -18,10 +18,6 @@ type AgentTelemetrySystemLookup struct {
 	SystemMap map[string]myfakeit.OSInfo `json:"systemMap" xml:"systemMap"`
 }
 
-type AgentTelemetrySystemAssociations struct {
-	Agents []AgentSystemEnv `json:"agents" xml:"agents"`
-}
-
 type AgentTelemetrySystemAssociationsLookup struct {
 	Agents []AgentSystemEnv `json:"agents" xml:"agents"`
 }

@@ -10,8 +10,6 @@ type ServerCollection struct {
 	Server *myfakeit.Server `json:"server" xml:"server"`
 }
 
-type ServerTelemetryAssociations myfakeit.Server
-
 func CollectServer() *ServerCollection {
 	var server ServerCollection
 

@@ -17,10 +17,6 @@ type AgentTelemetrySoftwareLookup struct {
 	AppMap map[string]myfakeit.AppInfo `json:"appMap" xml:"appMap"`
 }
 
-type AgentTelemetrySoftwareAssociations struct {
-	Agents []myfakeit.AgentSoftwareEnv `json:"agents" xml:"agents"`
-}
-
 type AgentTelemetrySoftwareAssociationsLookup struct {
 	Agents []AgentSoftwareEnv `json:"agents" xml:"agents"`
 }

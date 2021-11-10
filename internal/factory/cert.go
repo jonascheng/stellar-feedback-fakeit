@@ -17,10 +17,6 @@ type AgentTelemetryCertLookup struct {
 	CertMap map[string]myfakeit.CertInfo `json:"certMap" xml:"certMap"`
 }
 
-type AgentTelemetryCertAssociations struct {
-	Agents []myfakeit.AgentCert `json:"agents" xml:"agents"`
-}
-
 type AgentTelemetryCertAssociationsLookup struct {
 	Agents []AgentCert `json:"agents" xml:"agents"`
 }

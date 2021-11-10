@@ -12,10 +12,6 @@ type AgentCollection struct {
 	Agents []myfakeit.Agent `json:"agents" xml:"agents"`
 }
 
-type AgentTelemetryAssociations struct {
-	Agents []myfakeit.Agent `json:"agents" xml:"agents"`
-}
-
 func CollectAgent(size int) *AgentCollection {
 	var agents AgentCollection
 
