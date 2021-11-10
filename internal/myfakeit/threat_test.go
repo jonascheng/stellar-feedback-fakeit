@@ -16,7 +16,7 @@ func TestThreatInfo(t *testing.T) {
 	{
 		assert.Greater(t, len(threats.AppExecBlocked), 0)
 		threat := threats.AppExecBlocked[0]
-		assert.Equal(t, "b07d51a817ee47c3b2145935bc7155e3", threat.Guid)
+		assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", threat.Guid)
 		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
 		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
 		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))

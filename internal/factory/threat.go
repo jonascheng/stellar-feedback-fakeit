@@ -1,7 +1,6 @@
 package factory
 
 import (
-	"fmt"
 	"strings"
 	"time"
 
@@ -13,9 +12,7 @@ type ThreatCollection struct {
 	Agents []myfakeit.Threat `json:"agents" xml:"agents"`
 }
 
-type ThreatTelemetryAssociations struct {
-	AppExecBlocked []myfakeit.AppExecBlockedEvent `json:"appExecBlocked,omitempty" xml:"appExecBlocked"`
-}
+type ThreatTelemetryAssociations myfakeit.Threat
 
 func CollectThreat(size int) *ThreatCollection {
 	var threats ThreatCollection
@@ -24,6 +21,7 @@ func CollectThreat(size int) *ThreatCollection {
 		agent := myfakeit.ThreatInfo(0)
 		threats.Agents = append(threats.Agents, *agent)
 	}
+	
 	return &threats
 }
 
@@ -41,7 +39,7 @@ func (threats *ThreatCollection) EncodeCollectionFlat() *AgentTelemetry {
 		ServerGuid:    strings.Replace(strings.Replace(gofakeit.UUID(), "-", "", -1), "-", "", -1),
 		Associations:  associatedThreats,
 	}
-	fmt.Println(telemetry)
+
 	return &telemetry
 }
 

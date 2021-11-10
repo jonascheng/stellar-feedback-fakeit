@@ -17,12 +17,12 @@ func TestNewThreatCollection(t *testing.T) {
 	// AppExecBlockedEventInfo
 	{
 		threat := threats.Agents[1].AppExecBlocked[0]
-		assert.Equal(t, "c3f2145935bc4155a3c7a76490c3e0aa", threat.Guid)
+		assert.Equal(t, "145935bc71d948e1bb32210fad76abb6", threat.Guid)
 		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
 		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
 		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
-		assert.Equal(t, "C:\\Program Files (x86)\\ASDA_Soft_V5\\ASDA_Soft_V5.exe", threat.File)
-		assert.Equal(t, "4eef4479d5532869f9eef67104b6559b9bbbeca70d4f345753db8bb7626d4a8b", threat.Hash)
+		assert.Equal(t, "C:\\Program Files\\Buerkert Communicator\\Buerkert Communicator.exe", threat.File)
+		assert.Equal(t, "8fc0fac27db5e2e9b426a2d3a785f29728ee73c5e005b750b089e24080c8e18a", threat.Hash)
 		assert.Equal(t, "Virus", threat.Type)
 		assert.Equal(t, "PE_TEST_VIRUS", threat.Name)
 		assert.Greater(t, threat.Count, 0)
@@ -38,16 +38,23 @@ func TestEncodeThreatCollectionFlat(t *testing.T) {
 	assert.Equal(t, 5, len(threats.Agents))
 
 	telemetry := threats.EncodeCollectionFlat()
-	assert.Equal(t, "c33d812f93154fe5bfde4c607f36dfe5", telemetry.ServerGuid)
+	assert.Equal(t, "0fde0f3193154fe5bfde4c607f36dfe5", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-threat", telemetry.TelemetryType)
 
-	fmt.Println(telemetry)
-	// associatedAgents := telemetry.Associations.(AgentCollection)
-	// assert.Equal(t, 5, len(associatedAgents.Agents))
+	associatedThreats := telemetry.Associations.(ThreatTelemetryAssociations)
+	assert.Greater(t, len(associatedThreats.AppExecBlocked), 0)
 
-	// agent := agents.Agents[0]
-	// assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", agent.Guid)
-	// assert.Equal(t, "1.0.1000", agent.Version)
-	// assert.Equal(t, 0, agent.Type)
-	// assert.Equal(t, 15888, agent.TimeGap)
+	// AppExecBlockedEventInfo
+	{
+		threat := associatedThreats.AppExecBlocked[0]
+		assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", threat.Guid)
+		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
+		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
+		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
+		assert.Equal(t, "C:\\Program Files\\ASDA_Soft_V5\\ASDA_Soft_V5.exe", threat.File)
+		assert.Equal(t, "032a4e38b86d929ca23b3755cff582df406d4cbf758e3c91715e774dc270ede2", threat.Hash)
+		assert.Equal(t, "Virus", threat.Type)
+		assert.Equal(t, "PE_TEST_VIRUS", threat.Name)
+		assert.Greater(t, threat.Count, 0)
+	}
 }

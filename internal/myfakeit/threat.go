@@ -34,12 +34,12 @@ func ThreatInfo(min int) *Threat {
 func threatInfo(r *rand.Rand, min int) *Threat {
 	var s Threat
 
+	uuid := gofakeit.UUID()
+	// remove dash from UUID
+	uuid = strings.Replace(uuid, "-", "", -1)
+
 	// AppExecBlockedEvents
 	for nEvents := gofakeit.Number(min, 10); nEvents > 0; nEvents-- {
-		uuid := gofakeit.UUID()
-		// remove dash from UUID
-		uuid = strings.Replace(uuid, "-", "", -1)
-
 		event := appExecBlockedEventInfo(r, uuid)
 		s.AppExecBlocked = append(s.AppExecBlocked, *event)
 	}
