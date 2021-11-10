@@ -7,18 +7,33 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestAppExecBlockedEvents(t *testing.T) {
+func TestThreatInfo(t *testing.T) {
 	gofakeit.Seed(11)
 
-	threats := AppExecBlockedEvents(2, 2)
-	assert.Equal(t, 2, len(threats))
-	assert.Equal(t, threats[0].Guid, threats[1].Guid)
-	assert.Equal(t, "C:\\Program Files\\ASDA_Soft_V5\\ASDA_Soft_V5.exe", threats[0].File)
-	assert.Equal(t, "032a4e38b86d929ca23b3755cff582df406d4cbf758e3c91715e774dc270ede2", threats[0].Hash)
-	assert.Equal(t, "Virus", threats[0].Type)
-	assert.Equal(t, "PE_TEST_VIRUS", threats[0].Name)
-	assert.Equal(t, "C:\\Windows\\SysWOW64\\LRXSW 3.45\\LRXSW 3.45.exe", threats[1].File)
-	assert.Equal(t, "2ec1f96e1a3b197dcb71baacb9abe6a1f688a2642b8d0d6e011701d0c544810b", threats[1].Hash)
-	assert.Equal(t, "Virus", threats[1].Type)
-	assert.Equal(t, "PE_TEST_VIRUS", threats[1].Name)
+	threats := ThreatInfo(true)
+
+	// AppExecBlockedEventInfo
+	{
+		assert.Greater(t, len(threats.AppExecBlocked), 0)
+		threat := threats.AppExecBlocked[0]
+		assert.Equal(t, "c3f2145935bc4155a3c7a76490c3e0aa", threat.Guid)
+		assert.Equal(t, "C:\\Program Files (x86)\\ASDA_Soft_V5\\ASDA_Soft_V5.exe", threat.File)
+		assert.Equal(t, "4eef4479d5532869f9eef67104b6559b9bbbeca70d4f345753db8bb7626d4a8b", threat.Hash)
+		assert.Equal(t, "Virus", threat.Type)
+		assert.Equal(t, "PE_TEST_VIRUS", threat.Name)
+		assert.Greater(t, threat.Count, 0)
+	}
+
+}
+
+func TestAppExecBlockedEventInfo(t *testing.T) {
+	gofakeit.Seed(11)
+
+	threat := AppExecBlockedEventInfo("guid1")
+	assert.Equal(t, "guid1", threat.Guid)
+	assert.Equal(t, "C:\\Vijeo Designer Runtime\\Vijeo Designer Runtime.exe", threat.File)
+	assert.Equal(t, "226e61623c687060b589b8003eb1338dc12fb2b7414d4a6f7ccbe77380a7692c", threat.Hash)
+	assert.Equal(t, "Virus", threat.Type)
+	assert.Equal(t, "PE_TEST_VIRUS", threat.Name)
+	assert.Greater(t, threat.Count, 0)
 }

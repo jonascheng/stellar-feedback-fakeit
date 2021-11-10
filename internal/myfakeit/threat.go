@@ -11,59 +11,73 @@ import (
 	"github.com/brianvoe/gofakeit/v6"
 )
 
-// Declaring layout constant
-const layout = "Jan 2, 2006 at 3:04pm (PST)"
+type Threat struct {
+	AppExecBlocked []AppExecBlockedEvent `json:"appExecBlocked,omitempty" xml:"appExecBlocked" fake:"skip"`
+}
 
 type AppExecBlockedEvent struct {
-	Guid    string    `json:"guid" xml:"guid" fake:"skip"`
-	Created time.Time `json:"created" xml:"created" fake:"skip"`
-	File    string    `json:"flie" xml:"flie" fake:"{threat-filename}"`
-	Hash    string    `json:"hash" xml:"hash" fake:"skip"`
-	Type    string    `json:"type" xml:"type" fake:"{randomstring:[Virus]}"`
-	Name    string    `json:"name" xml:"name" fake:"{randomstring:[PE_TEST_VIRUS]}"`
+	Guid          string `json:"guid" xml:"guid" fake:"skip"`
+	TimeslotBegin int64  `json:"timeslotBegin" xml:"timeslotBegin" fake:"skip"`
+	TimeslotEnd   int64  `json:"timeslotEnd" xml:"timeslotEnd" fake:"skip"`
+	File          string `json:"flie" xml:"flie" fake:"{threat-filename}"`
+	Hash          string `json:"hash" xml:"hash" fake:"skip"`
+	Type          string `json:"type" xml:"type" fake:"{randomstring:[Virus]}"`
+	Name          string `json:"name" xml:"name" fake:"{randomstring:[PE_TEST_VIRUS]}"`
+	Count         int    `json:"count" xml:"count" fake:"{number:1,1000}"`
 }
 
-// SystemEnv will generate a struct of system information
-func AppExecBlockedEvents(min int, max int) []AppExecBlockedEvent {
-	return appExecBlockedEvents(globalFaker.Rand, min, max)
+// ThreatInfo will generate a struct of threat information
+func ThreatInfo(fakeall bool) *Threat {
+	return threatInfo(globalFaker.Rand, fakeall)
 }
 
-func appExecBlockedEvents(r *rand.Rand, min int, max int) []AppExecBlockedEvent {
-	var parsedCreated time.Time
-	var err error
-	if parsedCreated, err = time.Parse(layout, "Nov 1, 2021 at 0:00am (PST)"); err != nil {
+func threatInfo(r *rand.Rand, fakeall bool) *Threat {
+	var s Threat
+
+	// AppExecBlockedEvents
+	if gofakeit.Bool() || fakeall { // fakeit or not?
+		for nEvents := gofakeit.Number(1, 10); nEvents > 0; nEvents-- {
+			uuid := gofakeit.UUID()
+			// remove dash from UUID
+			uuid = strings.Replace(uuid, "-", "", -1)
+
+			event := appExecBlockedEventInfo(r, uuid)
+			s.AppExecBlocked = append(s.AppExecBlocked, *event)
+		}
+	}
+
+	return &s
+}
+
+// AppExecBlockedEventInfo will generate a struct of system information
+func AppExecBlockedEventInfo(uuid string) *AppExecBlockedEvent {
+	return appExecBlockedEventInfo(globalFaker.Rand, uuid)
+}
+
+func appExecBlockedEventInfo(r *rand.Rand, uuid string) *AppExecBlockedEvent {
+	var s AppExecBlockedEvent
+
+	if err := gofakeit.Struct(&s); err != nil {
 		panic(err)
 	}
 
-	var list []AppExecBlockedEvent
+	s.Guid = uuid
 
-	size := gofakeit.Number(min, max)
+	// obtain time on the hour
+	subHour := gofakeit.Number(-23, -1)
+	fakeNow := time.Now().Add(time.Hour * time.Duration(subHour)).UTC()
+	timestamp := fakeNow.Unix() - int64(fakeNow.Second()) - int64(60*fakeNow.Minute())
+	s.TimeslotBegin = timestamp
+	s.TimeslotEnd = timestamp + 86400
 
-	uuid := gofakeit.UUID()
-	// remove dash from UUID
-	uuid = strings.Replace(uuid, "-", "", -1)
-
-	for i := 0; i < size; i++ {
-		h := sha256.New()
-		addHour := gofakeit.Number(1, 3)
-		created := parsedCreated.Add(time.Hour * time.Duration(addHour)).UTC()
-
-		var s AppExecBlockedEvent
-		if err := gofakeit.Struct(&s); err != nil {
-			panic(err)
-		}
-		s.Guid = uuid
-		s.Created = created
-
-		if _, err := h.Write([]byte(s.File)); err != nil {
-			panic(err)
-		}
-		s.Hash = hex.EncodeToString(h.Sum(nil))
-
-		list = append(list, s)
+	// obtain file hash
+	h := sha256.New()
+	if _, err := h.Write([]byte(s.File)); err != nil {
+		panic(err)
 	}
+	s.Hash = hex.EncodeToString(h.Sum(nil))
 
-	return list
+	return &s
 }
 
 func threatFilename(r *rand.Rand) string {
