@@ -11,7 +11,8 @@ $ ./bin/fakeit-go --help
 usage: fakeit-go [<flags>]
 
 Flags:
-  --help                Show context-sensitive help (also try --help-long and --help-man).
+  --help                Show context-sensitive help (also try --help-long and
+                        --help-man).
   --server-info         Random generate server-telemetry.
   --agent-info          Random generate agent-telemetry.
   --agent-system-env    Random generate agent-telemetry-system-environment.
@@ -19,10 +20,13 @@ Flags:
   --agent-cert          Random generate agent-telemetry-cert.
   --threat-info         Random generate agent-telemetry-threat.
   --all-info            Random generate all telemetry above.
-  --benchmark           Benchmark performance for agent-system-env, agent-software-env and agent-cert.
+  --benchmark           Benchmark performance for agent-system-env,
+                        agent-software-env and agent-cert.
   --size=1              Random size
+  --cleanup             Remove all json and gzip files
   --debug               Debug output results in json format
   --version             Show application version.
+
 ```
 
 ## LICENSE
