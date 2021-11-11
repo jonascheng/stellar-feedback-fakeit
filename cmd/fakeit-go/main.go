@@ -64,7 +64,7 @@ func fullServerCollection(size int) Benchmark {
 	agents := factory.NewServerCollection()
 	benchmark.Size = 0
 
-	flatFilename := fmt.Sprintf("agent-telemetry-info-flat-%d-%d.json", size, now)
+	flatFilename := fmt.Sprintf("server-telemetry-info-flat-%d-%d.json", size, now)
 	encodeCollectionFlat(&benchmark, agents, flatFilename)
 
 	return benchmark
