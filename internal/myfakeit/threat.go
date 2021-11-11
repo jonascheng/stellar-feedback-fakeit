@@ -47,48 +47,40 @@ type FileScanBlockedEvent struct {
 }
 
 type SuspiciousExecBlockedEvent struct {
-	Guid          string `json:"guid" xml:"guid" fake:"skip"`
-	TimeslotBegin int64  `json:"timeslotBegin" xml:"timeslotBegin" fake:"skip"`
-	TimeslotEnd   int64  `json:"timeslotEnd" xml:"timeslotEnd" fake:"skip"`
-	File          string `json:"flie" xml:"flie" fake:"{threat-filename}"`
-	Hash          string `json:"hash" xml:"hash" fake:"skip"`
-	Count         int    `json:"count" xml:"count" fake:"{number:1,1000}"`
+	CommonBlockedEvent
+	File  string `json:"flie" xml:"flie" fake:"{threat-filename}"`
+	Hash  string `json:"hash" xml:"hash" fake:"skip"`
+	Count int    `json:"count" xml:"count" fake:"{number:1,1000}"`
 }
 
 type OBADBlockedEvent struct {
-	Guid          string `json:"guid" xml:"guid" fake:"skip"`
-	TimeslotBegin int64  `json:"timeslotBegin" xml:"timeslotBegin" fake:"skip"`
-	TimeslotEnd   int64  `json:"timeslotEnd" xml:"timeslotEnd" fake:"skip"`
-	File          string `json:"flie" xml:"flie" fake:"{threat-filename}"`
-	User          string `json:"user" xml:"user" fake:"{firstname}"`
-	Parent1       string `json:"parent1" xml:"parent1" fake:"{threat-filename}"`
-	Parent2       string `json:"parent2" xml:"parent2" fake:"{threat-filename}"`
-	Parent3       string `json:"parent3" xml:"parent3" fake:"{threat-filename}"`
-	Parent4       string `json:"parent4" xml:"parent4" fake:"{threat-filename}"`
-	Mode          string `json:"mode" xml:"mode" fake:"{randomstring:[Detection,Prevention]}"`
-	Level         string `json:"lvl" xml:"lvl" fake:"{randomstring:[aggressive]}"`
-	Count         int    `json:"count" xml:"count" fake:"{number:1,1000}"`
+	CommonBlockedEvent
+	File    string `json:"flie" xml:"flie" fake:"{threat-filename}"`
+	User    string `json:"user" xml:"user" fake:"{firstname}"`
+	Parent1 string `json:"parent1" xml:"parent1" fake:"{threat-filename}"`
+	Parent2 string `json:"parent2" xml:"parent2" fake:"{threat-filename}"`
+	Parent3 string `json:"parent3" xml:"parent3" fake:"{threat-filename}"`
+	Parent4 string `json:"parent4" xml:"parent4" fake:"{threat-filename}"`
+	Mode    string `json:"mode" xml:"mode" fake:"{randomstring:[Detection,Prevention]}"`
+	Level   string `json:"lvl" xml:"lvl" fake:"{randomstring:[aggressive]}"`
+	Count   int    `json:"count" xml:"count" fake:"{number:1,1000}"`
 }
 
 type NonWhitelistingBlockedEvent struct {
-	Guid          string `json:"guid" xml:"guid" fake:"skip"`
-	TimeslotBegin int64  `json:"timeslotBegin" xml:"timeslotBegin" fake:"skip"`
-	TimeslotEnd   int64  `json:"timeslotEnd" xml:"timeslotEnd" fake:"skip"`
-	File          string `json:"flie" xml:"flie" fake:"{threat-filename}"`
-	Hash          string `json:"hash" xml:"hash" fake:"skip"`
-	User          string `json:"user" xml:"user" fake:"{firstname}"`
-	Count         int    `json:"count" xml:"count" fake:"{number:1,1000}"`
+	CommonBlockedEvent
+	File  string `json:"flie" xml:"flie" fake:"{threat-filename}"`
+	Hash  string `json:"hash" xml:"hash" fake:"skip"`
+	User  string `json:"user" xml:"user" fake:"{firstname}"`
+	Count int    `json:"count" xml:"count" fake:"{number:1,1000}"`
 }
 
 type ADCBlockedEvent struct {
-	Guid          string   `json:"guid" xml:"guid" fake:"skip"`
-	TimeslotBegin int64    `json:"timeslotBegin" xml:"timeslotBegin" fake:"skip"`
-	TimeslotEnd   int64    `json:"timeslotEnd" xml:"timeslotEnd" fake:"skip"`
-	File          string   `json:"flie" xml:"flie" fake:"{threat-filename}"`
-	Hash          string   `json:"hash" xml:"hash" fake:"skip"`
-	Impacted      []string `json:"impacted" xml:"impacted" fake:"skip"`
-	Mode          string   `json:"mode" xml:"mode" fake:"{randomstring:[Detection,Prevention]}"`
-	Count         int      `json:"count" xml:"count" fake:"{number:1,1000}"`
+	CommonBlockedEvent
+	File     string   `json:"flie" xml:"flie" fake:"{threat-filename}"`
+	Hash     string   `json:"hash" xml:"hash" fake:"skip"`
+	Impacted []string `json:"impacted" xml:"impacted" fake:"skip"`
+	Mode     string   `json:"mode" xml:"mode" fake:"{randomstring:[Detection,Prevention]}"`
+	Count    int      `json:"count" xml:"count" fake:"{number:1,1000}"`
 }
 
 // ThreatInfo will generate a struct of threat information
@@ -115,6 +107,30 @@ func threatInfo(r *rand.Rand, min int) *Threat {
 		s.FileScanBlocked = append(s.FileScanBlocked, *event)
 	}
 
+	// SuspiciousExecBlockedEvent
+	for nEvents := gofakeit.Number(min, 10); nEvents > 0; nEvents-- {
+		event := suspiciousExecBlockedEventInfo(r, uuid)
+		s.SuspiciousExecBlocked = append(s.SuspiciousExecBlocked, *event)
+	}
+
+	// OBADBlockedEvent
+	for nEvents := gofakeit.Number(min, 10); nEvents > 0; nEvents-- {
+		event := obadBlockedEventInfo(r, uuid)
+		s.OBADBlocked = append(s.OBADBlocked, *event)
+	}
+
+	// NonWhitelistingBlockedEvent
+	for nEvents := gofakeit.Number(min, 10); nEvents > 0; nEvents-- {
+		event := nonWhitelistingBlockedEventInfo(r, uuid)
+		s.NonWhitelistingBlocked = append(s.NonWhitelistingBlocked, *event)
+	}
+
+	// ADCBlockedEvent
+	for nEvents := gofakeit.Number(min, 10); nEvents > 0; nEvents-- {
+		event := adcBlockedEventInfo(r, uuid)
+		s.ADCBlocked = append(s.ADCBlocked, *event)
+	}
+
 	return &s
 }
 
@@ -126,6 +142,26 @@ func AppExecBlockedEventInfo(uuid string) *AppExecBlockedEvent {
 // FileScanBlockedEventInfo will generate a struct of threat information
 func FileScanBlockedEventInfo(uuid string) *FileScanBlockedEvent {
 	return fileScanBlockedEventInfo(globalFaker.Rand, uuid)
+}
+
+// SuspiciousExecBlockedEventInfo will generate a struct of threat information
+func SuspiciousExecBlockedEventInfo(uuid string) *SuspiciousExecBlockedEvent {
+	return suspiciousExecBlockedEventInfo(globalFaker.Rand, uuid)
+}
+
+// NonWhitelistingBlockedEventInfo will generate a struct of threat information
+func NonWhitelistingBlockedEventInfo(uuid string) *NonWhitelistingBlockedEvent {
+	return nonWhitelistingBlockedEventInfo(globalFaker.Rand, uuid)
+}
+
+// OBADBlockedEventInfo will generate a struct of threat information
+func OBADBlockedEventInfo(uuid string) *OBADBlockedEvent {
+	return obadBlockedEventInfo(globalFaker.Rand, uuid)
+}
+
+// ADCBlockedEventInfo will generate a struct of threat information
+func ADCBlockedEventInfo(uuid string) *ADCBlockedEvent {
+	return adcBlockedEventInfo(globalFaker.Rand, uuid)
 }
 
 func appExecBlockedEventInfo(r *rand.Rand, uuid string) *AppExecBlockedEvent {
@@ -166,6 +202,81 @@ func fileScanBlockedEventInfo(r *rand.Rand, uuid string) *FileScanBlockedEvent {
 	return &s
 }
 
+func suspiciousExecBlockedEventInfo(r *rand.Rand, uuid string) *SuspiciousExecBlockedEvent {
+	var s SuspiciousExecBlockedEvent
+
+	if err := gofakeit.Struct(&s); err != nil {
+		panic(err)
+	}
+
+	s.setCommonBlockedEvent(uuid)
+
+	// obtain file hash
+	h := sha256.New()
+	if _, err := h.Write([]byte(s.File)); err != nil {
+		panic(err)
+	}
+	s.Hash = hex.EncodeToString(h.Sum(nil))
+
+	return &s
+}
+
+func nonWhitelistingBlockedEventInfo(r *rand.Rand, uuid string) *NonWhitelistingBlockedEvent {
+	var s NonWhitelistingBlockedEvent
+
+	if err := gofakeit.Struct(&s); err != nil {
+		panic(err)
+	}
+
+	s.setCommonBlockedEvent(uuid)
+
+	// obtain file hash
+	h := sha256.New()
+	if _, err := h.Write([]byte(s.File)); err != nil {
+		panic(err)
+	}
+	s.Hash = hex.EncodeToString(h.Sum(nil))
+
+	return &s
+}
+
+func obadBlockedEventInfo(r *rand.Rand, uuid string) *OBADBlockedEvent {
+	var s OBADBlockedEvent
+
+	if err := gofakeit.Struct(&s); err != nil {
+		panic(err)
+	}
+
+	s.setCommonBlockedEvent(uuid)
+
+	return &s
+}
+
+func adcBlockedEventInfo(r *rand.Rand, uuid string) *ADCBlockedEvent {
+	var s ADCBlockedEvent
+
+	if err := gofakeit.Struct(&s); err != nil {
+		panic(err)
+	}
+
+	s.setCommonBlockedEvent(uuid)
+
+	// obtain file hash
+	h := sha256.New()
+	if _, err := h.Write([]byte(s.File)); err != nil {
+		panic(err)
+	}
+	s.Hash = hex.EncodeToString(h.Sum(nil))
+
+	// obtain impacted
+	for n := gofakeit.Number(3, 10); n > 0; n-- {
+		filename := docxFilename(r)
+		s.Impacted = append(s.Impacted, filename)
+	}
+
+	return &s
+}
+
 func (event *CommonBlockedEvent) setCommonBlockedEvent(uuid string) {
 	event.Guid = uuid
 
@@ -181,7 +292,7 @@ func (event *CommonBlockedEvent) setCommonBlockedEvent(uuid string) {
 func threatFilename(r *rand.Rand) string {
 	base := gofakeit.RandomString([]string{"C:", "C:\\Program Files (x86)", "C:\\Program Files", "C:\\Users", "C:\\Windows\\System32", "C:\\Windows\\SysWOW64"})
 	folder := getRandValue(r, []string{"Application", "caption"})
-	filename := folder
+	filename := gofakeit.UUID()
 	return fmt.Sprintf("%s\\%s\\%s.exe", base, folder, filename)
 }
 
@@ -189,6 +300,12 @@ func quarantineFilename(r *rand.Rand) string {
 	base := gofakeit.RandomString([]string{"C:\\Program Files\\TXOne\\StellarProtect\\private\\quarantine", "C:\\Program Files\\TXOne\\StellarEnforce\\private\\quarantine"})
 	filename := gofakeit.UUID()
 	return fmt.Sprintf("%s\\%s", base, filename)
+}
+
+func docxFilename(r *rand.Rand) string {
+	folder := getRandValue(r, []string{"Desktop", "Documents", "Downloads"})
+	filename := gofakeit.UUID()
+	return fmt.Sprintf("C:\\Users\\%s\\%s\\%s.docx", gofakeit.FirstName(), folder, filename)
 }
 
 func addTreatLookup() {
