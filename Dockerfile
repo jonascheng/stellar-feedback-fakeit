@@ -1,4 +1,4 @@
-FROM golang:1.16.6-alpine3.14 as build-env
+FROM golang:1.17.3-alpine3.14 as build-env
 
 ENV GOOS linux
 
