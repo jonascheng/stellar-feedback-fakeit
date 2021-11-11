@@ -303,7 +303,7 @@ func quarantineFilename(r *rand.Rand) string {
 }
 
 func docxFilename(r *rand.Rand) string {
-	folder := getRandValue(r, []string{"Desktop", "Documents", "Downloads"})
+	folder := gofakeit.RandomString([]string{"Desktop", "Documents", "Downloads"})
 	filename := gofakeit.UUID()
 	return fmt.Sprintf("C:\\Users\\%s\\%s\\%s.docx", gofakeit.FirstName(), folder, filename)
 }

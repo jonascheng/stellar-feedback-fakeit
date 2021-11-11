@@ -88,7 +88,22 @@ func TestThreatInfo(t *testing.T) {
 		assert.Equal(t, "Triston", threat.User)
 		assert.Greater(t, threat.Count, 0)
 	}
+
 	// ADCBlockedEvent
+	{
+		assert.Greater(t, len(threats.ADCBlocked), 0)
+		threat := threats.ADCBlocked[0]
+		assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", threat.Guid)
+		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
+		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
+		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
+		assert.Equal(t, "C:\\Users\\Panel Studio V2.31\\a82b381e-8573-4bd5-aab6-f0ab330576fb.exe", threat.File)
+		assert.Equal(t, 64, len(threat.Hash))
+		assert.GreaterOrEqual(t, len(threat.Impacted), 3)
+		assert.Equal(t, "C:\\Users\\Roberto\\Desktop\\5e9b3f30-2c8f-42e5-aee6-dec8714c4edd.docx", threat.Impacted[0])
+		assert.Equal(t, "Prevention", threat.Mode)
+		assert.Greater(t, threat.Count, 0)
+	}
 }
 
 func TestAppExecBlockedEventInfo(t *testing.T) {
@@ -163,7 +178,23 @@ func TestNonWhitelistingBlockedEventInfo(t *testing.T) {
 	assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
 	assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
 	assert.Equal(t, "C:\\Vijeo Designer Runtime\\c3f21459-35bc-4155-a3c7-a76490c3e0aa.exe", threat.File)
-	assert.Equal(t, "454afe8ffed5ba3eafbc8fe0edad7500600330c9da16baeb0238d938c10611f6", threat.Hash)
+	assert.Equal(t, 64, len(threat.Hash))
 	assert.Equal(t, "Marques", threat.User)
+	assert.Greater(t, threat.Count, 0)
+}
+
+func TestADCBlockedEventInfo(t *testing.T) {
+	gofakeit.Seed(11)
+
+	threat := ADCBlockedEventInfo("guid1")
+	assert.Equal(t, "guid1", threat.Guid)
+	assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
+	assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
+	assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
+	assert.Equal(t, "C:\\Vijeo Designer Runtime\\c3f21459-35bc-4155-a3c7-a76490c3e0aa.exe", threat.File)
+	assert.Equal(t, 64, len(threat.Hash))
+	assert.GreaterOrEqual(t, len(threat.Impacted), 3)
+	assert.Equal(t, "C:\\Users\\Enrique\\Desktop\\0b6a6658-621e-460b-b665-2ef9c6c737e1.docx", threat.Impacted[0])
+	assert.Equal(t, "Prevention", threat.Mode)
 	assert.Greater(t, threat.Count, 0)
 }

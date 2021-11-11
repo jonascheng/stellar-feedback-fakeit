@@ -16,11 +16,11 @@ func TestNewThreatCollection(t *testing.T) {
 	// AppExecBlockedEventInfo
 	{
 		threat := threats.Agents[1].AppExecBlocked[0]
-		assert.Equal(t, "275747bbf6904e0d87f0a89b46129837", threat.Guid)
+		assert.Equal(t, "fae67cced9934644bc9d9d3b067436c5", threat.Guid)
 		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
 		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
 		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
-		assert.Equal(t, "C:\\Buerkert Communicator\\f419e025-479c-4c02-801a-57add5cefeda.exe", threat.File)
+		assert.Equal(t, "C:\\LRH SW version 4.0.0\\1f0b6647-f147-4e73-9baa-6842ab8e7a3f.exe", threat.File)
 		assert.Equal(t, 64, len(threat.Hash))
 		assert.Equal(t, "Virus", threat.Type)
 		assert.Equal(t, "PE_TEST_VIRUS", threat.Name)
@@ -30,15 +30,15 @@ func TestNewThreatCollection(t *testing.T) {
 	// FileScanBlockedEventInfo
 	{
 		threat := threats.Agents[1].FileScanBlocked[0]
-		assert.Equal(t, "275747bbf6904e0d87f0a89b46129837", threat.Guid)
+		assert.Equal(t, "fae67cced9934644bc9d9d3b067436c5", threat.Guid)
 		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
 		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
 		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
-		assert.Equal(t, "C:\\Windows\\System32\\Buerkert Communicator\\bdd66f0e-3ab4-4eb2-868b-f577592df1ec.exe", threat.File)
+		assert.Equal(t, "C:\\Windows\\System32\\Roboticsware FA-Server6\\44e70791-ddeb-4c6e-afba-d7a3b46d3ea5.exe", threat.File)
 		assert.Equal(t, 64, len(threat.Hash))
 		assert.Equal(t, "Virus", threat.Type)
 		assert.Equal(t, "PE_TEST_VIRUS", threat.Name)
-		assert.Equal(t, "C:\\Program Files\\TXOne\\StellarEnforce\\private\\quarantine\\1fe3f47e-8787-4e6c-8702-11ba36a80846", threat.Quarantine)
+		assert.Equal(t, "C:\\Program Files\\TXOne\\StellarProtect\\private\\quarantine\\8f1d18e7-a98b-446a-b190-4bdcebcb23b8", threat.Quarantine)
 		assert.Greater(t, threat.Count, 0)
 
 	}
@@ -51,7 +51,7 @@ func TestEncodeThreatCollectionFlat(t *testing.T) {
 	assert.Equal(t, 5, len(threats.Agents))
 
 	telemetry := threats.EncodeCollectionFlat()
-	assert.Equal(t, "9304a66e51ea429797546c070641be14", telemetry.ServerGuid)
+	assert.Equal(t, "7e6f57fa9a344a75ad5e20ac0736a148", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-threat", telemetry.TelemetryType)
 
 	associatedThreats := telemetry.Associations.(ThreatTelemetryAssociations)
