@@ -34,6 +34,18 @@ func (threats *ThreatCollection) EncodeCollectionFlat() *AgentTelemetry {
 		if agent.FileScanBlocked != nil {
 			associatedThreats.FileScanBlocked = append(associatedThreats.FileScanBlocked, agent.FileScanBlocked...)
 		}
+		if agent.SuspiciousExecBlocked != nil {
+			associatedThreats.SuspiciousExecBlocked = append(associatedThreats.SuspiciousExecBlocked, agent.SuspiciousExecBlocked...)
+		}
+		if agent.OBADBlocked != nil {
+			associatedThreats.OBADBlocked = append(associatedThreats.OBADBlocked, agent.OBADBlocked...)
+		}
+		if agent.NonWhitelistingBlocked != nil {
+			associatedThreats.NonWhitelistingBlocked = append(associatedThreats.NonWhitelistingBlocked, agent.NonWhitelistingBlocked...)
+		}
+		if agent.ADCBlocked != nil {
+			associatedThreats.ADCBlocked = append(associatedThreats.ADCBlocked, agent.ADCBlocked...)
+		}
 	}
 
 	telemetry := AgentTelemetry{

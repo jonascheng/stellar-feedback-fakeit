@@ -269,7 +269,7 @@ func adcBlockedEventInfo(r *rand.Rand, uuid string) *ADCBlockedEvent {
 	s.Hash = hex.EncodeToString(h.Sum(nil))
 
 	// obtain impacted
-	for n := gofakeit.Number(3, 10); n > 0; n-- {
+	for n := gofakeit.Number(3, 100); n > 0; n-- {
 		filename := docxFilename(r)
 		s.Impacted = append(s.Impacted, filename)
 	}
