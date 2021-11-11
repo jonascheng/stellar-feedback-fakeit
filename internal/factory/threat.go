@@ -21,7 +21,7 @@ func CollectThreat(size int) *ThreatCollection {
 		agent := myfakeit.ThreatInfo(0)
 		threats.Agents = append(threats.Agents, *agent)
 	}
-	
+
 	return &threats
 }
 
@@ -30,6 +30,9 @@ func (threats *ThreatCollection) EncodeCollectionFlat() *AgentTelemetry {
 	for _, agent := range threats.Agents {
 		if agent.AppExecBlocked != nil {
 			associatedThreats.AppExecBlocked = append(associatedThreats.AppExecBlocked, agent.AppExecBlocked...)
+		}
+		if agent.FileScanBlocked != nil {
+			associatedThreats.FileScanBlocked = append(associatedThreats.FileScanBlocked, agent.FileScanBlocked...)
 		}
 	}
 
