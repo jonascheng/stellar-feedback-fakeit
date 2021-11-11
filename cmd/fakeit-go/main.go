@@ -22,6 +22,7 @@ import (
 )
 
 var (
+	now              = time.Now().UnixMicro()
 	serverInfo       = kingpin.Flag("server-info", "Random generate server-telemetry.").Bool()
 	agentInfo        = kingpin.Flag("agent-info", "Random generate agent-telemetry.").Bool()
 	agentSystemEnv   = kingpin.Flag("agent-system-env", "Random generate agent-telemetry-system-environment.").Bool()
@@ -31,6 +32,7 @@ var (
 	allInfo          = kingpin.Flag("all-info", "Random generate all telemetry above.").Bool()
 	benchmark        = kingpin.Flag("benchmark", "Benchmark performance for agent-system-env, agent-software-env and agent-cert.").Bool()
 	size             = kingpin.Flag("size", "Random size").Default("1").Int()
+	clean            = kingpin.Flag("cleanup", "Remove all json and gzip files").Bool()
 	debug            = kingpin.Flag("debug", "Debug output results in json format").Bool()
 )
 
@@ -62,7 +64,7 @@ func fullServerCollection(size int) Benchmark {
 	agents := factory.NewServerCollection()
 	benchmark.Size = 0
 
-	flatFilename := fmt.Sprintf("agent-telemetry-info-flat-%d.json", size)
+	flatFilename := fmt.Sprintf("agent-telemetry-info-flat-%d-%d.json", size, now)
 	encodeCollectionFlat(&benchmark, agents, flatFilename)
 
 	return benchmark
@@ -74,7 +76,7 @@ func fullAgentCollection(size int) Benchmark {
 	agents := factory.NewAgentCollection(size)
 	benchmark.Size = size
 
-	flatFilename := fmt.Sprintf("agent-telemetry-info-flat-%d.json", size)
+	flatFilename := fmt.Sprintf("agent-telemetry-info-flat-%d-%d.json", size, now)
 	encodeCollectionFlat(&benchmark, agents, flatFilename)
 
 	return benchmark
@@ -86,7 +88,7 @@ func fullThreatCollection(size int) Benchmark {
 	threats := factory.NewThreatCollection(size)
 	benchmark.Size = size
 
-	flatFilename := fmt.Sprintf("agent-telemetry-threat-info-flat-%d.json", size)
+	flatFilename := fmt.Sprintf("agent-telemetry-threat-info-flat-%d-%d.json", size, now)
 	encodeCollectionFlat(&benchmark, threats, flatFilename)
 
 	return benchmark
@@ -98,10 +100,10 @@ func fullAgentSystemEnvCollection(size int) Benchmark {
 	agents := factory.NewAgentSystemEnvCollection(size)
 	benchmark.Size = size
 
-	flatFilename := fmt.Sprintf("agent-telemetry-system-environment-flat-%d.json", size)
+	flatFilename := fmt.Sprintf("agent-telemetry-system-environment-flat-%d-%d.json", size, now)
 	encodeCollectionFlat(&benchmark, agents, flatFilename)
 
-	lookupFilename := fmt.Sprintf("agent-telemetry-system-environment-lookup-%d.json", size)
+	lookupFilename := fmt.Sprintf("agent-telemetry-system-environment-lookup-%d-%d.json", size, now)
 	encodeAgentCollectionLookup(&benchmark, agents, lookupFilename)
 
 	return benchmark
@@ -113,10 +115,10 @@ func fullAgentSoftwareEnvCollection(size int) Benchmark {
 	agents := factory.NewAgentSoftwareEnvCollection(size)
 	benchmark.Size = size
 
-	flatFilename := fmt.Sprintf("agent-telemetry-software-environment-flat-%d.json", size)
+	flatFilename := fmt.Sprintf("agent-telemetry-software-environment-flat-%d-%d.json", size, now)
 	encodeCollectionFlat(&benchmark, agents, flatFilename)
 
-	lookupFilename := fmt.Sprintf("agent-telemetry-software-environment-lookup-%d.json", size)
+	lookupFilename := fmt.Sprintf("agent-telemetry-software-environment-lookup-%d-%d.json", size, now)
 	encodeAgentCollectionLookup(&benchmark, agents, lookupFilename)
 
 	return benchmark
@@ -128,10 +130,10 @@ func fullAgentCertCollection(size int) Benchmark {
 	agents := factory.NewAgentCertCollection(size)
 	benchmark.Size = size
 
-	flatFilename := fmt.Sprintf("agent-telemetry-cert-flat-%d.json", size)
+	flatFilename := fmt.Sprintf("agent-telemetry-cert-flat-%d-%d.json", size, now)
 	encodeCollectionFlat(&benchmark, agents, flatFilename)
 
-	lookupFilename := fmt.Sprintf("agent-telemetry-cert-lookup-%d.json", size)
+	lookupFilename := fmt.Sprintf("agent-telemetry-cert-lookup-%d-%d.json", size, now)
 	encodeAgentCollectionLookup(&benchmark, agents, lookupFilename)
 
 	return benchmark
@@ -230,15 +232,8 @@ func benchmarkAgentTelemetry(callback func(size int) Benchmark) {
 	fmt.Println("<<")
 }
 
-func main() {
-	kingpin.Version("1.0.0")
-	kingpin.Parse()
-
-	if *benchmark {
-		benchmarkAgentTelemetry(fullAgentSystemEnvCollection)
-		benchmarkAgentTelemetry(fullAgentSoftwareEnvCollection)
-		benchmarkAgentTelemetry(fullAgentCertCollection)
-
+func cleanup() {
+	if *clean {
 		// clean up benchmark files
 		files, err := filepath.Glob("*.json")
 		checkError(err)
@@ -250,6 +245,21 @@ func main() {
 		for _, f := range files {
 			os.Remove(f)
 		}
+	}
+}
+
+func main() {
+	kingpin.Version("1.0.0")
+	kingpin.Parse()
+
+	if *benchmark {
+		benchmarkAgentTelemetry(fullAgentSystemEnvCollection)
+		benchmarkAgentTelemetry(fullAgentSoftwareEnvCollection)
+		benchmarkAgentTelemetry(fullAgentCertCollection)
+
+		// clean up benchmark files
+		cleanup()
+
 		return
 	}
 
@@ -294,6 +304,8 @@ func main() {
 		fullThreatCollection(*size)
 		fmt.Println("<<")
 	}
+
+	cleanup()
 }
 
 func dots(quit chan bool) {
