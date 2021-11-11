@@ -22,7 +22,7 @@ import (
 )
 
 var (
-	now              = time.Now().UnixMicro()
+	now              = time.Now().Unix()
 	serverInfo       = kingpin.Flag("server-info", "Random generate server-telemetry.").Bool()
 	agentInfo        = kingpin.Flag("agent-info", "Random generate agent-telemetry.").Bool()
 	agentSystemEnv   = kingpin.Flag("agent-system-env", "Random generate agent-telemetry-system-environment.").Bool()
