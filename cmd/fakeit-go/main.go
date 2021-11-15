@@ -213,7 +213,7 @@ func benchmarkAgentTelemetry(callback func(size int) Benchmark) {
 	go dots(quit)
 
 	var benchmarkResult []Benchmark
-	for i := 50; i < 10000; i = i * 2 {
+	for i := 50; i < 15000; i = i * 2 {
 		benchmark := callback(i)
 
 		// calculate compression ratio
@@ -253,9 +253,11 @@ func main() {
 	kingpin.Parse()
 
 	if *benchmark {
+		benchmarkAgentTelemetry(fullAgentCollection)
 		benchmarkAgentTelemetry(fullAgentSystemEnvCollection)
 		benchmarkAgentTelemetry(fullAgentSoftwareEnvCollection)
 		benchmarkAgentTelemetry(fullAgentCertCollection)
+		benchmarkAgentTelemetry(fullThreatCollection)
 
 		// clean up benchmark files
 		cleanup()
