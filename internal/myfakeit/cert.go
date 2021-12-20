@@ -12,7 +12,7 @@ import (
 
 type AgentCert struct {
 	Guid string     `json:"guid" xml:"guid" fake:"{uuid}"`
-	Cert []CertInfo `json:"cert" xml:"cert" fakesize:"100"`
+	Cert []CertInfo `json:"cert" xml:"cert" fakesize:"1000"`
 }
 
 type CertInfo struct {

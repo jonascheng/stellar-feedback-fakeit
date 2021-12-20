@@ -9,13 +9,11 @@ import (
 )
 
 type Server struct {
-	Guid           string             `json:"guid" xml:"guid" fake:"{uuid}"`
-	Version        string             `json:"version" xml:"version" fake:"{randomstring:[1.0.1000,1.1.1100]}"`
-	SKU            string             `json:"sku" xml:"sku" fake:"{randomstring:[TES1ZAEXX,TES1ZAEXY,TES1ZAEXZ]}"`
-	AC             string             `json:"ac" xml:"ac" fake:"{regex:[A-Z,0-9]{32}}"`
-	Volume         []ServerVolumeInfo `json:"volume" xml:"volume" fakesize:"5"`
-	EnabledFeature []string           `json:"enabledFeature" xml:"enabledFeature" fake:"skip"`
-	Meta           []MetaInfo         `json:"meta" xml:"meta" fake:"skip"`
+	Guid           string     `json:"guid" xml:"guid" fake:"{uuid}"`
+	Version        string     `json:"version" xml:"version" fake:"{randomstring:[1.0.1000,1.1.1100]}"`
+	AC             []string   `json:"ac" xml:"ac" fake:"{regex:[A-Z,0-9]{32}}" fakesize:"2"`
+	EnabledFeature []string   `json:"enabledFeature" xml:"enabledFeature" fake:"skip"`
+	Meta           []MetaInfo `json:"meta" xml:"meta" fake:"skip"`
 }
 
 type ServerVolumeInfo struct {

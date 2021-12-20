@@ -96,37 +96,37 @@ func threatInfo(r *rand.Rand, min int) *Threat {
 	uuid = strings.Replace(uuid, "-", "", -1)
 
 	// AppExecBlockedEvents
-	for nEvents := gofakeit.Number(min, 10); nEvents > 0; nEvents-- {
+	for nEvents := gofakeit.Number(min, 100); nEvents > 0; nEvents-- {
 		event := appExecBlockedEventInfo(r, uuid)
 		s.AppExecBlocked = append(s.AppExecBlocked, *event)
 	}
 
 	// FileScanBlockedEvent
-	for nEvents := gofakeit.Number(min, 10); nEvents > 0; nEvents-- {
+	for nEvents := gofakeit.Number(min, 100); nEvents > 0; nEvents-- {
 		event := fileScanBlockedEventInfo(r, uuid)
 		s.FileScanBlocked = append(s.FileScanBlocked, *event)
 	}
 
 	// SuspiciousExecBlockedEvent
-	for nEvents := gofakeit.Number(min, 10); nEvents > 0; nEvents-- {
+	for nEvents := gofakeit.Number(min, 100); nEvents > 0; nEvents-- {
 		event := suspiciousExecBlockedEventInfo(r, uuid)
 		s.SuspiciousExecBlocked = append(s.SuspiciousExecBlocked, *event)
 	}
 
 	// OBADBlockedEvent
-	for nEvents := gofakeit.Number(min, 10); nEvents > 0; nEvents-- {
+	for nEvents := gofakeit.Number(min, 100); nEvents > 0; nEvents-- {
 		event := obadBlockedEventInfo(r, uuid)
 		s.OBADBlocked = append(s.OBADBlocked, *event)
 	}
 
 	// NonWhitelistingBlockedEvent
-	for nEvents := gofakeit.Number(min, 10); nEvents > 0; nEvents-- {
+	for nEvents := gofakeit.Number(min, 100); nEvents > 0; nEvents-- {
 		event := nonWhitelistingBlockedEventInfo(r, uuid)
 		s.NonWhitelistingBlocked = append(s.NonWhitelistingBlocked, *event)
 	}
 
 	// ADCBlockedEvent
-	for nEvents := gofakeit.Number(min, 10); nEvents > 0; nEvents-- {
+	for nEvents := gofakeit.Number(min, 100); nEvents > 0; nEvents-- {
 		event := adcBlockedEventInfo(r, uuid)
 		s.ADCBlocked = append(s.ADCBlocked, *event)
 	}

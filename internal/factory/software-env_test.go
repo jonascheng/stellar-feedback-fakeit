@@ -16,7 +16,7 @@ func TestCollectAgentSoftwareEnv(t *testing.T) {
 
 	agent := agents.Agents[0]
 	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", agent.Guid)
-	assert.Equal(t, 100, len(agent.App))
+	assert.Equal(t, 1000, len(agent.App))
 	assert.Equal(t, "VT5", agent.App[0].Caption)
 	assert.Equal(t, "2.2.1000", agent.App[0].Version)
 	assert.Equal(t, "VT5", agent.App[0].Vendor)
@@ -30,7 +30,7 @@ func TestEncodeAgentSoftwareEnvCollectionFlat(t *testing.T) {
 	assert.Equal(t, 5, len(agents.Agents))
 
 	telemetry := agents.EncodeCollectionFlat()
-	assert.Equal(t, "1b9962c39d2a42e2bd41779f96871a0d", telemetry.ServerGuid)
+	assert.Equal(t, "31b20faed48e481db1713864468b6efc", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-software-environment", telemetry.TelemetryType)
 
 	associatedAgents := telemetry.Associations.(AgentSoftwareEnvCollection)
@@ -38,7 +38,7 @@ func TestEncodeAgentSoftwareEnvCollectionFlat(t *testing.T) {
 
 	agent := associatedAgents.Agents[0]
 	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", agent.Guid)
-	assert.Equal(t, 100, len(agent.App))
+	assert.Equal(t, 1000, len(agent.App))
 	assert.Equal(t, "VT5", agent.App[0].Caption)
 	assert.Equal(t, "2.2.1000", agent.App[0].Version)
 	assert.Equal(t, "VT5", agent.App[0].Vendor)
@@ -52,7 +52,7 @@ func TestEncodeAgentSoftwareEnvCollectionLookup(t *testing.T) {
 	assert.Equal(t, 5, len(agents.Agents))
 
 	telemetry := agents.EncodeAgentCollectionLookup()
-	assert.Equal(t, "1b9962c39d2a42e2bd41779f96871a0d", telemetry.ServerGuid)
+	assert.Equal(t, "31b20faed48e481db1713864468b6efc", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-software-environment", telemetry.TelemetryType)
 
 	lookup := telemetry.Lookup.(AgentTelemetrySoftwareLookup)

@@ -16,11 +16,11 @@ func TestNewThreatCollection(t *testing.T) {
 	// AppExecBlockedEventInfo
 	{
 		threat := threats.Agents[1].AppExecBlocked[0]
-		assert.Equal(t, "9e665f526a3d467a8854b5b1505cfb85", threat.Guid)
+		assert.Equal(t, "6b8849fe65884ae9970c8fe8da8d86e9", threat.Guid)
 		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
 		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
 		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
-		assert.Equal(t, "C:\\Program Files (x86)\\Roboticsware FA-Server6\\71904b9e-b832-4ae9-a762-ebc1087c92b0.exe", threat.File)
+		assert.Equal(t, "C:\\Program Files\\Buerkert Communicator\\c5bdec5c-6134-40e8-9381-63b27ee1f2d3.exe", threat.File)
 		assert.Equal(t, 64, len(threat.Hash))
 		assert.Equal(t, "Virus", threat.Type)
 		assert.Equal(t, "PE_TEST_VIRUS", threat.Name)
@@ -30,15 +30,15 @@ func TestNewThreatCollection(t *testing.T) {
 	// FileScanBlockedEventInfo
 	{
 		threat := threats.Agents[1].FileScanBlocked[0]
-		assert.Equal(t, "9e665f526a3d467a8854b5b1505cfb85", threat.Guid)
+		assert.Equal(t, "6b8849fe65884ae9970c8fe8da8d86e9", threat.Guid)
 		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
 		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
 		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
-		assert.Equal(t, "C:\\VT5\\8b9a7e03-7a5a-408c-aa52-62898f84c1cc.exe", threat.File)
+		assert.Equal(t, "C:\\Windows\\SysWOW64\\LRXSW 3.45\\971346af-571a-4202-a2ad-dd8402de89af.exe", threat.File)
 		assert.Equal(t, 64, len(threat.Hash))
 		assert.Equal(t, "Virus", threat.Type)
 		assert.Equal(t, "PE_TEST_VIRUS", threat.Name)
-		assert.Equal(t, "C:\\Program Files\\TXOne\\StellarEnforce\\private\\quarantine\\dcee4333-ad57-4f8d-8dfc-c98c27ae6c69", threat.Quarantine)
+		assert.Equal(t, "C:\\Program Files\\TXOne\\StellarEnforce\\private\\quarantine\\aee50967-b4c9-43ae-8004-5f9ebdf4f481", threat.Quarantine)
 		assert.Greater(t, threat.Count, 0)
 
 	}
@@ -46,11 +46,11 @@ func TestNewThreatCollection(t *testing.T) {
 	// SuspiciousExecBlockedEventInfo
 	{
 		threat := threats.Agents[1].SuspiciousExecBlocked[0]
-		assert.Equal(t, "9e665f526a3d467a8854b5b1505cfb85", threat.Guid)
+		assert.Equal(t, "6b8849fe65884ae9970c8fe8da8d86e9", threat.Guid)
 		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
 		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
 		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
-		assert.Equal(t, "C:\\Program Files (x86)\\ASDA_Soft_V5\\34cfa02d-09e6-46d9-8f2e-4b800da503a4.exe", threat.File)
+		assert.Equal(t, "C:\\Windows\\System32\\LRXSW 3.45\\14bcd0f3-8395-4a47-a753-eaa5608e7c2a.exe", threat.File)
 		assert.Equal(t, 64, len(threat.Hash))
 		assert.Greater(t, threat.Count, 0)
 	}
@@ -58,17 +58,17 @@ func TestNewThreatCollection(t *testing.T) {
 	// OBADBlockedEvent
 	{
 		threat := threats.Agents[1].OBADBlocked[0]
-		assert.Equal(t, "9e665f526a3d467a8854b5b1505cfb85", threat.Guid)
+		assert.Equal(t, "6b8849fe65884ae9970c8fe8da8d86e9", threat.Guid)
 		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
 		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
 		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
-		assert.Equal(t, "C:\\Windows\\SysWOW64\\GX8 Design Studio\\bcc0ae04-be1c-42f1-87cc-1b4391df7273.exe", threat.File)
-		assert.Equal(t, "Nat", threat.User)
+		assert.Equal(t, "C:\\Users\\LRH SW version 4.0.0\\87a100ed-5f5e-4c57-94c1-1678a4232f4a.exe", threat.File)
+		assert.Equal(t, "Lonzo", threat.User)
 		assert.NotEmpty(t, threat.Parent1)
 		assert.NotEmpty(t, threat.Parent2)
 		assert.NotEmpty(t, threat.Parent3)
 		assert.NotEmpty(t, threat.Parent4)
-		assert.Equal(t, "Prevention", threat.Mode)
+		assert.Equal(t, "Detection", threat.Mode)
 		assert.Equal(t, "aggressive", threat.Level)
 		assert.Greater(t, threat.Count, 0)
 	}
@@ -76,28 +76,28 @@ func TestNewThreatCollection(t *testing.T) {
 	// NonWhitelistingBlockedEvent
 	{
 		threat := threats.Agents[1].NonWhitelistingBlocked[0]
-		assert.Equal(t, "9e665f526a3d467a8854b5b1505cfb85", threat.Guid)
+		assert.Equal(t, "6b8849fe65884ae9970c8fe8da8d86e9", threat.Guid)
 		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
 		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
 		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
-		assert.Equal(t, "C:\\Windows\\SysWOW64\\OPC Server\\88a3f15d-1628-46bb-a609-6d118d6e9f8a.exe", threat.File)
+		assert.Equal(t, "C:\\Buerkert Communicator\\b74fe5f4-5ca3-472d-9be0-585d65acb7e9.exe", threat.File)
 		assert.Equal(t, 64, len(threat.Hash))
-		assert.Equal(t, "Loy", threat.User)
+		assert.Equal(t, "Levi", threat.User)
 		assert.Greater(t, threat.Count, 0)
 	}
 
 	// ADCBlockedEvent
 	{
 		threat := threats.Agents[1].ADCBlocked[0]
-		assert.Equal(t, "9e665f526a3d467a8854b5b1505cfb85", threat.Guid)
+		assert.Equal(t, "6b8849fe65884ae9970c8fe8da8d86e9", threat.Guid)
 		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
 		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
 		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
-		assert.Equal(t, "C:\\Users\\Roboticsware FA-Panel6 (32bit)\\0169344d-8c42-424b-b780-1573093ab49b.exe", threat.File)
+		assert.Equal(t, "C:\\Windows\\System32\\OPC Server\\bf378c78-e5c7-4cf8-95eb-086c3ec71255.exe", threat.File)
 		assert.Equal(t, 64, len(threat.Hash))
 		assert.GreaterOrEqual(t, len(threat.Impacted), 3)
 		assert.NotEmpty(t, threat.Impacted[0])
-		assert.Equal(t, "Prevention", threat.Mode)
+		assert.Equal(t, "Detection", threat.Mode)
 		assert.Greater(t, threat.Count, 0)
 	}
 }
@@ -109,7 +109,7 @@ func TestEncodeThreatCollectionFlat(t *testing.T) {
 	assert.Equal(t, 5, len(threats.Agents))
 
 	telemetry := threats.EncodeCollectionFlat()
-	assert.Equal(t, "3e199767913046deab1678448b32f2f7", telemetry.ServerGuid)
+	assert.Equal(t, "1c8b35fc32cf48b3852e8ca897ec5958", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-threat", telemetry.TelemetryType)
 
 	associatedThreats := telemetry.Associations.(ThreatTelemetryAssociations)
@@ -136,11 +136,11 @@ func TestEncodeThreatCollectionFlat(t *testing.T) {
 		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
 		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
 		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
-		assert.Equal(t, "C:\\Program Files\\LRXSW 3.45\\02cc3379-6a30-4aff-8b68-0eece23fc937.exe", threat.File)
+		assert.Equal(t, "C:\\LRXSW 3.45\\16a03737-ec06-42f7-b00e-4789a3b67464.exe", threat.File)
 		assert.Equal(t, 64, len(threat.Hash))
 		assert.Equal(t, "Virus", threat.Type)
 		assert.Equal(t, "PE_TEST_VIRUS", threat.Name)
-		assert.Equal(t, "C:\\Program Files\\TXOne\\StellarProtect\\private\\quarantine\\36b2bdba-8956-472b-891d-702db6ce1b64", threat.Quarantine)
+		assert.Equal(t, "C:\\Program Files\\TXOne\\StellarEnforce\\private\\quarantine\\e4b7fea8-01af-49a4-aa90-0bf820e119e7", threat.Quarantine)
 		assert.Greater(t, threat.Count, 0)
 
 	}
@@ -152,7 +152,7 @@ func TestEncodeThreatCollectionFlat(t *testing.T) {
 		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
 		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
 		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
-		assert.Equal(t, "C:\\Users\\GX8 Design Studio\\b76f4ccc-1fe7-498a-a33b-6dd43b272b52.exe", threat.File)
+		assert.Equal(t, "C:\\Windows\\SysWOW64\\Roboticsware FA-Server6\\442da0f3-252d-4c9c-9d2c-2c88d85e5cdc.exe", threat.File)
 		assert.Equal(t, 64, len(threat.Hash))
 		assert.Greater(t, threat.Count, 0)
 	}
@@ -164,13 +164,13 @@ func TestEncodeThreatCollectionFlat(t *testing.T) {
 		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
 		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
 		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
-		assert.Equal(t, "C:\\Roboticsware FA-Panel6 (32bit)\\8f86b660-9f02-4a76-8e22-cf85566bc4e5.exe", threat.File)
-		assert.Equal(t, "Lizzie", threat.User)
+		assert.Equal(t, "C:\\Windows\\SysWOW64\\Buerkert Communicator\\56168ba3-0fdd-4889-a759-45b23b6351eb.exe", threat.File)
+		assert.Equal(t, "Pauline", threat.User)
 		assert.NotEmpty(t, threat.Parent1)
 		assert.NotEmpty(t, threat.Parent2)
 		assert.NotEmpty(t, threat.Parent3)
 		assert.NotEmpty(t, threat.Parent4)
-		assert.Equal(t, "Detection", threat.Mode)
+		assert.Equal(t, "Prevention", threat.Mode)
 		assert.Equal(t, "aggressive", threat.Level)
 		assert.Greater(t, threat.Count, 0)
 	}
@@ -182,9 +182,9 @@ func TestEncodeThreatCollectionFlat(t *testing.T) {
 		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
 		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
 		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
-		assert.Equal(t, "C:\\GX8 Design Studio\\aaa5c386-64fc-4228-9f1e-e6c471a48945.exe", threat.File)
+		assert.Equal(t, "C:\\Windows\\SysWOW64\\GX8 Design Studio\\b8145dc6-2d80-4f88-a734-59c6fe289734.exe", threat.File)
 		assert.Equal(t, 64, len(threat.Hash))
-		assert.Equal(t, "Mona", threat.User)
+		assert.Equal(t, "Lorna", threat.User)
 		assert.Greater(t, threat.Count, 0)
 	}
 
@@ -195,7 +195,7 @@ func TestEncodeThreatCollectionFlat(t *testing.T) {
 		assert.Greater(t, threat.TimeslotEnd-threat.TimeslotBegin, int64(0))
 		assert.Equal(t, int64(1), (threat.TimeslotEnd-threat.TimeslotBegin)/int64(86400))
 		assert.Equal(t, int64(0), (threat.TimeslotEnd-threat.TimeslotBegin)%int64(86400))
-		assert.Equal(t, "C:\\Users\\Roboticsware FA-Server6\\4edd0942-16a0-4737-ac06-bd87c5605512.exe", threat.File)
+		assert.Equal(t, "C:\\Windows\\SysWOW64\\Panel Studio V2.31\\6479fb30-0be1-473e-ac95-19e7b27bc2ad.exe", threat.File)
 		assert.Equal(t, 64, len(threat.Hash))
 		assert.GreaterOrEqual(t, len(threat.Impacted), 3)
 		assert.NotEmpty(t, threat.Impacted[0])

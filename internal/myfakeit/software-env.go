@@ -10,7 +10,7 @@ import (
 
 type AgentSoftwareEnv struct {
 	Guid string    `json:"guid" xml:"guid" fake:"{uuid}"`
-	App  []AppInfo `json:"app" xml:"app" fakesize:"100"`
+	App  []AppInfo `json:"app" xml:"app" fakesize:"1000"`
 }
 
 type AppInfo struct {

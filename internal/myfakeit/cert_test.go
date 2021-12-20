@@ -13,7 +13,7 @@ func TestCert(t *testing.T) {
 	agent := Cert()
 
 	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", agent.Guid)
-	assert.Equal(t, 100, len(agent.Cert))
+	assert.Equal(t, 1000, len(agent.Cert))
 	assert.Equal(t, "VT5", agent.Cert[0].Subject)
 	assert.Equal(t, "Class 1 Public Primary Certification Authority", agent.Cert[0].Issuer)
 	assert.Equal(t, "MTA=", agent.Cert[0].Serial)
