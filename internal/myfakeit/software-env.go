@@ -14,6 +14,7 @@ type AgentSoftwareEnv struct {
 }
 
 type AppInfo struct {
+	AppGuid         string `json:"appGuid" xml:"appGuid" fake:"{uuid}"`
 	Caption         string `json:"caption" xml:"caption" fake:"{app-caption}"`
 	Version         string `json:"version" xml:"version" fake:"{app-version}"`
 	Vendor          string `json:"vendor" xml:"vendor" fake:"skip"`
@@ -34,6 +35,8 @@ func sfotwareEnv(r *rand.Rand) *AgentSoftwareEnv {
 
 	// set vendor to caption
 	for i, app := range s.App {
+		// remove dash from UUID
+		s.App[i].AppGuid = strings.Replace(s.App[i].AppGuid, "-", "", -1)
 		s.App[i].Vendor = app.Caption
 	}
 
