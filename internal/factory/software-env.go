@@ -3,7 +3,6 @@ package factory
 import (
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/jonascheng/stellar-feedback-fakeit/internal/myfakeit"
@@ -36,9 +35,9 @@ func CollectAgentSoftwareEnv(size int) *AgentSoftwareEnvCollection {
 	return &agents
 }
 
-func (agents *AgentSoftwareEnvCollection) EncodeCollectionFlat() *AgentTelemetry {
+func (agents *AgentSoftwareEnvCollection) EncodeCollectionFlat(counterfeitHour bool, counterfeitDay bool, counterfeitMonth bool) *AgentTelemetry {
 	telemetry := AgentTelemetry{
-		Timestamp:     time.Now().UTC(),
+		Timestamp:     CounterfeitTimestamp(counterfeitHour, counterfeitDay, counterfeitMonth),
 		TelemetryType: "agent-telemetry-software-environment",
 		ServerGuid:    strings.Replace(strings.Replace(gofakeit.UUID(), "-", "", -1), "-", "", -1),
 		Associations:  *agents,
@@ -46,9 +45,9 @@ func (agents *AgentSoftwareEnvCollection) EncodeCollectionFlat() *AgentTelemetry
 	return &telemetry
 }
 
-func (agents *AgentSoftwareEnvCollection) EncodeAgentCollectionLookup() *AgentTelemetry {
+func (agents *AgentSoftwareEnvCollection) EncodeAgentCollectionLookup(counterfeitHour bool, counterfeitDay bool, counterfeitMonth bool) *AgentTelemetry {
 	telemetry := AgentTelemetry{
-		Timestamp:     time.Now().UTC(),
+		Timestamp:     CounterfeitTimestamp(counterfeitHour, counterfeitDay, counterfeitMonth),
 		TelemetryType: "agent-telemetry-software-environment",
 		ServerGuid:    strings.Replace(gofakeit.UUID(), "-", "", -1),
 	}

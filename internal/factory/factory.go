@@ -11,8 +11,8 @@ type AgentTelemetry struct {
 }
 
 type IAgentTelemetry interface {
-	EncodeCollectionFlat() *AgentTelemetry
-	EncodeAgentCollectionLookup() *AgentTelemetry
+	EncodeCollectionFlat(counterfeitHour bool, counterfeitDay bool, counterfeitMonth bool) *AgentTelemetry
+	EncodeAgentCollectionLookup(counterfeitHour bool, counterfeitDay bool, counterfeitMonth bool) *AgentTelemetry
 }
 
 func NewServerCollection() *ServerCollection {

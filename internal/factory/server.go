@@ -1,8 +1,6 @@
 package factory
 
 import (
-	"time"
-
 	"github.com/jonascheng/stellar-feedback-fakeit/internal/myfakeit"
 )
 
@@ -18,9 +16,9 @@ func CollectServer() *ServerCollection {
 	return &server
 }
 
-func (server *ServerCollection) EncodeCollectionFlat() *AgentTelemetry {
+func (server *ServerCollection) EncodeCollectionFlat(counterfeitHour bool, counterfeitDay bool, counterfeitMonth bool) *AgentTelemetry {
 	telemetry := AgentTelemetry{
-		Timestamp:     time.Now().UTC(),
+		Timestamp:     CounterfeitTimestamp(counterfeitHour, counterfeitDay, counterfeitMonth),
 		TelemetryType: "server-telemetry",
 		ServerGuid:    server.Server.Guid,
 		Associations:  *server.Server,
@@ -28,6 +26,6 @@ func (server *ServerCollection) EncodeCollectionFlat() *AgentTelemetry {
 	return &telemetry
 }
 
-func (server *ServerCollection) EncodeAgentCollectionLookup() *AgentTelemetry {
-	return server.EncodeCollectionFlat()
+func (server *ServerCollection) EncodeAgentCollectionLookup(counterfeitHour bool, counterfeitDay bool, counterfeitMonth bool) *AgentTelemetry {
+	return server.EncodeCollectionFlat(counterfeitHour, counterfeitDay, counterfeitMonth)
 }

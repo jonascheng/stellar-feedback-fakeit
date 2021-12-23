@@ -29,7 +29,7 @@ func TestEncodeAgentCertCollectionFlat(t *testing.T) {
 	agents := NewAgentCertCollection(5)
 	assert.Equal(t, 5, len(agents.Agents))
 
-	telemetry := agents.EncodeCollectionFlat()
+	telemetry := agents.EncodeCollectionFlat(false, false, false)
 	assert.Equal(t, "b964960367c0453287a8756855dd63fe", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-cert", telemetry.TelemetryType)
 
@@ -51,7 +51,7 @@ func TestEncodeAgentCertCollectionLookup(t *testing.T) {
 	agents := NewAgentCertCollection(5)
 	assert.Equal(t, 5, len(agents.Agents))
 
-	telemetry := agents.EncodeAgentCollectionLookup()
+	telemetry := agents.EncodeAgentCollectionLookup(false, false, false)
 	assert.Equal(t, "b964960367c0453287a8756855dd63fe", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-cert", telemetry.TelemetryType)
 
@@ -106,7 +106,7 @@ func TestEncodeAgentCertCollectionLookuWithSameCert(t *testing.T) {
 		Cert: certList,
 	}
 
-	telemetry := agents.EncodeAgentCollectionLookup()
+	telemetry := agents.EncodeAgentCollectionLookup(false, false, false)
 	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-cert", telemetry.TelemetryType)
 
@@ -190,7 +190,7 @@ func TestEncodeAgentCertCollectionLookuWithDifferentCert(t *testing.T) {
 		Cert: certList,
 	}
 
-	telemetry := agents.EncodeAgentCollectionLookup()
+	telemetry := agents.EncodeAgentCollectionLookup(false, false, false)
 	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-cert", telemetry.TelemetryType)
 

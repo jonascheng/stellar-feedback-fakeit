@@ -3,7 +3,6 @@ package factory
 import (
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/brianvoe/gofakeit/v6"
 
@@ -40,9 +39,9 @@ func CollectAgentSystemEnv(size int) *AgentSystemEnvCollection {
 	return &agents
 }
 
-func (agents *AgentSystemEnvCollection) EncodeCollectionFlat() *AgentTelemetry {
+func (agents *AgentSystemEnvCollection) EncodeCollectionFlat(counterfeitHour bool, counterfeitDay bool, counterfeitMonth bool) *AgentTelemetry {
 	telemetry := AgentTelemetry{
-		Timestamp:     time.Now().UTC(),
+		Timestamp:     CounterfeitTimestamp(counterfeitHour, counterfeitDay, counterfeitMonth),
 		TelemetryType: "agent-telemetry-system-environment",
 		ServerGuid:    strings.Replace(gofakeit.UUID(), "-", "", -1),
 		Associations:  *agents,
@@ -50,9 +49,9 @@ func (agents *AgentSystemEnvCollection) EncodeCollectionFlat() *AgentTelemetry {
 	return &telemetry
 }
 
-func (agents *AgentSystemEnvCollection) EncodeAgentCollectionLookup() *AgentTelemetry {
+func (agents *AgentSystemEnvCollection) EncodeAgentCollectionLookup(counterfeitHour bool, counterfeitDay bool, counterfeitMonth bool) *AgentTelemetry {
 	telemetry := AgentTelemetry{
-		Timestamp:     time.Now().UTC(),
+		Timestamp:     CounterfeitTimestamp(counterfeitHour, counterfeitDay, counterfeitMonth),
 		TelemetryType: "agent-telemetry-system-environment",
 		ServerGuid:    strings.Replace(gofakeit.UUID(), "-", "", -1),
 	}

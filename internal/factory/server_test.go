@@ -26,7 +26,7 @@ func TestEncodeServerCollectionFlat(t *testing.T) {
 
 	server := NewServerCollection()
 
-	telemetry := server.EncodeCollectionFlat()
+	telemetry := server.EncodeCollectionFlat(false, false, false)
 	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", telemetry.ServerGuid)
 	assert.Equal(t, "server-telemetry", telemetry.TelemetryType)
 
@@ -45,7 +45,7 @@ func TestEncodeServerCollectionLookup(t *testing.T) {
 
 	server := NewServerCollection()
 
-	telemetry := server.EncodeCollectionFlat()
+	telemetry := server.EncodeCollectionFlat(false, false, false)
 	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", telemetry.ServerGuid)
 	assert.Equal(t, "server-telemetry", telemetry.TelemetryType)
 

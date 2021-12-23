@@ -2,7 +2,6 @@ package factory
 
 import (
 	"strings"
-	"time"
 
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/jonascheng/stellar-feedback-fakeit/internal/myfakeit"
@@ -25,7 +24,7 @@ func CollectThreat(size int) *ThreatCollection {
 	return &threats
 }
 
-func (threats *ThreatCollection) EncodeCollectionFlat() *AgentTelemetry {
+func (threats *ThreatCollection) EncodeCollectionFlat(counterfeitHour bool, counterfeitDay bool, counterfeitMonth bool) *AgentTelemetry {
 	var associatedThreats ThreatTelemetryAssociations
 	for _, agent := range threats.Agents {
 		if agent.AppExecBlocked != nil {
@@ -49,7 +48,7 @@ func (threats *ThreatCollection) EncodeCollectionFlat() *AgentTelemetry {
 	}
 
 	telemetry := AgentTelemetry{
-		Timestamp:     time.Now().UTC(),
+		Timestamp:     CounterfeitTimestamp(counterfeitHour, counterfeitDay, counterfeitMonth),
 		TelemetryType: "agent-telemetry-threat",
 		ServerGuid:    strings.Replace(strings.Replace(gofakeit.UUID(), "-", "", -1), "-", "", -1),
 		Associations:  associatedThreats,
@@ -58,6 +57,6 @@ func (threats *ThreatCollection) EncodeCollectionFlat() *AgentTelemetry {
 	return &telemetry
 }
 
-func (threats *ThreatCollection) EncodeAgentCollectionLookup() *AgentTelemetry {
-	return threats.EncodeCollectionFlat()
+func (threats *ThreatCollection) EncodeAgentCollectionLookup(counterfeitHour bool, counterfeitDay bool, counterfeitMonth bool) *AgentTelemetry {
+	return threats.EncodeCollectionFlat(counterfeitHour, counterfeitDay, counterfeitMonth)
 }

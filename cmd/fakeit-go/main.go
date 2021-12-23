@@ -32,6 +32,9 @@ var (
 	allInfo          = kingpin.Flag("all-info", "Random generate all telemetry above.").Bool()
 	benchmark        = kingpin.Flag("benchmark", "Benchmark performance for agent-system-env, agent-software-env and agent-cert.").Bool()
 	size             = kingpin.Flag("size", "Random size").Default("1").Int()
+	counterfeitHour  = kingpin.Flag("counterfeit-hour", "Counterfeit feedback time, 0~23").Bool()
+	counterfeitDay   = kingpin.Flag("counterfeit-day", "Counterfeit feedback date, 1~31").Bool()
+	counterfeitMonth = kingpin.Flag("counterfeit-month", "Counterfeit feedback month, 1~12").Bool()
 	clean            = kingpin.Flag("cleanup", "Remove all json and gzip files").Bool()
 	debug            = kingpin.Flag("debug", "Debug output results in json format").Bool()
 )
@@ -47,13 +50,13 @@ type Benchmark struct {
 }
 
 func encodeCollectionFlat(benchmark *Benchmark, agents factory.IAgentTelemetry, flatFilename string) {
-	telemetryFlat := agents.EncodeCollectionFlat()
+	telemetryFlat := agents.EncodeCollectionFlat(*counterfeitHour, *counterfeitDay, *counterfeitMonth)
 	benchmark.FlatBytes = dumpToFile(telemetryFlat, flatFilename)
 	benchmark.FlatCompressedBytes = compressFile(flatFilename)
 }
 
 func encodeAgentCollectionLookup(benchmark *Benchmark, agents factory.IAgentTelemetry, lookupFilename string) {
-	telemetryFlat := agents.EncodeAgentCollectionLookup()
+	telemetryFlat := agents.EncodeAgentCollectionLookup(*counterfeitHour, *counterfeitDay, *counterfeitMonth)
 	benchmark.LookupBytes = dumpToFile(telemetryFlat, lookupFilename)
 	benchmark.LookupCompressedBytes = compressFile(lookupFilename)
 }

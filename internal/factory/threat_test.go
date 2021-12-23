@@ -108,7 +108,7 @@ func TestEncodeThreatCollectionFlat(t *testing.T) {
 	threats := NewThreatCollection(5)
 	assert.Equal(t, 5, len(threats.Agents))
 
-	telemetry := threats.EncodeCollectionFlat()
+	telemetry := threats.EncodeCollectionFlat(false, false, false)
 	assert.Equal(t, "1c8b35fc32cf48b3852e8ca897ec5958", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-threat", telemetry.TelemetryType)
 

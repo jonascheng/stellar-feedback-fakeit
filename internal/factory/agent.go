@@ -2,7 +2,6 @@ package factory
 
 import (
 	"strings"
-	"time"
 
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/jonascheng/stellar-feedback-fakeit/internal/myfakeit"
@@ -22,9 +21,9 @@ func CollectAgent(size int) *AgentCollection {
 	return &agents
 }
 
-func (agents *AgentCollection) EncodeCollectionFlat() *AgentTelemetry {
+func (agents *AgentCollection) EncodeCollectionFlat(counterfeitHour bool, counterfeitDay bool, counterfeitMonth bool) *AgentTelemetry {
 	telemetry := AgentTelemetry{
-		Timestamp:     time.Now().UTC(),
+		Timestamp:     CounterfeitTimestamp(counterfeitHour, counterfeitDay, counterfeitMonth),
 		TelemetryType: "agent-telemetry",
 		ServerGuid:    strings.Replace(strings.Replace(gofakeit.UUID(), "-", "", -1), "-", "", -1),
 		Associations:  *agents,
@@ -32,6 +31,6 @@ func (agents *AgentCollection) EncodeCollectionFlat() *AgentTelemetry {
 	return &telemetry
 }
 
-func (agents *AgentCollection) EncodeAgentCollectionLookup() *AgentTelemetry {
-	return agents.EncodeCollectionFlat()
+func (agents *AgentCollection) EncodeAgentCollectionLookup(counterfeitHour bool, counterfeitDay bool, counterfeitMonth bool) *AgentTelemetry {
+	return agents.EncodeCollectionFlat(counterfeitHour, counterfeitDay, counterfeitMonth)
 }

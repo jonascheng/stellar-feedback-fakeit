@@ -30,7 +30,7 @@ func TestEncodeAgentSoftwareEnvCollectionFlat(t *testing.T) {
 	agents := NewAgentSoftwareEnvCollection(5)
 	assert.Equal(t, 5, len(agents.Agents))
 
-	telemetry := agents.EncodeCollectionFlat()
+	telemetry := agents.EncodeCollectionFlat(false, false, false)
 	assert.Equal(t, "c75907d1dc394af4ad324b49646f3507", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-software-environment", telemetry.TelemetryType)
 
@@ -53,7 +53,7 @@ func TestEncodeAgentSoftwareEnvCollectionLookup(t *testing.T) {
 	agents := NewAgentSoftwareEnvCollection(5)
 	assert.Equal(t, 5, len(agents.Agents))
 
-	telemetry := agents.EncodeAgentCollectionLookup()
+	telemetry := agents.EncodeAgentCollectionLookup(false, false, false)
 	assert.Equal(t, "c75907d1dc394af4ad324b49646f3507", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-software-environment", telemetry.TelemetryType)
 
@@ -109,7 +109,7 @@ func TestEncodeAgentSoftwareEnvCollectionLookuWithSameApp(t *testing.T) {
 		App:  appList,
 	}
 
-	telemetry := agents.EncodeAgentCollectionLookup()
+	telemetry := agents.EncodeAgentCollectionLookup(false, false, false)
 	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-software-environment", telemetry.TelemetryType)
 
@@ -193,7 +193,7 @@ func TestEncodeAgentSoftwareEnvCollectionLookuWithDifferentApp(t *testing.T) {
 		App:  appList,
 	}
 
-	telemetry := agents.EncodeAgentCollectionLookup()
+	telemetry := agents.EncodeAgentCollectionLookup(false, false, false)
 	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-software-environment", telemetry.TelemetryType)
 

@@ -26,7 +26,7 @@ func TestEncodeAgentCollectionFlat(t *testing.T) {
 	agents := NewAgentCollection(5)
 	assert.Equal(t, 5, len(agents.Agents))
 
-	telemetry := agents.EncodeCollectionFlat()
+	telemetry := agents.EncodeCollectionFlat(false, false, false)
 	assert.Equal(t, "56769046311d483d91c150205f6674f4", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry", telemetry.TelemetryType)
 
@@ -47,7 +47,7 @@ func TestEncodeAgentCollectionLookup(t *testing.T) {
 	agents := NewAgentCollection(5)
 	assert.Equal(t, 5, len(agents.Agents))
 
-	telemetry := agents.EncodeAgentCollectionLookup()
+	telemetry := agents.EncodeAgentCollectionLookup(false, false, false)
 	assert.Equal(t, "56769046311d483d91c150205f6674f4", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry", telemetry.TelemetryType)
 

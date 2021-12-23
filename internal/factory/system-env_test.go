@@ -32,7 +32,7 @@ func TestEncodeAgentSystemEnvCollectionFlat(t *testing.T) {
 	agents := NewAgentSystemEnvCollection(5)
 	assert.Equal(t, 5, len(agents.Agents))
 
-	telemetry := agents.EncodeCollectionFlat()
+	telemetry := agents.EncodeCollectionFlat(false, false, false)
 	assert.Equal(t, "f83e12501065410d8499d725553b2a94", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-system-environment", telemetry.TelemetryType)
 
@@ -57,7 +57,7 @@ func TestEncodeAgentSystemEnvCollectionLookup(t *testing.T) {
 	agents := NewAgentSystemEnvCollection(5)
 	assert.Equal(t, 5, len(agents.Agents))
 
-	telemetry := agents.EncodeAgentCollectionLookup()
+	telemetry := agents.EncodeAgentCollectionLookup(false, false, false)
 	assert.Equal(t, "f83e12501065410d8499d725553b2a94", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-system-environment", telemetry.TelemetryType)
 
@@ -106,7 +106,7 @@ func TestEncodeAgentSystemEnvCollectionLookuWithSameOS(t *testing.T) {
 		Version: "1",
 	}
 
-	telemetry := agents.EncodeAgentCollectionLookup()
+	telemetry := agents.EncodeAgentCollectionLookup(false, false, false)
 	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-system-environment", telemetry.TelemetryType)
 
@@ -160,7 +160,7 @@ func TestEncodeAgentSystemEnvCollectionLookuWithDifferentOS(t *testing.T) {
 		Version: "3",
 	}
 
-	telemetry := agents.EncodeAgentCollectionLookup()
+	telemetry := agents.EncodeAgentCollectionLookup(false, false, false)
 	assert.Equal(t, "590c1440988845b0bd51a817ee07c3f2", telemetry.ServerGuid)
 	assert.Equal(t, "agent-telemetry-system-environment", telemetry.TelemetryType)
 
