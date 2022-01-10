@@ -18,7 +18,7 @@ func TestNewServerCollection(t *testing.T) {
 	assert.Equal(t, []string{"PTHYM3Q2DIFHYM0E490JPTGN71CBMJIX", "28UYLHB7PV5V3YDCXJGPA9091PA58EU5"}, server.Server.AC)
 	assert.Equal(t, 4, len(server.Server.EnabledFeature))
 	assert.Equal(t, "forward-syslog", server.Server.EnabledFeature[0])
-	assert.Equal(t, 5, len(server.Server.Meta))
+	assert.Equal(t, 5, len(*server.Server.Meta))
 }
 
 func TestEncodeServerCollectionFlat(t *testing.T) {
@@ -36,7 +36,7 @@ func TestEncodeServerCollectionFlat(t *testing.T) {
 	assert.Equal(t, []string{"PTHYM3Q2DIFHYM0E490JPTGN71CBMJIX", "28UYLHB7PV5V3YDCXJGPA9091PA58EU5"}, associatedServer.AC)
 	assert.Equal(t, 4, len(associatedServer.EnabledFeature))
 	assert.Equal(t, "forward-syslog", associatedServer.EnabledFeature[0])
-	assert.Equal(t, 5, len(associatedServer.Meta))
+	assert.Equal(t, 5, len(*associatedServer.Meta))
 }
 
 // identical to EncodeCollectionFlat
@@ -55,5 +55,5 @@ func TestEncodeServerCollectionLookup(t *testing.T) {
 	assert.Equal(t, []string{"PTHYM3Q2DIFHYM0E490JPTGN71CBMJIX", "28UYLHB7PV5V3YDCXJGPA9091PA58EU5"}, associatedServer.AC)
 	assert.Equal(t, 4, len(associatedServer.EnabledFeature))
 	assert.Equal(t, "forward-syslog", associatedServer.EnabledFeature[0])
-	assert.Equal(t, 5, len(associatedServer.Meta))
+	assert.Equal(t, 5, len(*associatedServer.Meta))
 }

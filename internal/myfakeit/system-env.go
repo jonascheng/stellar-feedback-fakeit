@@ -35,8 +35,6 @@ type VolumeInfo struct {
 	Type  string `json:"type" xml:"type" fake:"{randomstring:[FAT32,NTFS]}"`
 }
 
-type MetaInfo map[string]string
-
 // SystemEnv will generate a struct of system information
 func SystemEnv() *AgentSystemEnv { return systemEnv(globalFaker.Rand) }
 

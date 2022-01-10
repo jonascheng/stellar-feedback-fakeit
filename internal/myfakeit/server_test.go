@@ -17,5 +17,5 @@ func TestServerInfo(t *testing.T) {
 	assert.Equal(t, []string{"PTHYM3Q2DIFHYM0E490JPTGN71CBMJIX", "28UYLHB7PV5V3YDCXJGPA9091PA58EU5"}, server.AC)
 	assert.Equal(t, 4, len(server.EnabledFeature))
 	assert.Equal(t, "forward-syslog", server.EnabledFeature[0])
-	assert.Equal(t, 5, len(server.Meta))
+	assert.Equal(t, 5, len(*server.Meta))
 }
