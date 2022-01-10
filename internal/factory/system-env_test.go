@@ -22,8 +22,8 @@ func TestCollectAgentSystemEnv(t *testing.T) {
 	assert.Equal(t, myfakeit.QfeInfo{HotfixId: "KB5994899", InstalledOn: "21/07/2021"}, agent.Qfe[0])
 	assert.Equal(t, 2, len(agent.Volume))
 	assert.Equal(t, myfakeit.VolumeInfo{Drive: "D:", Total: "2252481995878", Free: "2670240491", Type: "FAT32"}, agent.Volume[0])
-	assert.Equal(t, 7, len(agent.Meta))
-	assert.Equal(t, myfakeit.MetaInfo{"cpuCaption": "Intel64 Family 6 Model 167 Stepping 1"}, agent.Meta[0])
+	assert.Equal(t, 7, len(*agent.Meta))
+	assert.Equal(t, "Intel64 Family 6 Model 167 Stepping 1", (*agent.Meta)["cpuCaption"])
 }
 
 func TestEncodeAgentSystemEnvCollectionFlat(t *testing.T) {
@@ -47,8 +47,8 @@ func TestEncodeAgentSystemEnvCollectionFlat(t *testing.T) {
 	assert.Equal(t, myfakeit.QfeInfo{HotfixId: "KB5994899", InstalledOn: "21/07/2021"}, agent.Qfe[0])
 	assert.Equal(t, 2, len(agent.Volume))
 	assert.Equal(t, myfakeit.VolumeInfo{Drive: "D:", Total: "2252481995878", Free: "2670240491", Type: "FAT32"}, agent.Volume[0])
-	assert.Equal(t, 7, len(agent.Meta))
-	assert.Equal(t, myfakeit.MetaInfo{"cpuCaption": "Intel64 Family 6 Model 167 Stepping 1"}, agent.Meta[0])
+	assert.Equal(t, 7, len(*agent.Meta))
+	assert.Equal(t, "Intel64 Family 6 Model 167 Stepping 1", (*agent.Meta)["cpuCaption"])
 }
 
 func TestEncodeAgentSystemEnvCollectionLookup(t *testing.T) {
@@ -79,8 +79,8 @@ func TestEncodeAgentSystemEnvCollectionLookup(t *testing.T) {
 	assert.Equal(t, myfakeit.QfeInfo{HotfixId: "KB5994899", InstalledOn: "21/07/2021"}, agent.Qfe[0])
 	assert.Equal(t, 2, len(agent.Volume))
 	assert.Equal(t, myfakeit.VolumeInfo{Drive: "D:", Total: "2252481995878", Free: "2670240491", Type: "FAT32"}, agent.Volume[0])
-	assert.Equal(t, 7, len(agent.Meta))
-	assert.Equal(t, myfakeit.MetaInfo{"cpuCaption": "Intel64 Family 6 Model 167 Stepping 1"}, agent.Meta[0])
+	assert.Equal(t, 7, len(*agent.Meta))
+	assert.Equal(t, "Intel64 Family 6 Model 167 Stepping 1", (*agent.Meta)["cpuCaption"])
 }
 
 func TestEncodeAgentSystemEnvCollectionLookuWithSameOS(t *testing.T) {

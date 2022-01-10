@@ -26,7 +26,7 @@ type AgentSystemEnv struct {
 	System string                `json:"system" xml:"system"`
 	Qfe    []myfakeit.QfeInfo    `json:"qfe" xml:"qfe"`
 	Volume []myfakeit.VolumeInfo `json:"volume" xml:"volume"`
-	Meta   []myfakeit.MetaInfo   `json:"meta" xml:"meta"`
+	Meta   *map[string]string    `json:"meta" xml:"meta"`
 }
 
 func CollectAgentSystemEnv(size int) *AgentSystemEnvCollection {

@@ -23,5 +23,5 @@ func TestAgentSystemEnv(t *testing.T) {
 	assert.Equal(t, "2252481995878", agent.Volume[0].Total)
 	assert.Equal(t, "2670240491", agent.Volume[0].Free)
 	assert.Equal(t, "FAT32", agent.Volume[0].Type)
-	assert.Equal(t, 7, len(agent.Meta))
+	assert.Equal(t, 7, len(*agent.Meta))
 }
